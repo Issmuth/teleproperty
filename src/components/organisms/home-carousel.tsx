@@ -1,11 +1,5 @@
-import { useState } from "react";
-import {
-    FlatList,
-    NativeScrollEvent,
-    NativeSyntheticEvent,
-    StyleSheet,
-    View
-} from "react-native";
+import { useRef, useState } from "react";
+import { FlatList, StyleSheet, View, ViewToken } from "react-native";
 
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
@@ -34,11 +28,17 @@ export function HomeCarousel<T>({
   const { colors } = useAppTheme();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(offsetX / (itemWidth + gap));
-    setActiveIndex(index);
-  };
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+  }).current;
+
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (viewableItems.length > 0) {
+        setActiveIndex(viewableItems[0].index ?? 0);
+      }
+    },
+  ).current;
 
   return (
     <View style={styles.container}>
@@ -49,7 +49,8 @@ export function HomeCarousel<T>({
         contentContainerStyle={[styles.listContent, { gap }]}
         snapToInterval={itemWidth + gap}
         decelerationRate="fast"
-        onScroll={handleScroll}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
         scrollEventThrottle={16}
         renderItem={renderItem}
         keyExtractor={keyExtractor}

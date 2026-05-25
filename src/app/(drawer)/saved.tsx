@@ -1,4 +1,4 @@
-import { ScreenTemplate } from "@/components/atoms/screen-template";
+import { ScreenTemplate } from "@/components/templates/screen-template";
 import { useI18n } from "@/i18n";
 
 export default function SavedScreen() {
@@ -6,3 +6,4 @@ export default function SavedScreen() {
 
   return <ScreenTemplate title={t("nav.saved")} />;
 }
+

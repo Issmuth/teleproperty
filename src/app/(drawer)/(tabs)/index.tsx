@@ -15,9 +15,9 @@ import {
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { HomeCarousel } from "@/components/molecules/home-carousel";
-import { HomeCategoryRow } from "@/components/molecules/home-category-row";
-import { HomeHero } from "@/components/molecules/home-hero";
+import { HomeCarousel } from "@/components/organisms/home-carousel";
+import { HomeCategoryRow } from "@/components/organisms/home-category-row";
+import { HomeHero } from "@/components/organisms/home-hero";
 import { HomeListingCard } from "@/components/molecules/home-listing-card";
 import { HomePropertyCard } from "@/components/molecules/home-property-card";
 import { HomeSectionHeader } from "@/components/molecules/home-section-header";
@@ -300,3 +300,4 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 });
+

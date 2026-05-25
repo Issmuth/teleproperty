@@ -1,4 +1,4 @@
-import { ScreenTemplate } from "@/components/atoms/screen-template";
+import { ScreenTemplate } from "@/components/templates/screen-template";
 import { useI18n } from "@/i18n";
 
 export default function AccountScreen() {
@@ -6,3 +6,4 @@ export default function AccountScreen() {
 
   return <ScreenTemplate title={t("nav.account")} />;
 }
+

@@ -1,7 +1,7 @@
 import { Drawer } from "expo-router/drawer";
 
 import { AppLogo } from "@/components/atoms/app-logo";
-import { DrawerHeaderActions } from "@/components/molecules/drawer-header-actions";
+import { DrawerHeaderActions } from "@/components/organisms/drawer-header-actions";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
@@ -63,3 +63,4 @@ export default function DrawerLayout() {
     </Drawer>
   );
 }
+
