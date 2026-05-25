@@ -20,7 +20,9 @@ export function ScreenTemplate({ title, description }: ScreenTemplateProps) {
           { backgroundColor: colors.surface, borderColor: colors.border },
         ]}
       >
-        <Text style={[styles.kicker, { color: colors.textMuted }]}>{t("common.appName")}</Text>
+        <Text style={[styles.kicker, { color: colors.textMuted }]}>
+          {t("common.appName")}
+        </Text>
         <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
         <Text style={[styles.description, { color: colors.textMuted }]}>
           {description ?? t("common.blankTemplate")}

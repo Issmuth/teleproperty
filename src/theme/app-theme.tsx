@@ -66,19 +66,19 @@ const lightColors: AppThemeColors = {
 };
 
 const darkColors: AppThemeColors = {
-  background: "#062D35",
-  surface: "#073C28",
-  surfaceMuted: "#084C2E",
-  surfaceAccent: "rgba(24, 195, 106, 0.14)",
+  background: "#0A0A0B",
+  surface: "#0F1113",
+  surfaceMuted: "#161718",
+  surfaceAccent: "rgba(248, 250, 252, 0.04)",
   text: "#F8FAFC",
   textMuted: "#CBD5E1",
   textInverse: palette.text.inverse,
-  border: "rgba(229, 231, 235, 0.12)",
+  border: "rgba(255, 255, 255, 0.06)",
   shadow: "rgba(0, 0, 0, 0.45)",
-  drawerBackground: "#062D35",
-  headerBackground: "#073C28",
-  tabBarBackground: "#073C28",
-  iconButtonBackground: "rgba(255, 255, 255, 0.08)",
+  drawerBackground: "#0A0A0B",
+  headerBackground: "#0F1113",
+  tabBarBackground: "#0F1113",
+  iconButtonBackground: "rgba(255, 255, 255, 0.06)",
   icon: "#F8FAFC",
   iconMuted: "#CBD5E1",
   activeSurface: "rgba(24, 195, 106, 0.14)",
@@ -194,3 +194,7 @@ export function useAppTheme() {
 
   if (!context) {
     throw new Error("useAppTheme must be used within AppThemeProvider");
+  }
+
+  return context;
+}

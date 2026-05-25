@@ -151,4 +151,9 @@ const styles = StyleSheet.create({
   },
   optionLabel: {
     fontSize: 14,
-    fontWeight: "600"
+    fontWeight: "600",
+  },
+  optionLabelActive: {
+    color: "#0A7A4A",
+  },
+});

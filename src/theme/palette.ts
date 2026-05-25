@@ -11,6 +11,30 @@ export const palette = {
     primaryMuted: "#166534",
     accent: "#18C36A",
   },
+  blue: {
+    primary: "#1877F2",
+    strong: "#2563EB",
+    muted: "#3B82F6",
+  },
+  purple: {
+    primary: "#8B5CF6",
+    strong: "#7C3AED",
+    muted: "#6D28D9",
+  },
+  red: {
+    primary: "#EF4444",
+    strong: "#DC2626",
+    muted: "#F43F5E",
+  },
+  pink: {
+    primary: "#EC4899",
+    strong: "#DB2777",
+    muted: "#F472B6",
+  },
+  orange: {
+    primary: "#F97316",
+    strong: "#EA580C",
+  },
   text: {
     primary: "#0F172A",
     secondary: "#64748B",
