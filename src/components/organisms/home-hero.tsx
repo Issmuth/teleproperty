@@ -1,12 +1,15 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, View } from "react-native";
 
+import { ActionButton } from "@/components/atoms/action-button";
 import { HomeSearchBar } from "@/components/atoms/home/home-search-bar";
 import {
     HomeSegmentedControl,
     type HomeSegment,
 } from "@/components/atoms/home/home-segmented-control";
 import { useAppTheme } from "@/theme/app-theme";
+import { palette } from "@/theme/palette";
+import { PlusCircle } from "lucide-react-native";
 
 type HomeHeroProps = {
   activeSegment: string;
@@ -40,38 +43,47 @@ export function HomeHero({
     : (["rgb(6, 78, 59)", "rgb(6, 95, 70)", "rgb(20, 83, 45)"] as const);
 
   return (
-    <LinearGradient
-      colors={gradientColors}
-      start={{ x: 0, y: 0 }}
-      style={styles.hero}
-    >
-      <View style={styles.topRow}>
-        <Text style={styles.kicker}>{kicker}</Text>
-        <View
-          style={[styles.localePill, { backgroundColor: colors.surfaceMuted }]}
-        >
-          <Text style={[styles.localePillText, { color: colors.textMuted }]}>
-            {localePill}
-          </Text>
+    <View style={{ gap: 16 }}>
+      <LinearGradient
+        colors={gradientColors}
+        start={{ x: 0, y: 0 }}
+        style={styles.hero}
+      >
+        <View style={styles.topRow}>
+          <Text style={styles.kicker}>{kicker}</Text>
+          <View
+            style={[
+              styles.localePill,
+              { backgroundColor: colors.surfaceMuted },
+            ]}
+          >
+            <Text style={[styles.localePillText, { color: colors.textMuted }]}>
+              {localePill}
+            </Text>
+          </View>
         </View>
-      </View>
-
-      <View style={styles.titleBlock}>
-        <Text style={styles.title}>{title.toUpperCase()}</Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
-      </View>
-
-      <HomeSegmentedControl
-        segments={segments}
-        activeKey={activeSegment}
-        onChange={onSegmentChange}
-      />
-
+        <View style={styles.titleBlock}>
+          <Text style={styles.title}>{title.toUpperCase()}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+        </View>
+        <HomeSegmentedControl
+          segments={segments}
+          activeKey={activeSegment}
+          onChange={onSegmentChange}
+        />
+      </LinearGradient>
       <HomeSearchBar
         placeholder={searchPlaceholder}
         actionLabel={searchAction}
       />
-    </LinearGradient>
+      <ActionButton
+        label={postLabel}
+        icon={PlusCircle}
+        backgroundColor={palette.brand.accent}
+        iconSize={20}
+        style={styles.postButton}
+      />
+    </View>
   );
 }
 
@@ -121,14 +133,7 @@ const styles = StyleSheet.create({
   postButton: {
     minHeight: 54,
     borderRadius: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  postLabel: {
-    fontSize: 15,
-    fontWeight: "800",
-    color: "#FFFFFF",
+    marginHorizontal: 16,
+    gap: 10,
   },
 });

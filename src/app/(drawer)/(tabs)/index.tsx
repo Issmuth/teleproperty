@@ -1,8 +1,10 @@
 import {
     Briefcase,
+    Building,
     Building2,
     Gift,
     Newspaper,
+    Package,
     Plus,
     Search,
     ShieldCheck,
@@ -15,13 +17,14 @@ import {
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { HomeCarousel } from "@/components/organisms/home-carousel";
-import { HomeCategoryRow } from "@/components/organisms/home-category-row";
-import { HomeHero } from "@/components/organisms/home-hero";
 import { HomeListingCard } from "@/components/molecules/home-listing-card";
 import { HomePropertyCard } from "@/components/molecules/home-property-card";
 import { HomeSectionHeader } from "@/components/molecules/home-section-header";
 import { HomeServiceBanner } from "@/components/molecules/home-service-banner";
+import { QuickServiceCard } from "@/components/molecules/quick-service-card";
+import { HomeCarousel } from "@/components/organisms/home-carousel";
+import { HomeCategoryRow } from "@/components/organisms/home-category-row";
+import { HomeHero } from "@/components/organisms/home-hero";
 import {
     featuredProjects,
     featuredProperties,
@@ -82,7 +85,13 @@ export default function HomeScreen() {
                       ? t("nav.services")
                       : category.label === "Interior"
                         ? t("home.interior")
-                        : category.label,
+                        : category.label === "Movers"
+                          ? t("home.movers")
+                          : category.label === "Agents"
+                            ? t("home.agents")
+                            : category.label === "Rewards"
+                              ? t("home.rewards")
+                              : category.label,
           }))}
         />
       </View>
@@ -128,19 +137,33 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={[styles.cardsRow, { paddingHorizontal: 16 }]}
         >
-          <HomeServiceBanner
-            style={{ width: 280, marginRight: 12 }}
-            backgroundColor="#1CA1E3"
+          <QuickServiceCard
             title="Home Services"
             subtitle="Cleaning, plumbing, electrical & more"
-            image="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=500&q=80"
+            icon={Wrench}
+            backgroundColor="#1CA1E3"
+            style={{ width: 320 }}
           />
-          <HomeServiceBanner
-            style={{ width: 200 }}
+          <QuickServiceCard
+            title="Interior Design"
+            subtitle="Design, furniture & decoration"
+            icon={Sofa}
             backgroundColor={palette.purple.primary}
-            title="Interiors"
-            subtitle="Design & Furniture"
-            image="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=500&q=80"
+            style={{ width: 280 }}
+          />
+          <QuickServiceCard
+            title="Packers & Movers"
+            subtitle="Safe moving & relocation services"
+            icon={Package}
+            backgroundColor={palette.orange.primary}
+            style={{ width: 280 }}
+          />
+          <QuickServiceCard
+            title="Hotel Booking"
+            subtitle="Hotels & guest houses"
+            icon={Building}
+            backgroundColor={palette.brand.accent}
+            style={{ width: 280 }}
           />
         </ScrollView>
       </View>
@@ -284,6 +307,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   cardsRow: {
+    flexDirection: "row",
     gap: 14,
     paddingTop: 2,
     paddingBottom: 8,
@@ -300,4 +324,3 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 });
-

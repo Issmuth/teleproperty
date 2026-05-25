@@ -1,8 +1,11 @@
 import {
     Building2,
     DraftingCompass,
+    Gift,
     Home,
     Palette,
+    Truck,
+    UserCheck,
     Wrench,
     type LucideIcon,
 } from "lucide-react-native";
@@ -29,6 +32,9 @@ export const homeCategories: HomeCategory[] = [
   { label: "Projects", icon: DraftingCompass, color: palette.purple.strong },
   { label: "Services", icon: Wrench, color: palette.red.muted },
   { label: "Interior", icon: Palette, color: palette.pink.primary },
+  { label: "Movers", icon: Truck, color: "#00B4D8" },
+  { label: "Agents", icon: UserCheck, color: palette.brand.accent },
+  { label: "Rewards", icon: Gift, color: palette.orange.primary },
 ];
 
 export const featuredProjects = [

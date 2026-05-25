@@ -24,7 +24,7 @@ export function HomeSegmentedControl({
     <View
       style={[
         styles.container,
-        { backgroundColor: colors.surfaceAccent, borderColor: colors.border },
+        { backgroundColor: colors.surfaceAccent + "35", borderColor: "white" },
       ]}
     >
       {segments.map((segment) => {
@@ -46,7 +46,7 @@ export function HomeSegmentedControl({
             <Text
               style={[
                 styles.label,
-                { color: isActive ? colors.activeText : colors.textMuted },
+                { color: isActive ? colors.activeText : "white" },
               ]}
             >
               {segment.label}
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     borderRadius: 22,
-    borderWidth: 1,
+    borderWidth: 0.2,
     padding: 6,
   },
   segment: {

@@ -1,6 +1,7 @@
-import { Filter, Search } from "lucide-react-native";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Search, SlidersHorizontal } from "lucide-react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
+import { ActionButton } from "@/components/atoms/action-button";
 import { useAppTheme } from "@/theme/app-theme";
 
 type HomeSearchBarProps = {
@@ -33,15 +34,18 @@ export function HomeSearchBar({
       <Pressable
         style={[styles.filterButton, { backgroundColor: colors.surfaceMuted }]}
       >
-        <Filter size={18} color={colors.textMuted} strokeWidth={2.2} />
+        <SlidersHorizontal
+          size={18}
+          color={colors.textMuted}
+          strokeWidth={2.2}
+        />
       </Pressable>
 
-      <Pressable
-        style={[styles.actionButton, { backgroundColor: colors.activeText }]}
-      >
-        <Search size={16} color="#FFFFFF" strokeWidth={2.2} />
-        <Text style={styles.actionLabel}>{actionLabel}</Text>
-      </Pressable>
+      <ActionButton
+        label={actionLabel}
+        icon={Search}
+        backgroundColor={colors.activeText}
+      />
     </View>
   );
 }
@@ -53,11 +57,12 @@ const styles = StyleSheet.create({
     gap: 8,
     borderRadius: 22,
     padding: 10,
-    shadowColor: "rgba(0, 0, 0, 0.12)",
-    shadowOpacity: 0.12,
+    shadowColor: "rgba(0, 0, 0, 0.4)",
+    shadowOpacity: 0.4,
     shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 16,
-    elevation: 8,
+    shadowRadius: 4,
+    elevation: 4,
+    marginHorizontal: 16,
   },
   inputWrap: {
     flex: 1,
@@ -81,19 +86,5 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-  },
-  actionButton: {
-    minHeight: 44,
-    paddingHorizontal: 18,
-    borderRadius: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  actionLabel: {
-    fontSize: 14,
-    fontWeight: "800",
-    color: "#FFFFFF",
   },
 });
