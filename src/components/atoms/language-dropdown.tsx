@@ -4,9 +4,11 @@ import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { HeaderIconButton } from "@/components/atoms/header-icon-button";
 import { supportedLocales, useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 
 export function LanguageDropdown() {
   const { locale, selectedLocale, setLocale, t } = useI18n();
+  const { colors } = useAppTheme();
   const [open, setOpen] = useState(false);
 
   return (
@@ -16,6 +18,7 @@ export function LanguageDropdown() {
         label={t("settings.languageSectionTitle")}
         onPress={() => setOpen(true)}
         style={styles.iconButton}
+        iconColor={colors.activeText}
       />
 
       <Modal
@@ -24,22 +27,30 @@ export function LanguageDropdown() {
         animationType="fade"
         onRequestClose={() => setOpen(false)}
       >
-        <View style={styles.backdrop}>
+        <View style={[styles.backdrop, { backgroundColor: colors.shadow }]}>
           <Pressable
             style={StyleSheet.absoluteFill}
             onPress={() => setOpen(false)}
           />
 
-          <View style={styles.menu}>
-            <Text style={styles.menuTitle}>
+          <View
+            style={[
+              styles.menu,
+              { backgroundColor: colors.surface, shadowColor: colors.shadow },
+            ]}
+          >
+            <Text style={[styles.menuTitle, { color: colors.textMuted }]}>
               {t("settings.languageSectionTitle")}
             </Text>
 
             <Pressable
-              onPress={() => setLocale(null)}
-              onPressOut={() => setOpen(false)}
+              onPress={() => {
+                setLocale(null);
+                setOpen(false);
+              }}
               style={({ pressed }) => [
                 styles.option,
+                { backgroundColor: colors.surface, borderColor: colors.border },
                 selectedLocale === null ? styles.optionActive : null,
                 pressed ? styles.optionPressed : null,
               ]}
@@ -47,6 +58,7 @@ export function LanguageDropdown() {
               <Text
                 style={[
                   styles.optionLabel,
+                  { color: colors.text },
                   selectedLocale === null ? styles.optionLabelActive : null,
                 ]}
               >
@@ -60,10 +72,16 @@ export function LanguageDropdown() {
               return (
                 <Pressable
                   key={localeCode}
-                  onPress={() => setLocale(localeCode)}
-                  onPressOut={() => setOpen(false)}
+                  onPress={() => {
+                    setLocale(localeCode);
+                    setOpen(false);
+                  }}
                   style={({ pressed }) => [
                     styles.option,
+                    {
+                      backgroundColor: colors.surface,
+                      borderColor: colors.border,
+                    },
                     isActive ? styles.optionActive : null,
                     pressed ? styles.optionPressed : null,
                   ]}
@@ -71,6 +89,7 @@ export function LanguageDropdown() {
                   <Text
                     style={[
                       styles.optionLabel,
+                      { color: colors.text },
                       isActive ? styles.optionLabelActive : null,
                     ]}
                   >
@@ -91,11 +110,10 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   iconButton: {
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "transparent",
   },
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(15, 23, 42, 0.16)",
   },
   menu: {
     position: "absolute",
@@ -103,10 +121,8 @@ const styles = StyleSheet.create({
     right: 16,
     width: 220,
     borderRadius: 18,
-    backgroundColor: "#FFFFFF",
     padding: 12,
     gap: 8,
-    shadowColor: "#000",
     shadowOpacity: 0.16,
     shadowOffset: { width: 0, height: 8 },
     shadowRadius: 18,
@@ -117,31 +133,22 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 0.6,
     textTransform: "uppercase",
-    color: "#64748B",
     paddingHorizontal: 4,
     paddingBottom: 2,
   },
   option: {
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
     paddingVertical: 11,
     paddingHorizontal: 12,
-    backgroundColor: "#FFFFFF",
   },
   optionPressed: {
     opacity: 0.85,
   },
   optionActive: {
-    borderColor: "#208AEF",
-    backgroundColor: "#E6F4FE",
+    borderColor: "#0B8F55",
+    backgroundColor: "#ECFDF5",
   },
   optionLabel: {
     fontSize: 14,
-    color: "#0F172A",
-    fontWeight: "600",
-  },
-  optionLabelActive: {
-    color: "#125FA8",
-  },
-});
+    fontWeight: "600"

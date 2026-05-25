@@ -1,21 +1,40 @@
 import { House } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
 
+import { useAppTheme } from "@/theme/app-theme";
+import { palette } from "@/theme/palette";
+
 type AppLogoProps = {
   compact?: boolean;
 };
 
 export function AppLogo({ compact = false }: AppLogoProps) {
+  const { colors } = useAppTheme();
+
   return (
     <View style={[styles.container, compact && styles.compactContainer]}>
       <View style={[styles.mark, compact && styles.compactMark]}>
-        <House color="#FFFFFF" size={compact ? 16 : 18} strokeWidth={2.5} />
+        <House
+          color={colors.textInverse}
+          size={compact ? 16 : 18}
+          strokeWidth={2.5}
+        />
       </View>
       <View style={styles.textBlock}>
-        <Text style={[styles.title, compact && styles.compactTitle]}>
+        <Text
+          style={[
+            styles.title,
+            compact && styles.compactTitle,
+            { color: colors.text },
+          ]}
+        >
           TeleProperty
         </Text>
-        {!compact ? <Text style={styles.subtitle}>Finder Ethiopia</Text> : null}
+        {!compact ? (
+          <Text style={[styles.subtitle, { color: colors.activeText }]}>
+            Finder Ethiopia
+          </Text>
+        ) : null}
       </View>
     </View>
   );
@@ -35,7 +54,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: "#0E7C4B",
+    backgroundColor: palette.brand.primary,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -51,7 +70,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 20,
     fontWeight: "800",
-    color: "#111827",
   },
   compactTitle: {
     fontSize: 15,
@@ -61,6 +79,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 14,
     fontWeight: "600",
-    color: "#0E7C4B",
   },
 });

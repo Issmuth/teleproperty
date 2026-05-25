@@ -22,6 +22,10 @@ export const ti: typeof en = {
     followSystem: "ቋንቋ መሳርሒ ተኸተል",
     currentLanguage: "ሕጂ ቋንቋ: %{language}",
   },
+  theme: {
+    switchToLight: "ናብ ብሩህ ሁነታ ቀይር",
+    switchToDark: "ናብ ጸሊም ሁነታ ቀይር",
+  },
   languages: {
     en: "English",
     am: "Amharic",

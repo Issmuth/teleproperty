@@ -3,9 +3,11 @@ import { Drawer } from "expo-router/drawer";
 import { AppLogo } from "@/components/atoms/app-logo";
 import { DrawerHeaderActions } from "@/components/molecules/drawer-header-actions";
 import { useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 
 export default function DrawerLayout() {
   const { t } = useI18n();
+  const { colors } = useAppTheme();
 
   return (
     <Drawer
@@ -14,11 +16,17 @@ export default function DrawerLayout() {
         headerShown: true,
         drawerType: "front",
         drawerPosition: "right",
+        drawerStyle: {
+          backgroundColor: colors.drawerBackground,
+        },
+        drawerActiveTintColor: colors.activeText,
+        drawerInactiveTintColor: colors.iconMuted,
+        drawerActiveBackgroundColor: colors.activeSurface,
         headerTitle: () => null,
         headerLeft: () => <AppLogo />,
         headerRight: () => <DrawerHeaderActions />,
         headerStyle: {
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.headerBackground,
           shadowOpacity: 0,
           elevation: 0,
         },

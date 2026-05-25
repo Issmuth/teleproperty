@@ -1,19 +1,32 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { supportedLocales, useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 
 export default function SettingsScreen() {
   const { locale, selectedLocale, setLocale, t } = useI18n();
+  const { colors } = useAppTheme();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.kicker}>{t("common.appName")}</Text>
-        <Text style={styles.title}>{t("settings.title")}</Text>
-        <Text style={styles.description}>{t("settings.description")}</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: colors.surface, borderColor: colors.border },
+        ]}
+      >
+        <Text style={[styles.kicker, { color: colors.textMuted }]}>
+          {t("common.appName")}
+        </Text>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {t("settings.title")}
+        </Text>
+        <Text style={[styles.description, { color: colors.textMuted }]}>
+          {t("settings.description")}
+        </Text>
 
         <View style={styles.languageSection}>
-          <Text style={styles.sectionTitle}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
             {t("settings.languageSectionTitle")}
           </Text>
 
@@ -21,6 +34,7 @@ export default function SettingsScreen() {
             onPress={() => setLocale(null)}
             style={({ pressed }) => [
               styles.option,
+              { backgroundColor: colors.surface, borderColor: colors.border },
               selectedLocale === null ? styles.optionActive : null,
               pressed ? styles.optionPressed : null,
             ]}
@@ -28,6 +42,7 @@ export default function SettingsScreen() {
             <Text
               style={[
                 styles.optionLabel,
+                { color: colors.text },
                 selectedLocale === null ? styles.optionLabelActive : null,
               ]}
             >
@@ -44,6 +59,10 @@ export default function SettingsScreen() {
                 onPress={() => setLocale(localeCode)}
                 style={({ pressed }) => [
                   styles.option,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                  },
                   isActive ? styles.optionActive : null,
                   pressed ? styles.optionPressed : null,
                 ]}
@@ -51,6 +70,7 @@ export default function SettingsScreen() {
                 <Text
                   style={[
                     styles.optionLabel,
+                    { color: colors.text },
                     isActive ? styles.optionLabelActive : null,
                   ]}
                 >
@@ -61,7 +81,7 @@ export default function SettingsScreen() {
           })}
         </View>
 
-        <Text style={styles.currentLanguage}>
+        <Text style={[styles.currentLanguage, { color: colors.textMuted }]}>
           {t("settings.currentLanguage", {
             language: t(`languages.${locale}`),
           })}
@@ -76,7 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F5F7F8",
     padding: 24,
   },
   card: {
@@ -85,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     paddingVertical: 32,
     paddingHorizontal: 24,
-    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
     gap: 10,
   },
   kicker: {
@@ -93,18 +112,15 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 1.2,
     textTransform: "uppercase",
-    color: "#4B5563",
     textAlign: "center",
   },
   title: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#111827",
     textAlign: "center",
   },
   description: {
     fontSize: 15,
-    color: "#6B7280",
     textAlign: "center",
     marginBottom: 8,
   },
@@ -114,36 +130,31 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#374151",
     marginBottom: 2,
   },
   option: {
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "#D1D5DB",
     paddingVertical: 12,
     paddingHorizontal: 14,
-    backgroundColor: "#FFFFFF",
   },
   optionPressed: {
     opacity: 0.85,
   },
   optionActive: {
-    borderColor: "#208AEF",
-    backgroundColor: "#E6F4FE",
+    borderColor: "#0B8F55",
+    backgroundColor: "#ECFDF5",
   },
   optionLabel: {
     fontSize: 14,
-    color: "#111827",
     fontWeight: "600",
   },
   optionLabelActive: {
-    color: "#125FA8",
+    color: "#0A7A4A",
   },
   currentLanguage: {
     marginTop: 10,
     textAlign: "center",
-    color: "#4B5563",
     fontSize: 13,
   },
 });

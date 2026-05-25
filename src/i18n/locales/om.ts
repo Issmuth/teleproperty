@@ -22,6 +22,10 @@ export const om: typeof en = {
     followSystem: "Afaan bilbila fayyadami",
     currentLanguage: "Afaan amma: %{language}",
   },
+  theme: {
+    switchToLight: "Gara haala ifaa ce'i",
+    switchToDark: "Gara haala dukkanaa ce'i",
+  },
   languages: {
     en: "English",
     am: "Amharic",

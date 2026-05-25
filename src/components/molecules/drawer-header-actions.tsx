@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 
 import { HeaderIconButton } from "@/components/atoms/header-icon-button";
 import { LanguageDropdown } from "@/components/atoms/language-dropdown";
+import { ThemeToggle } from "@/components/atoms/theme-toggle";
 
 export function DrawerHeaderActions() {
   const navigation = useNavigation();
@@ -12,6 +13,7 @@ export function DrawerHeaderActions() {
   return (
     <View style={styles.container}>
       <LanguageDropdown />
+      <ThemeToggle />
       <HeaderIconButton
         icon={Bell}
         label="Open messages"

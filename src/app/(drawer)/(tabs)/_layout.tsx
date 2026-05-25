@@ -1,4 +1,4 @@
-import { Tabs, useTheme } from "expo-router";
+import { Tabs } from "expo-router";
 import {
     Building2,
     CreditCard,
@@ -9,19 +9,26 @@ import {
 import { StyleSheet } from "react-native";
 
 import { useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 
 export default function TabsLayout() {
-  const theme = useTheme();
   const { t } = useI18n();
+  const { colors } = useAppTheme();
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.text,
+        tabBarActiveTintColor: colors.activeText,
+        tabBarInactiveTintColor: colors.iconMuted,
         tabBarLabelStyle: styles.label,
-        tabBarStyle: [styles.tabBar, { backgroundColor: theme.colors.card }],
+        tabBarStyle: [
+          styles.tabBar,
+          {
+            backgroundColor: colors.tabBarBackground,
+            borderColor: colors.border,
+          },
+        ],
       }}
     >
       <Tabs.Screen
@@ -75,20 +82,19 @@ export default function TabsLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: "absolute",
     left: 16,
     right: 16,
     bottom: 12,
     height: 68,
     borderRadius: 22,
     borderTopWidth: 0,
+    borderWidth: 1,
     elevation: 12,
-    shadowColor: "#000",
+    shadowColor: "rgba(0, 0, 0, 0.18)",
     shadowOpacity: 0.12,
     shadowOffset: { width: 0, height: 8 },
     shadowRadius: 18,
-    paddingBottom: 10,
-    paddingTop: 8,
+    paddingVertical: 10,
   },
   label: {
     fontSize: 12,

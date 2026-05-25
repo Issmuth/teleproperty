@@ -20,6 +20,10 @@ export const en = {
     followSystem: "Use device language",
     currentLanguage: "Current language: %{language}",
   },
+  theme: {
+    switchToLight: "Switch to light mode",
+    switchToDark: "Switch to dark mode",
+  },
   languages: {
     en: "English",
     am: "Amharic",

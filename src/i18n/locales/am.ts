@@ -22,6 +22,10 @@ export const am: typeof en = {
     followSystem: "የመሣሪያ ቋንቋን ተከተል",
     currentLanguage: "የአሁኑ ቋንቋ: %{language}",
   },
+  theme: {
+    switchToLight: "ወደ ብርሃን ሁነታ ቀይር",
+    switchToDark: "ወደ ጨለማ ሁነታ ቀይር",
+  },
   languages: {
     en: "እንግሊዝኛ",
     am: "አማርኛ",
