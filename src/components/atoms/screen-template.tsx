@@ -1,20 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
 
+import { useI18n } from "@/i18n";
+
 type ScreenTemplateProps = {
   title: string;
   description?: string;
 };
 
-export function ScreenTemplate({
-  title,
-  description = "Blank template",
-}: ScreenTemplateProps) {
+export function ScreenTemplate({ title, description }: ScreenTemplateProps) {
+  const { t } = useI18n();
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.kicker}>TeleProperty</Text>
+        <Text style={styles.kicker}>{t("common.appName")}</Text>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.description}>
+          {description ?? t("common.blankTemplate")}
+        </Text>
       </View>
     </View>
   );

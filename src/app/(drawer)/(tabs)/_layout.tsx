@@ -8,8 +8,11 @@ import {
 } from "lucide-react-native";
 import { StyleSheet } from "react-native";
 
+import { useI18n } from "@/i18n";
+
 export default function TabsLayout() {
   const theme = useTheme();
+  const { t } = useI18n();
 
   return (
     <Tabs
@@ -24,7 +27,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: t("nav.home"),
           tabBarIcon: ({ color }) => (
             <House color={color} size={20} strokeWidth={2.25} />
           ),
@@ -33,7 +36,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="property"
         options={{
-          title: "Property",
+          title: t("nav.property"),
           tabBarIcon: ({ color }) => (
             <Building2 color={color} size={20} strokeWidth={2.25} />
           ),
@@ -42,7 +45,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="services"
         options={{
-          title: "Services",
+          title: t("nav.services"),
           tabBarIcon: ({ color }) => (
             <Wrench color={color} size={20} strokeWidth={2.25} />
           ),
@@ -51,7 +54,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="payments"
         options={{
-          title: "Payments",
+          title: t("nav.payments"),
           tabBarIcon: ({ color }) => (
             <CreditCard color={color} size={20} strokeWidth={2.25} />
           ),
@@ -60,7 +63,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="account"
         options={{
-          title: "Account",
+          title: t("nav.account"),
           tabBarIcon: ({ color }) => (
             <User color={color} size={20} strokeWidth={2.25} />
           ),
