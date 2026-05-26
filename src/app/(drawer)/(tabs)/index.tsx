@@ -24,6 +24,7 @@ import { HomeServiceBanner } from "@/components/molecules/home-service-banner";
 import { QuickServiceCard } from "@/components/molecules/quick-service-card";
 import { HomeCarousel } from "@/components/organisms/home-carousel";
 import { HomeCategoryRow } from "@/components/organisms/home-category-row";
+import { HomeCategoryStory } from "@/components/organisms/home-category-story";
 import { HomeHero } from "@/components/organisms/home-hero";
 import {
     featuredProjects,
@@ -40,6 +41,7 @@ export default function HomeScreen() {
   const { t } = useI18n();
   const { colors } = useAppTheme();
   const [activeSegment, setActiveSegment] = useState<HomeSegmentKey>("buy");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const segments = homeSegments.map((segment) => ({
     key: segment.key,
@@ -94,6 +96,8 @@ export default function HomeScreen() {
                                 ? t("home.rewards")
                                 : category.label,
             }))}
+            selected={selectedCategory}
+            onSelect={(label) => setSelectedCategory(label)}
           />
         </View>
 
@@ -286,6 +290,11 @@ export default function HomeScreen() {
             />
           </View>
         </View>
+        <HomeCategoryStory
+          visible={Boolean(selectedCategory)}
+          categoryLabel={selectedCategory}
+          onClose={() => setSelectedCategory(null)}
+        />
       </View>
     </ScrollView>
   );

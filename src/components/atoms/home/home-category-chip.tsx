@@ -14,6 +14,7 @@ type HomeCategoryChipProps = {
   icon: IconComponent;
   color: string;
   selected?: boolean;
+  onPress?: () => void;
 };
 
 export function HomeCategoryChip({
@@ -21,11 +22,12 @@ export function HomeCategoryChip({
   icon: Icon,
   color,
   selected = false,
+  onPress,
 }: HomeCategoryChipProps) {
   const { colors } = useAppTheme();
 
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} onPress={onPress}>
       <View
         style={[
           styles.circle,

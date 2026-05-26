@@ -144,13 +144,10 @@ export default function TabsLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: "absolute",
-    left: 14,
-    right: 14,
     bottom: 10,
     marginHorizontal: 10,
     height: 66,
-    borderRadius: 24,
+    borderRadius: 20,
     borderTopWidth: 0,
     borderWidth: 1,
     elevation: 8,
@@ -160,6 +157,7 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     paddingVertical: 8,
     paddingHorizontal: 2,
+    zIndex: 100,
   },
   item: {
     paddingHorizontal: 0,

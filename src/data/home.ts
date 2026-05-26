@@ -87,3 +87,42 @@ export const featuredProperties = [
     price: "ETB 12.5M",
   },
 ] as const;
+
+export type Story = {
+  id: string;
+  image: string;
+  title?: string;
+  subtitle?: string;
+  cta?: string;
+};
+
+export const categoryStories: Record<string, Story[]> = {
+  Buy: [
+    {
+      id: "buy-1",
+      image:
+        "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?auto=format&fit=crop&w=1200&q=80",
+      title: "Buy Property",
+      subtitle: "12,400+ listings",
+      cta: "Browse Now",
+    },
+    {
+      id: "buy-2",
+      image:
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      title: "Cozy Family Homes",
+      subtitle: "New listings today",
+      cta: "Explore",
+    },
+  ],
+  Projects: [
+    {
+      id: "proj-1",
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+      title: "Diamond Plaza Complex",
+      subtitle: "Launch offers available",
+      cta: "View Project",
+    },
+  ],
+};

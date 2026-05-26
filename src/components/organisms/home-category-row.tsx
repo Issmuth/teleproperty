@@ -5,9 +5,15 @@ import type { HomeCategory } from "@/data/home";
 
 type HomeCategoryRowProps = {
   categories: readonly HomeCategory[];
+  selected?: string | null;
+  onSelect?: (label: string) => void;
 };
 
-export function HomeCategoryRow({ categories }: HomeCategoryRowProps) {
+export function HomeCategoryRow({
+  categories,
+  selected,
+  onSelect,
+}: HomeCategoryRowProps) {
   return (
     <ScrollView
       horizontal
@@ -20,6 +26,8 @@ export function HomeCategoryRow({ categories }: HomeCategoryRowProps) {
           label={category.label}
           icon={category.icon}
           color={category.color}
+          selected={category.label === selected}
+          onPress={() => onSelect?.(category.label)}
         />
       ))}
     </ScrollView>

@@ -9,7 +9,7 @@ import { useAppTheme } from "@/theme/app-theme";
 import { PromoBanner } from "@/components/molecules/promo-banner";
 import { PropertySearchBar } from "@/components/molecules/property/property-search-bar";
 import { PropertySegmentedControl } from "@/components/molecules/property/property-segmented-control";
-import { CitySelectorSheet } from "@/components/organisms/property/city-selector-sheet";
+// City selector sheet removed — stories UI handles category-driven browsing
 import { PremiumBanner } from "@/components/organisms/property/premium-banner";
 import { PropertyCard } from "@/components/organisms/property/property-card";
 
@@ -18,7 +18,6 @@ export default function PropertyScreen() {
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
   const [activeSegment, setActiveSegment] = useState<string>("buy");
-  const [showCitySheet, setShowCitySheet] = useState<boolean>(true);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -60,14 +59,7 @@ export default function PropertyScreen() {
         colors={["#14B37B", "#14B37B"]}
       />
 
-      <CitySelectorSheet
-        visible={showCitySheet}
-        onClose={() => setShowCitySheet(false)}
-        onSelect={(city) => {
-          console.log("Selected city:", city);
-          setShowCitySheet(false);
-        }}
-      />
+      {/* CitySelectorSheet removed per request */}
     </View>
   );
 }
