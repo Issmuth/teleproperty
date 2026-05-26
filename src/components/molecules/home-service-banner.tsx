@@ -71,6 +71,7 @@ export function HomeServiceBanner({
             style={styles.image}
             contentFit="cover"
           />
+          <View style={styles.imageOverlay} />
         </View>
       )}
       {customLogo && <View style={styles.logoWrap}>{customLogo}</View>}
@@ -102,42 +103,47 @@ const styles = StyleSheet.create({
     maxWidth: "60%",
   },
   contentHalf: {
-    padding: 16,
+    padding: 12,
     justifyContent: "flex-start",
     maxWidth: "100%",
-    height: "55%",
+    height: "50%",
   },
   iconWrap: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "800",
     marginBottom: 4,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "500",
-    lineHeight: 18,
+    lineHeight: 16,
   },
   imageWrap: {
     position: "absolute",
     right: 0,
     top: 0,
     bottom: 0,
-    width: "50%",
+    width: "40%",
     zIndex: 1,
   },
   imageWrapHalf: {
     top: "auto",
     left: 0,
+    bottom: 0,
     width: "100%",
-    height: "55%",
+    height: "50%",
   },
   image: {
     width: "100%",
     height: "100%",
+  },
+  imageOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: "rgba(0, 0, 0, .3)",
   },
   logoWrap: {
     position: "absolute",

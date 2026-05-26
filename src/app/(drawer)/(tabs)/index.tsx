@@ -57,20 +57,21 @@ export default function HomeScreen() {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <HomeHero
-        activeSegment={activeSegment}
-        onSegmentChange={(key) => setActiveSegment(key as HomeSegmentKey)}
-        segments={segments}
-        kicker={t("home.heroKicker")}
-        title={t("home.heroTitle")}
-        subtitle={t("home.heroSubtitle")}
-        searchPlaceholder={t("home.searchPlaceholder")}
-        searchAction={t("home.searchAction")}
-        postLabel={t("home.postPropertyFree")}
-        localePill="GB EN"
-      />
+      <View style={styles.innerContainer}>
+        <HomeHero
+          activeSegment={activeSegment}
+          onSegmentChange={(key) => setActiveSegment(key as HomeSegmentKey)}
+          segments={segments}
+          kicker={t("home.heroKicker")}
+          title={t("home.heroTitle")}
+          subtitle={t("home.heroSubtitle")}
+          searchPlaceholder={t("home.searchPlaceholder")}
+          searchAction={t("home.searchAction")}
+          postLabel={t("home.postPropertyFree")}
+          localePill="GB EN"
+        />
 
-      <View style={styles.sectionSpacing}>
+        <View style={styles.sectionSpacing}>
         <HomeCategoryRow
           categories={homeCategories.map((category) => ({
             ...category,
@@ -285,6 +286,7 @@ export default function HomeScreen() {
           />
         </View>
       </View>
+      </View>
     </ScrollView>
   );
 }
@@ -295,6 +297,11 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 120,
+  },
+  innerContainer: {
+    width: "100%",
+    maxWidth: 768,
+    alignSelf: "center",
   },
   sectionSpacing: {
     marginTop: 16,

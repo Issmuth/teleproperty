@@ -1,5 +1,12 @@
 import { type LucideIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, ViewStyle } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 type ActionButtonProps = {
   label: string;
@@ -20,14 +27,30 @@ export function ActionButton({
   style,
   iconSize = 16,
 }: ActionButtonProps) {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.96, { damping: 15, stiffness: 200, mass: 0.5 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 15, stiffness: 200, mass: 0.5 });
+  };
+
   return (
-    <Pressable
-      style={[styles.actionButton, { backgroundColor }, style]}
+    <AnimatedPressable
+      style={[styles.actionButton, { backgroundColor }, style, animatedStyle]}
       onPress={onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
     >
       <Icon size={iconSize} color={color} strokeWidth={2.2} />
       <Text style={[styles.actionLabel, { color }]}>{label}</Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 

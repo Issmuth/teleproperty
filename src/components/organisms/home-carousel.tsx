@@ -1,5 +1,11 @@
-import { useRef, useState } from "react";
-import { FlatList, StyleSheet, View, ViewToken } from "react-native";
+import { useState } from "react";
+import {
+    FlatList,
+    NativeScrollEvent,
+    NativeSyntheticEvent,
+    StyleSheet,
+    View,
+} from "react-native";
 
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
@@ -28,17 +34,22 @@ export function HomeCarousel<T>({
   const { colors } = useAppTheme();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const viewabilityConfig = useRef({
-    itemVisiblePercentThreshold: 50,
-  }).current;
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+    const slideSize = itemWidth + gap;
+    const scrollPosition = contentOffset.x;
 
-  const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      if (viewableItems.length > 0) {
-        setActiveIndex(viewableItems[0].index ?? 0);
-      }
-    },
-  ).current;
+    // Check if we've scrolled to the very end of the list
+    const isAtEnd =
+      scrollPosition + layoutMeasurement.width >= contentSize.width - 10;
+
+    if (isAtEnd) {
+      setActiveIndex(data.length - 1);
+    } else {
+      const index = Math.round(scrollPosition / slideSize);
+      setActiveIndex(Math.min(Math.max(index, 0), data.length - 1));
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -49,8 +60,7 @@ export function HomeCarousel<T>({
         contentContainerStyle={[styles.listContent, { gap }]}
         snapToInterval={itemWidth + gap}
         decelerationRate="fast"
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
+        onScroll={handleScroll}
         scrollEventThrottle={16}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
