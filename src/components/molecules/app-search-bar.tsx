@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 16,
   },
   elevatedContainer: {
     gap: 8,

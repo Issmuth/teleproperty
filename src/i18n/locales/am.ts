@@ -51,4 +51,8 @@ export const am: typeof en = {
     om: "Afan Oromo",
     ti: "ትግርኛ",
   },
+  payments: {
+    title: "ክፍያዎች እና ሽልማቶች",
+    subtitle: "በTelebirr በፍጥነት እና በደህና ክፍያዎች · ቢልስ · ባንክ",
+  },
 };

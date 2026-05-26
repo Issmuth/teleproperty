@@ -51,4 +51,8 @@ export const om: typeof en = {
     om: "Afan Oromo",
     ti: "Tigrigna",
   },
+  payments: {
+    title: "Kafaltii fi Badhaasa",
+    subtitle: "Telebirr irratti ittiin kafali · Bilii · Baankii",
+  },
 };

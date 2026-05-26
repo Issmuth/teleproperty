@@ -51,4 +51,8 @@ export const ti: typeof en = {
     om: "Afan Oromo",
     ti: "ትግርኛ",
   },
+  payments: {
+    title: "ክፍሊትን ሽልማትን",
+    subtitle: "ብTelebirr ብደሓን ክፍሊት · ቢልስ · ባንክ",
+  },
 };

@@ -22,6 +22,9 @@ export default function DrawerLayout() {
         drawerActiveTintColor: colors.activeText,
         drawerInactiveTintColor: colors.iconMuted,
         drawerActiveBackgroundColor: colors.activeSurface,
+        drawerContentStyle: {
+          borderRadius: 0
+        },
         headerTitle: () => null,
         headerLeft: () => <AppLogo />,
         headerRight: () => <DrawerHeaderActions />,

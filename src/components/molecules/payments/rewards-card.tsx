@@ -1,0 +1,87 @@
+import { useAppTheme } from "@/theme/app-theme";
+import { LinearGradient } from "expo-linear-gradient";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+
+export function RewardsCard() {
+  const { colors } = useAppTheme();
+
+  return (
+    <LinearGradient colors={["#F59E0B", "#FBBF24"]} style={styles.container}>
+      <View style={styles.rowTop}>
+        <Text style={styles.kicker}>Your Rewards Balance</Text>
+        <View style={styles.circle} />
+      </View>
+
+      <Text style={styles.points}>0</Text>
+      <Text style={styles.pointsLabel}>points</Text>
+
+      <View style={styles.actionsRow}>
+        <Pressable style={[styles.actionBtn, styles.primaryBtn]}>
+          <Text style={styles.primaryLabel}>Redeem</Text>
+        </Pressable>
+
+        <Pressable style={[styles.actionBtn, styles.secondaryBtn]}>
+          <Text style={styles.secondaryLabel}>Earn More</Text>
+        </Pressable>
+      </View>
+    </LinearGradient>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 16,
+    padding: 16,
+    minHeight: 120,
+    justifyContent: "center",
+    gap: 6,
+  },
+  rowTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  kicker: {
+    color: "white",
+    fontWeight: "700",
+  },
+  circle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "rgba(255,255,255,0.12)",
+  },
+  points: {
+    color: "white",
+    fontSize: 36,
+    fontWeight: "900",
+  },
+  pointsLabel: {
+    color: "white",
+    fontWeight: "700",
+  },
+  actionsRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 8,
+  },
+  actionBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+  },
+  primaryBtn: {
+    backgroundColor: "rgba(255,255,255,0.14)",
+  },
+  secondaryBtn: {
+    backgroundColor: "white",
+  },
+  primaryLabel: {
+    color: "white",
+    fontWeight: "800",
+  },
+  secondaryLabel: {
+    color: "#B45309",
+    fontWeight: "800",
+  },
+});

@@ -3,6 +3,10 @@ export const en = {
     appName: "TeleProperty",
     blankTemplate: "Blank template",
   },
+  payments: {
+    title: "Payments & Rewards",
+    subtitle: "Pay securely via Telebirr · Bills · Bank",
+  },
   nav: {
     home: "Home",
     property: "Property",

@@ -6,12 +6,12 @@ import { propertySegments, sampleProperties } from "@/data/property";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
+import { PromoBanner } from "@/components/molecules/promo-banner";
 import { PropertySearchBar } from "@/components/molecules/property/property-search-bar";
 import { PropertySegmentedControl } from "@/components/molecules/property/property-segmented-control";
 import { CitySelectorSheet } from "@/components/organisms/property/city-selector-sheet";
 import { PremiumBanner } from "@/components/organisms/property/premium-banner";
 import { PropertyCard } from "@/components/organisms/property/property-card";
-import { ValuationBanner } from "@/components/organisms/property/valuation-banner";
 
 export default function PropertyScreen() {
   const { t } = useI18n();
@@ -50,7 +50,15 @@ export default function PropertyScreen() {
         ))}
       </ScrollView>
 
-      <ValuationBanner />
+      <PromoBanner
+        absoluteBottom
+        kicker="Property Valuation"
+        title="Property Valuation Free"
+        subtitle="Know your property worth in 2 minutes"
+        primaryLabel="Free Assessment"
+        secondaryLabel="Get Valued →"
+        colors={["#14B37B", "#14B37B"]}
+      />
 
       <CitySelectorSheet
         visible={showCitySheet}

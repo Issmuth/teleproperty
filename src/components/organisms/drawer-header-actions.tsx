@@ -3,8 +3,8 @@ import { Bell, Menu } from "lucide-react-native";
 import { StyleSheet, View } from "react-native";
 
 import { HeaderIconButton } from "@/components/atoms/header-icon-button";
-import { LanguageDropdown } from "@/components/molecules/language-dropdown";
 import { ThemeToggle } from "@/components/atoms/theme-toggle";
+import { LanguageDropdown } from "@/components/molecules/language-dropdown";
 
 export function DrawerHeaderActions() {
   const navigation = useNavigation();
@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 20,
     paddingRight: 8,
   },
 });
-

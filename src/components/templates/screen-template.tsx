@@ -6,11 +6,17 @@ import { useAppTheme } from "@/theme/app-theme";
 type ScreenTemplateProps = {
   title: string;
   description?: string;
+  variant?: "default" | "compact";
 };
 
-export function ScreenTemplate({ title, description }: ScreenTemplateProps) {
+export function ScreenTemplate({
+  title,
+  description,
+  variant = "default",
+}: ScreenTemplateProps) {
   const { t } = useI18n();
   const { colors } = useAppTheme();
+  const isCompact = variant === "compact";
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -23,8 +29,22 @@ export function ScreenTemplate({ title, description }: ScreenTemplateProps) {
         <Text style={[styles.kicker, { color: colors.textMuted }]}>
           {t("common.appName")}
         </Text>
-        <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
-        <Text style={[styles.description, { color: colors.textMuted }]}>
+        <Text
+          style={[
+            styles.title,
+            isCompact && styles.titleCompact,
+            { color: colors.text },
+          ]}
+        >
+          {title}
+        </Text>
+        <Text
+          style={[
+            styles.description,
+            isCompact && styles.descriptionCompact,
+            { color: colors.textMuted },
+          ]}
+        >
           {description ?? t("common.blankTemplate")}
         </Text>
       </View>
@@ -60,8 +80,16 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "800",
   },
+  titleCompact: {
+    fontSize: 18,
+    fontWeight: "800",
+  },
   description: {
     fontSize: 15,
+    textAlign: "center",
+  },
+  descriptionCompact: {
+    fontSize: 13,
     textAlign: "center",
   },
 });
