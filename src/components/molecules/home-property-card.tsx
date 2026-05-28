@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { Heart } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { useAuthGate } from "@/auth/use-auth-gate";
 import { useAppTheme } from "@/theme/app-theme";
 
 type HomePropertyCardProps = {
@@ -22,6 +23,7 @@ export function HomePropertyCard({
 }: HomePropertyCardProps) {
   const { colors } = useAppTheme();
   const router = useRouter();
+  const { requireAuth } = useAuthGate();
 
   const handlePress = () => {
     router.push({
@@ -44,14 +46,22 @@ export function HomePropertyCard({
           style={styles.image}
           contentFit="cover"
         />
-        <View style={[styles.heartButton, { backgroundColor: colors.surface }]}>
+        <Pressable
+          onPress={() =>
+            requireAuth(() => router.push("/saved" as never), {
+              intent: "save-property",
+              redirectTo: `/property-details?id=${id}&source=home`,
+            })
+          }
+          style={[styles.heartButton, { backgroundColor: colors.surface }]}
+        >
           <Heart
             size={14}
             color={colors.activeText}
             fill={colors.surface}
             strokeWidth={2.1}
           />
-        </View>
+        </Pressable>
       </View>
 
       <View style={styles.body}>

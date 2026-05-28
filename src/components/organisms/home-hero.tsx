@@ -16,6 +16,7 @@ type HomeHeroProps = {
   onSegmentChange: (key: string) => void;
   segments: readonly HomeSegment[];
   onFilterPress?: () => void;
+  onPostPress?: () => void;
   kicker: string;
   title: string;
   subtitle: string;
@@ -30,6 +31,7 @@ export function HomeHero({
   onSegmentChange,
   segments,
   onFilterPress,
+  onPostPress,
   kicker,
   title,
   subtitle,
@@ -92,6 +94,7 @@ export function HomeHero({
         backgroundColor={palette.brand.accent}
         iconSize={20}
         style={styles.postButton}
+        onPress={onPostPress}
       />
     </View>
   );

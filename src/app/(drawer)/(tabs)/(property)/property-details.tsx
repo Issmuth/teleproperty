@@ -15,6 +15,7 @@ import {
 import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { useAuthGate } from "@/auth/use-auth-gate";
 import { featuredProperties } from "@/data/home";
 import { sampleProperties } from "@/data/property";
 import { useAppTheme } from "@/theme/app-theme";
@@ -237,6 +238,7 @@ function findDetail(id?: string) {
 export default function PropertyDetails() {
   const { colors } = useAppTheme();
   const router = useRouter();
+  const { requireAuth } = useAuthGate();
   const { id, source } = useLocalSearchParams<{
     id?: string;
     source?: string;
@@ -300,6 +302,12 @@ export default function PropertyDetails() {
                   styles.heroIconButton,
                   { backgroundColor: "rgba(0,0,0,0.35)" },
                 ]}
+                onPress={() =>
+                  requireAuth(() => router.push("/saved" as never), {
+                    intent: "save-property",
+                    redirectTo: `/property-details?id=${id ?? ""}&source=${source ?? "property"}`,
+                  })
+                }
               >
                 <Heart size={18} color="#fff" fill="transparent" />
               </Pressable>

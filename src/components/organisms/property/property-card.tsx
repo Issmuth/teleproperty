@@ -1,3 +1,4 @@
+import { useAuthGate } from "@/auth/use-auth-gate";
 import { type PropertyItem } from "@/data/property";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
@@ -21,6 +22,7 @@ type PropertyCardProps = {
 export function PropertyCard({ property }: PropertyCardProps) {
   const { colors } = useAppTheme();
   const router = useRouter();
+  const { requireAuth } = useAuthGate();
 
   const handlePress = () => {
     router.push({
@@ -73,7 +75,15 @@ export function PropertyCard({ property }: PropertyCardProps) {
         </View>
 
         {/* Top right icon */}
-        <Pressable style={styles.favoriteButton}>
+        <Pressable
+          style={styles.favoriteButton}
+          onPress={() =>
+            requireAuth(() => router.push("/saved" as never), {
+              intent: "save-property",
+              redirectTo: `/property-details?id=${property.id}&source=property`,
+            })
+          }
+        >
           <Heart size={16} color={colors.textMuted} />
         </Pressable>
 

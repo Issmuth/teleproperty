@@ -1,6 +1,7 @@
 import { AccountRow } from "@/components/molecules/account/account-row";
 import { ProfileCard } from "@/components/molecules/account/profile-card";
 import { useI18n } from "@/i18n";
+import { useRouter } from "expo-router";
 import {
     BadgeCheck,
     Bell,
@@ -19,12 +20,13 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function AccountScreen() {
   const { t } = useI18n();
+  const router = useRouter();
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.content}>
-          <ProfileCard />
+          <ProfileCard onPress={() => router.push("/auth" as never)} />
 
           <View style={styles.listCard}>
             <AccountRow
@@ -39,6 +41,7 @@ export default function AccountScreen() {
               subtitle="8 saved properties"
               icon={<Heart size={18} color="#FB7185" />}
               accentColor="#FFF1F2"
+              onPress={() => router.push("/saved" as never)}
             />
             <View style={styles.divider} />
             <AccountRow

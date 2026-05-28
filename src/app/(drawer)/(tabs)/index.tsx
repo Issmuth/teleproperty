@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import {
     Briefcase,
     Building,
@@ -42,6 +43,7 @@ import { palette } from "@/theme/palette";
 export default function HomeScreen() {
   const { t } = useI18n();
   const { colors } = useAppTheme();
+  const router = useRouter();
   const [activeSegment, setActiveSegment] = useState<HomeSegmentKey>("buy");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -68,6 +70,7 @@ export default function HomeScreen() {
           onSegmentChange={(key) => setActiveSegment(key as HomeSegmentKey)}
           segments={segments}
           onFilterPress={() => setFiltersVisible(true)}
+          onPostPress={() => router.push("/post-property" as never)}
           kicker={t("home.heroKicker")}
           title={t("home.heroTitle")}
           subtitle={t("home.heroSubtitle")}

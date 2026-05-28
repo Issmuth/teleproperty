@@ -5,6 +5,7 @@ export default function PropertyStackLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="property" />
       <Stack.Screen name="property-details" />
+      <Stack.Screen name="post-property" />
     </Stack>
   );
 }
