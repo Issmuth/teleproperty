@@ -26,6 +26,7 @@ import { HomeCarousel } from "@/components/organisms/home-carousel";
 import { HomeCategoryRow } from "@/components/organisms/home-category-row";
 import { HomeCategoryStory } from "@/components/organisms/home-category-story";
 import { HomeHero } from "@/components/organisms/home-hero";
+import { SearchFiltersSheet } from "@/components/organisms/search-filters-sheet";
 import {
     featuredProjects,
     featuredProperties,
@@ -33,6 +34,7 @@ import {
     homeSegments,
     type HomeSegmentKey,
 } from "@/data/home";
+import { homeSearchFiltersConfig } from "@/data/search-filters";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
@@ -42,6 +44,7 @@ export default function HomeScreen() {
   const { colors } = useAppTheme();
   const [activeSegment, setActiveSegment] = useState<HomeSegmentKey>("buy");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
   const segments = homeSegments.map((segment) => ({
     key: segment.key,
@@ -64,6 +67,7 @@ export default function HomeScreen() {
           activeSegment={activeSegment}
           onSegmentChange={(key) => setActiveSegment(key as HomeSegmentKey)}
           segments={segments}
+          onFilterPress={() => setFiltersVisible(true)}
           kicker={t("home.heroKicker")}
           title={t("home.heroTitle")}
           subtitle={t("home.heroSubtitle")}
@@ -294,6 +298,11 @@ export default function HomeScreen() {
           visible={Boolean(selectedCategory)}
           categoryLabel={selectedCategory}
           onClose={() => setSelectedCategory(null)}
+        />
+        <SearchFiltersSheet
+          visible={filtersVisible}
+          onClose={() => setFiltersVisible(false)}
+          config={homeSearchFiltersConfig}
         />
       </View>
     </ScrollView>

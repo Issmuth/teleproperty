@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 14,
   },
-  // Muted specific inner styles
   mutedInputWrap: {
     height: 48,
     borderRadius: 12,

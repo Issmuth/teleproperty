@@ -1,3 +1,4 @@
+import DrawerContent from "@/components/organisms/drawer-content";
 import { Drawer } from "expo-router/drawer";
 
 import { AppLogo } from "@/components/atoms/app-logo";
@@ -12,18 +13,22 @@ export default function DrawerLayout() {
   return (
     <Drawer
       initialRouteName="(tabs)"
+      drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
         drawerType: "front",
         drawerPosition: "right",
         drawerStyle: {
           backgroundColor: colors.drawerBackground,
+          width: 250,
+          borderBottomLeftRadius: 0,
+          borderTopLeftRadius: 0,
         },
         drawerActiveTintColor: colors.activeText,
         drawerInactiveTintColor: colors.iconMuted,
         drawerActiveBackgroundColor: colors.activeSurface,
         drawerContentStyle: {
-          borderRadius: 0
+          paddingVertical: 20,
         },
         headerTitle: () => null,
         headerLeft: () => <AppLogo />,
@@ -66,4 +71,3 @@ export default function DrawerLayout() {
     </Drawer>
   );
 }
-

@@ -6,25 +6,28 @@ import { propertySegments, sampleProperties } from "@/data/property";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
+import { AppSearchBar } from "@/components/molecules/app-search-bar";
 import { PromoBanner } from "@/components/molecules/promo-banner";
-import { PropertySearchBar } from "@/components/molecules/property/property-search-bar";
 import { PropertySegmentedControl } from "@/components/molecules/property/property-segmented-control";
 // City selector sheet removed — stories UI handles category-driven browsing
 import { PremiumBanner } from "@/components/organisms/property/premium-banner";
 import { PropertyCard } from "@/components/organisms/property/property-card";
+import { SearchFiltersSheet } from "@/components/organisms/search-filters-sheet";
+import { propertySearchFiltersConfig } from "@/data/search-filters";
 
 export default function PropertyScreen() {
   const { t } = useI18n();
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
   const [activeSegment, setActiveSegment] = useState<string>("buy");
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingBottom: insets.bottom + 120 }, // Extra padding for the absolute bottom banner
+          { paddingBottom: insets.bottom + 120 },
         ]}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[1]}
@@ -32,7 +35,12 @@ export default function PropertyScreen() {
         <PremiumBanner />
 
         <View style={{ backgroundColor: colors.background }}>
-          <PropertySearchBar placeholder="Search city, area, property..." />
+          <AppSearchBar
+            placeholder="Search city, area, property..."
+            variant="elevated"
+            onFilterPress={() => setFiltersVisible(true)}
+            containerStyle={styles.searchBar}
+          />
           <PropertySegmentedControl
             segments={propertySegments}
             activeKey={activeSegment}
@@ -59,7 +67,11 @@ export default function PropertyScreen() {
         colors={["#14B37B", "#14B37B"]}
       />
 
-      {/* CitySelectorSheet removed per request */}
+      <SearchFiltersSheet
+        visible={filtersVisible}
+        onClose={() => setFiltersVisible(false)}
+        config={propertySearchFiltersConfig}
+      />
     </View>
   );
 }
@@ -77,5 +89,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginHorizontal: 16,
     marginBottom: 12,
+  },
+  searchBar: {
+    margin: 16,
   },
 });

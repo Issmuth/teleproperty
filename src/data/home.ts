@@ -66,6 +66,7 @@ export const featuredProjects = [
 
 export const featuredProperties = [
   {
+    id: "featured-property-1",
     image:
       "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?auto=format&fit=crop&w=900&q=80",
     title: "Modern family villa",
@@ -73,6 +74,7 @@ export const featuredProperties = [
     price: "ETB 8.4M",
   },
   {
+    id: "featured-property-2",
     image:
       "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?auto=format&fit=crop&w=900&q=80",
     title: "Garden apartment",
@@ -80,6 +82,7 @@ export const featuredProperties = [
     price: "ETB 4.1M",
   },
   {
+    id: "featured-property-3",
     image:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80",
     title: "Penthouse suite",

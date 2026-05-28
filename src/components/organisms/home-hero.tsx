@@ -1,20 +1,21 @@
 import { LinearGradient } from "expo-linear-gradient";
+import { PlusCircle, Search } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
 
 import { ActionButton } from "@/components/atoms/action-button";
-import { HomeSearchBar } from "@/components/atoms/home/home-search-bar";
 import {
     HomeSegmentedControl,
     type HomeSegment,
 } from "@/components/atoms/home/home-segmented-control";
+import { AppSearchBar } from "@/components/molecules/app-search-bar";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
-import { PlusCircle } from "lucide-react-native";
 
 type HomeHeroProps = {
   activeSegment: string;
   onSegmentChange: (key: string) => void;
   segments: readonly HomeSegment[];
+  onFilterPress?: () => void;
   kicker: string;
   title: string;
   subtitle: string;
@@ -28,6 +29,7 @@ export function HomeHero({
   activeSegment,
   onSegmentChange,
   segments,
+  onFilterPress,
   kicker,
   title,
   subtitle,
@@ -72,9 +74,17 @@ export function HomeHero({
           onChange={onSegmentChange}
         />
       </LinearGradient>
-      <HomeSearchBar
+      <AppSearchBar
         placeholder={searchPlaceholder}
-        actionLabel={searchAction}
+        showFilter={true}
+        onFilterPress={onFilterPress}
+        rightAccessory={
+          <ActionButton
+            label={searchAction}
+            icon={Search}
+            backgroundColor={colors.activeText}
+          />
+        }
       />
       <ActionButton
         label={postLabel}

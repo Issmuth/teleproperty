@@ -1,10 +1,12 @@
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { Heart } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useAppTheme } from "@/theme/app-theme";
 
 type HomePropertyCardProps = {
+  id: string;
   image: string;
   title: string;
   location: string;
@@ -12,15 +14,25 @@ type HomePropertyCardProps = {
 };
 
 export function HomePropertyCard({
+  id,
   image,
   title,
   location,
   price,
 }: HomePropertyCardProps) {
   const { colors } = useAppTheme();
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/property-details",
+      params: { id, source: "home" },
+    });
+  };
 
   return (
     <Pressable
+      onPress={handlePress}
       style={[
         styles.card,
         { backgroundColor: colors.surface, borderColor: colors.border },

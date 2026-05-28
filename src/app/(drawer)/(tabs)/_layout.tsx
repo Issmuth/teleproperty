@@ -103,13 +103,20 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="property"
+        name="(property)"
         options={{
           title: t("nav.property"),
+          popToTopOnBlur: true,
           tabBarIcon: ({ color }) => (
             <Building2 color={color} size={18} strokeWidth={2.1} />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (event) => {
+            event.preventDefault();
+            (navigation as any).navigate("(property)", { screen: "property" });
+          },
+        })}
       />
       <Tabs.Screen
         name="services"

@@ -16,6 +16,7 @@ type AppBottomSheetProps = {
   onClose: () => void;
   title?: string;
   subtitle?: string;
+  leadingIcon?: ReactNode;
   children: ReactNode;
   sheetStyle?: ViewStyle;
 };
@@ -25,6 +26,7 @@ export function AppBottomSheet({
   onClose,
   title,
   subtitle,
+  leadingIcon,
   children,
   sheetStyle,
 }: AppBottomSheetProps) {
@@ -51,10 +53,15 @@ export function AppBottomSheet({
         >
           <View style={styles.header}>
             <View style={styles.headerTextContainer}>
-              {title && (
-                <Text style={[styles.title, { color: colors.text }]}>
-                  {title}
-                </Text>
+              {(leadingIcon || title) && (
+                <View style={styles.titleRow}>
+                  {leadingIcon}
+                  {title && (
+                    <Text style={[styles.title, { color: colors.text }]}>
+                      {title}
+                    </Text>
+                  )}
+                </View>
               )}
               {subtitle && (
                 <Text style={[styles.subtitle, { color: colors.textMuted }]}>
@@ -101,10 +108,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 16,
   },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 4,
+  },
   title: {
     fontSize: 20,
     fontWeight: "800",
-    marginBottom: 4,
   },
   subtitle: {
     fontSize: 13,

@@ -1,6 +1,7 @@
 import { type PropertyItem } from "@/data/property";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
+import { useRouter } from "expo-router";
 import {
     BadgeCheck,
     Bath,
@@ -19,9 +20,18 @@ type PropertyCardProps = {
 
 export function PropertyCard({ property }: PropertyCardProps) {
   const { colors } = useAppTheme();
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push({
+      pathname: "/property-details",
+      params: { id: property.id, source: "property" },
+    });
+  };
 
   return (
-    <View
+    <Pressable
+      onPress={handlePress}
       style={[
         styles.container,
         { backgroundColor: colors.surface, borderColor: colors.border },
@@ -125,7 +135,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
