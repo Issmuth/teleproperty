@@ -1,4 +1,5 @@
 import { categoryStories, type Story } from "@/data/home";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { Image } from "expo-image";
 import { X } from "lucide-react-native";
@@ -15,21 +16,21 @@ import {
 
 type Props = {
   visible: boolean;
-  categoryLabel: string | null;
+  categoryKey: string | null;
   onClose: () => void;
 };
 
 const STORY_DURATION = 4200;
 
-export function HomeCategoryStory({ visible, categoryLabel, onClose }: Props) {
+export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const [index, setIndex] = useState(0);
   const progress = useRef(new Animated.Value(0)).current;
   const animRef = useRef<Animated.CompositeAnimation | null>(null);
   const indexRef = useRef(index);
 
-  const stories: Story[] =
-    (categoryLabel && categoryStories[categoryLabel]) || [];
+  const stories: Story[] = (categoryKey && categoryStories[categoryKey]) || [];
   const total = stories.length;
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export function HomeCategoryStory({ visible, categoryLabel, onClose }: Props) {
     progress.setValue(0);
     // stop any previous animation
     animRef.current?.stop?.();
-  }, [visible, categoryLabel, progress]);
+  }, [visible, categoryKey, progress]);
 
   useEffect(() => {
     if (!visible || total === 0) return;
@@ -75,7 +76,7 @@ export function HomeCategoryStory({ visible, categoryLabel, onClose }: Props) {
     indexRef.current = index;
   }, [index, progress]);
 
-  if (!categoryLabel || total === 0) return null;
+  if (!categoryKey || total === 0) return null;
 
   const active = stories[index];
   const { width, height } = Dimensions.get("window");
@@ -143,7 +144,9 @@ export function HomeCategoryStory({ visible, categoryLabel, onClose }: Props) {
           </View>
 
           <View style={styles.headerRow}>
-            <Text style={styles.headerLabel}>{categoryLabel}</Text>
+            <Text style={styles.headerLabel}>
+              {t(`home.categories.${categoryKey}`)}
+            </Text>
             <Pressable onPress={onClose} style={styles.closeBtn}>
               <X color="white" />
             </Pressable>
@@ -159,13 +162,15 @@ export function HomeCategoryStory({ visible, categoryLabel, onClose }: Props) {
           }}
         >
           <View style={styles.bottomMeta} pointerEvents="none">
-            <Text style={styles.storyTitle}>{active.title}</Text>
-            {active.subtitle ? (
-              <Text style={styles.storySubtitle}>{active.subtitle}</Text>
+            {active.titleKey ? (
+              <Text style={styles.storyTitle}>{t(active.titleKey)}</Text>
             ) : null}
-            {active.cta ? (
+            {active.subtitleKey ? (
+              <Text style={styles.storySubtitle}>{t(active.subtitleKey)}</Text>
+            ) : null}
+            {active.ctaKey ? (
               <View style={styles.ctaBtn}>
-                <Text style={styles.ctaText}>{active.cta}</Text>
+                <Text style={styles.ctaText}>{t(active.ctaKey)}</Text>
               </View>
             ) : null}
           </View>

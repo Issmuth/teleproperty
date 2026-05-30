@@ -21,16 +21,37 @@ export const homeSegments = [
 export type HomeSegmentKey = (typeof homeSegments)[number]["key"];
 
 export type HomeCategory = {
-  label: string;
+  key: string;
+  labelKey: string;
   icon: LucideIcon;
   color: string;
 };
 
 export const homeCategories: HomeCategory[] = [
-  { label: "Buy", icon: Home, color: palette.brand.primary },
-  { label: "Rent", icon: Building2, color: palette.blue.strong },
-  { label: "Projects", icon: DraftingCompass, color: palette.purple.strong },
-  { label: "Agents", icon: UserCheck, color: palette.pink.primary },
+  {
+    key: "buy",
+    labelKey: "home.categories.buy",
+    icon: Home,
+    color: palette.brand.primary,
+  },
+  {
+    key: "rent",
+    labelKey: "home.categories.rent",
+    icon: Building2,
+    color: palette.blue.strong,
+  },
+  {
+    key: "projects",
+    labelKey: "home.categories.projects",
+    icon: DraftingCompass,
+    color: palette.purple.strong,
+  },
+  {
+    key: "agents",
+    labelKey: "home.categories.agents",
+    icon: UserCheck,
+    color: palette.pink.primary,
+  },
   // { label: "Services", icon: Wrench, color: palette.red.muted },
   // { label: "Interior", icon: Palette, color: palette.pink.primary },
   // { label: "Movers", icon: Truck, color: "#00B4D8" },
@@ -38,6 +59,7 @@ export const homeCategories: HomeCategory[] = [
 
 export const featuredProjects = [
   {
+    id: "diamond-plaza",
     image:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80",
     badge: "Under construction",
@@ -50,6 +72,7 @@ export const featuredProjects = [
     accent: palette.brand.primary,
   },
   {
+    id: "skyline-residence",
     image:
       "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
     badge: "Launch soon",
@@ -93,23 +116,23 @@ export const featuredProperties = [
 export type Story = {
   id: string;
   image: string;
-  title?: string;
-  subtitle?: string;
-  cta?: string;
+  titleKey?: string;
+  subtitleKey?: string;
+  ctaKey?: string;
 };
 
 export type HomeServiceBannerItem = {
   size?: "full" | "half";
   backgroundColor: string;
   icon: LucideIcon;
-  title: string;
-  subtitle: string;
+  titleKey: string;
+  subtitleKey: string;
   image: string;
   actions?: HomeServiceBannerAction[];
 };
 
 export type HomeServiceBannerAction = {
-  label: string;
+  labelKey: string;
   pathname: string;
   params?: Record<string, string>;
 };
@@ -133,12 +156,17 @@ export const homeServiceBanners: HomeServicesGroup[] = [
     item: {
       backgroundColor: "#0B3C2A",
       icon: Search,
-      title: "Search Property",
-      subtitle: "Buy & Rent Effortlessly",
+      titleKey: "home.services.searchProperty.title",
+      subtitleKey: "home.services.searchProperty.subtitle",
       image:
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80",
 
-      actions: [{ label: "properties", pathname: "/property" }],
+      actions: [
+        {
+          labelKey: "home.services.searchProperty.action",
+          pathname: "/property",
+        },
+      ],
     },
   },
   {
@@ -149,13 +177,13 @@ export const homeServiceBanners: HomeServicesGroup[] = [
         size: "half",
         backgroundColor: "#0B3C2A",
         icon: Plus,
-        title: "Post your Property",
-        subtitle: "Free & Easy Listing",
+        titleKey: "home.services.postProperty.title",
+        subtitleKey: "home.services.postProperty.subtitle",
         image:
           "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80",
         actions: [
           {
-            label: "create-property",
+            labelKey: "home.services.postProperty.action",
             pathname: "/post-property",
           },
         ],
@@ -164,14 +192,14 @@ export const homeServiceBanners: HomeServicesGroup[] = [
         size: "half",
         backgroundColor: "#0B3C2A",
         icon: Building2,
-        title: "New Projects",
-        subtitle: "Off-Plan Developments",
+        titleKey: "home.services.newProjects.title",
+        subtitleKey: "home.services.newProjects.subtitle",
         image:
           "https://images.unsplash.com/photo-1541881451213-911293a9d905?auto=format&fit=crop&w=500&q=80",
         actions: [
           {
             pathname: "/projects",
-            label: "projects",
+            labelKey: "home.services.newProjects.action",
           },
         ],
       },
@@ -221,13 +249,13 @@ export const homeServiceBanners: HomeServicesGroup[] = [
         size: "half",
         backgroundColor: "#0B3C2A",
         icon: Briefcase,
-        title: "Developer Hub",
-        subtitle: "Build & Partner",
+        titleKey: "home.services.developerHub.title",
+        subtitleKey: "home.services.developerHub.subtitle",
         image:
           "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
         actions: [
           {
-            label: "Open Hub",
+            labelKey: "home.services.developerHub.action",
             pathname: "/developer-hub",
           },
         ],
@@ -236,13 +264,13 @@ export const homeServiceBanners: HomeServicesGroup[] = [
         size: "half",
         backgroundColor: "#0B3C2A",
         icon: ShieldCheck,
-        title: "Verified Brokers",
-        subtitle: "Professional Agents",
+        titleKey: "home.services.verifiedBrokers.title",
+        subtitleKey: "home.services.verifiedBrokers.subtitle",
         image:
           "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80",
         actions: [
           {
-            label: "Open Hub",
+            labelKey: "home.services.verifiedBrokers.action",
             pathname: "/broker-hub",
           },
         ],
@@ -264,32 +292,32 @@ export const homeServiceBanners: HomeServicesGroup[] = [
 ];
 
 export const categoryStories: Record<string, Story[]> = {
-  Buy: [
+  buy: [
     {
       id: "buy-1",
       image:
         "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?auto=format&fit=crop&w=1200&q=80",
-      title: "Buy Property",
-      subtitle: "12,400+ listings",
-      cta: "Browse Now",
+      titleKey: "home.stories.buy1.title",
+      subtitleKey: "home.stories.buy1.subtitle",
+      ctaKey: "home.stories.buy1.cta",
     },
     {
       id: "buy-2",
       image:
         "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
-      title: "Cozy Family Homes",
-      subtitle: "New listings today",
-      cta: "Explore",
+      titleKey: "home.stories.buy2.title",
+      subtitleKey: "home.stories.buy2.subtitle",
+      ctaKey: "home.stories.buy2.cta",
     },
   ],
-  Projects: [
+  projects: [
     {
       id: "proj-1",
       image:
         "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-      title: "Diamond Plaza Complex",
-      subtitle: "Launch offers available",
-      cta: "View Project",
+      titleKey: "home.stories.project1.title",
+      subtitleKey: "home.stories.project1.subtitle",
+      ctaKey: "home.stories.project1.cta",
     },
   ],
 };

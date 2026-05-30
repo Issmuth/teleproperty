@@ -4,9 +4,9 @@ import { HomeCategoryChip } from "@/components/atoms/home/home-category-chip";
 import type { HomeCategory } from "@/data/home";
 
 type HomeCategoryRowProps = {
-  categories: readonly HomeCategory[];
+  categories: readonly (HomeCategory & { label: string })[];
   selected?: string | null;
-  onSelect?: (label: string) => void;
+  onSelect?: (key: string) => void;
 };
 
 export function HomeCategoryRow({
@@ -22,12 +22,12 @@ export function HomeCategoryRow({
     >
       {categories.map((category) => (
         <HomeCategoryChip
-          key={category.label}
+          key={category.key}
           label={category.label}
           icon={category.icon}
           color={category.color}
-          selected={category.label === selected}
-          onPress={() => onSelect?.(category.label)}
+          selected={category.key === selected}
+          onPress={() => onSelect?.(category.key)}
         />
       ))}
     </ScrollView>

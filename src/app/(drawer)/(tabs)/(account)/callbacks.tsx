@@ -7,9 +7,9 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 type CallbackItem = {
   id: string;
   type: "inquiry" | "broker" | "service" | "hotel";
-  title: string;
-  subtitle?: string;
-  when: string;
+  titleKey: string;
+  subtitleKey?: string;
+  whenKey: string;
   status: "pending" | "called" | "closed";
   phone: string;
 };
@@ -18,36 +18,36 @@ const sample: CallbackItem[] = [
   {
     id: "cb1",
     type: "inquiry",
-    title: "Property Inquiry",
-    subtitle: "3BR Villa – Bole",
-    when: "Today 09:15",
+    titleKey: "account.callbacks.sample.inquiry.title",
+    subtitleKey: "account.callbacks.sample.inquiry.subtitle",
+    whenKey: "account.callbacks.sample.today915",
     status: "pending",
     phone: "+251 911 234 567",
   },
   {
     id: "cb2",
     type: "broker",
-    title: "Broker Callback",
-    subtitle: "Agent: Samuel Tadesse",
-    when: "Today 11:00",
+    titleKey: "account.callbacks.sample.broker.title",
+    subtitleKey: "account.callbacks.sample.broker.subtitle",
+    whenKey: "account.callbacks.sample.today1100",
     status: "pending",
     phone: "+251 922 345 678",
   },
   {
     id: "cb3",
     type: "service",
-    title: "Home Cleaning",
-    subtitle: "Kazanchis, Addis Ababa",
-    when: "Yesterday",
+    titleKey: "account.callbacks.sample.service.title",
+    subtitleKey: "account.callbacks.sample.service.subtitle",
+    whenKey: "account.callbacks.sample.yesterday",
     status: "called",
     phone: "+251 933 456 789",
   },
   {
     id: "cb4",
     type: "hotel",
-    title: "Hotel Booking",
-    subtitle: "Skylight Hotel – Apr 28",
-    when: "2 days ago",
+    titleKey: "account.callbacks.sample.hotel.title",
+    subtitleKey: "account.callbacks.sample.hotel.subtitle",
+    whenKey: "account.callbacks.sample.twoDaysAgo",
     status: "closed",
     phone: "+251 944 567 890",
   },
@@ -87,7 +87,7 @@ export default function CallbacksScreen() {
     return (
       <View style={[styles.status, { backgroundColor: bg }]}>
         <Text style={[styles.statusLabel, { color }]}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
+          {t(`account.callbacks.status.${status}`)}
         </Text>
       </View>
     );
@@ -95,14 +95,27 @@ export default function CallbacksScreen() {
 
   function renderItem({ item }: { item: CallbackItem }) {
     return (
-      <View style={styles.card} key={item.id}>
+      <View
+        style={[styles.card, { backgroundColor: colors.surface }]}
+        key={item.id}
+      >
         <View style={styles.cardHeader}>
           <View style={styles.leftRow}>
             <View style={styles.iconWrap}>{renderIcon(item.type)}</View>
             <View style={styles.cardCopy}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
-              <Text style={styles.cardTime}>{item.when}</Text>
+              <Text style={[styles.cardTitle, { color: colors.text }]}>
+                {t(item.titleKey)}
+              </Text>
+              {item.subtitleKey ? (
+                <Text
+                  style={[styles.cardSubtitle, { color: colors.textMuted }]}
+                >
+                  {t(item.subtitleKey)}
+                </Text>
+              ) : null}
+              <Text style={[styles.cardTime, { color: colors.textMuted }]}>
+                {t(item.whenKey)}
+              </Text>
             </View>
           </View>
           <StatusBadge status={item.status} />
@@ -110,8 +123,10 @@ export default function CallbacksScreen() {
 
         <View style={styles.cardFooter}>
           <Pressable style={styles.callButton} onPress={() => {}}>
-            <PhoneCall size={16} color="white" />
-            <Text style={styles.callText}>{item.phone}</Text>
+            <PhoneCall size={16} color={colors.textInverse} />
+            <Text style={[styles.callText, { color: colors.textInverse }]}>
+              {item.phone}
+            </Text>
           </Pressable>
           <Pressable style={styles.cancelButton} onPress={() => {}}>
             <X size={14} color="#EF4444" />
@@ -128,10 +143,12 @@ export default function CallbacksScreen() {
           <Text style={[styles.backText, { color: colors.text }]}>‹</Text>
         </Pressable>
         <Text style={[styles.headerTitle, { color: colors.text }]}>
-          My Callbacks
+          {t("account.callbacks.title")}
         </Text>
         <Pressable style={styles.requestBtn} onPress={() => {}}>
-          <Text style={styles.requestLabel}>Request Callback</Text>
+          <Text style={styles.requestLabel}>
+            {t("account.callbacks.request")}
+          </Text>
         </Pressable>
       </View>
 

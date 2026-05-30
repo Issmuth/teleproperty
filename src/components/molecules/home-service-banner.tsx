@@ -81,7 +81,7 @@ export function HomeServiceBanner({
           <View style={styles.actionRow}>
             {actions.map((action) => (
               <Pressable
-                key={action.label}
+                key={action.labelKey}
                 onPress={() =>
                   router.push({
                     pathname: action.pathname as never,

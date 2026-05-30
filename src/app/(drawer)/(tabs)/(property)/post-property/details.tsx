@@ -14,6 +14,7 @@ import { PostPropertyChoiceGrid } from "@/components/organisms/post-property/pos
 import { usePostPropertyDraft } from "@/components/organisms/post-property/post-property-draft-context";
 import { PostPropertyShell } from "@/components/organisms/post-property/post-property-shell";
 import { ethiopianCities } from "@/data/property";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import {
     ChevronRight,
@@ -26,22 +27,51 @@ import {
 
 export default function PostPropertyStep2() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const { draft, updateDraft } = usePostPropertyDraft();
   const [citySheetVisible, setCitySheetVisible] = useState(false);
 
   const propertyTypeOptions = [
-    { key: "residential", label: "Residential", icon: House },
-    { key: "commercial", label: "Commercial", icon: LayoutGrid },
-    { key: "land", label: "Land / Plot", icon: MapPin },
-    { key: "hotel", label: "Hotel / Guest House", icon: Sparkles },
+    {
+      key: "residential",
+      label: t("property.postProperty.propertyTypes.residential"),
+      icon: House,
+    },
+    {
+      key: "commercial",
+      label: t("property.postProperty.propertyTypes.commercial"),
+      icon: LayoutGrid,
+    },
+    {
+      key: "land",
+      label: t("property.postProperty.propertyTypes.landPlot"),
+      icon: MapPin,
+    },
+    {
+      key: "hotel",
+      label: t("property.postProperty.propertyTypes.hotelGuestHouse"),
+      icon: Sparkles,
+    },
   ];
 
   const purposeOptions = [
-    { key: "rent", label: "Rent", icon: Sparkles },
-    { key: "sale", label: "Sale", icon: Plus },
-    { key: "new-project", label: "New Project", icon: LayoutGrid },
-    { key: "short-term", label: "Short-Term Rental", icon: House },
+    {
+      key: "rent",
+      label: t("property.postProperty.purpose.rent"),
+      icon: Sparkles,
+    },
+    { key: "sale", label: t("property.postProperty.purpose.sale"), icon: Plus },
+    {
+      key: "new-project",
+      label: t("property.postProperty.purpose.newProject"),
+      icon: LayoutGrid,
+    },
+    {
+      key: "short-term",
+      label: t("property.postProperty.purpose.shortTermRental"),
+      icon: House,
+    },
   ];
 
   const cityOptions = ethiopianCities.map((item) => item.name);
@@ -49,15 +79,17 @@ export default function PostPropertyStep2() {
   return (
     <PostPropertyShell
       step={2}
-      title="Property Details"
-      subtitle="Fill in the core property information"
+      title={t("property.postProperty.step2.title")}
+      subtitle={t("property.postProperty.step2.subtitle")}
       footer={
         <Pressable
           onPress={() => router.push("/post-property/contact" as never)}
           style={[styles.primaryButton, { backgroundColor: colors.activeText }]}
         >
           <View style={styles.primaryButtonContent}>
-            <Text style={styles.primaryLabel}>Continue</Text>
+            <Text style={styles.primaryLabel}>
+              {t("property.postProperty.continue")}
+            </Text>
             <ChevronRight size={16} color="#FFFFFF" />
           </View>
         </Pressable>
@@ -74,7 +106,7 @@ export default function PostPropertyStep2() {
           ]}
         >
           <Text style={[styles.label, { color: colors.text }]}>
-            Property Type *
+            {t("property.postProperty.labels.propertyTypeRequired")}
           </Text>
           <PostPropertyChoiceGrid
             options={propertyTypeOptions}
@@ -88,7 +120,7 @@ export default function PostPropertyStep2() {
           <Text
             style={[styles.label, styles.topSpacing, { color: colors.text }]}
           >
-            Purpose *
+            {t("property.postProperty.labels.purposeRequired")}
           </Text>
           <PostPropertyChoiceGrid
             options={purposeOptions}
@@ -102,7 +134,7 @@ export default function PostPropertyStep2() {
           <Text
             style={[styles.label, styles.topSpacing, { color: colors.text }]}
           >
-            City *
+            {t("property.postProperty.labels.cityRequired")}
           </Text>
           <Pressable
             onPress={() => setCitySheetVisible(true)}
@@ -125,12 +157,12 @@ export default function PostPropertyStep2() {
           <Text
             style={[styles.label, styles.topSpacing, { color: colors.text }]}
           >
-            Area / Location
+            {t("property.postProperty.labels.areaLocation")}
           </Text>
           <TextInput
             value={draft.areaLocation}
             onChangeText={(value) => updateDraft({ areaLocation: value })}
-            placeholder="e.g. Bole, Kazanchis"
+            placeholder={t("property.postProperty.placeholders.areaLocation")}
             placeholderTextColor={colors.textMuted}
             style={[
               styles.input,
@@ -145,19 +177,21 @@ export default function PostPropertyStep2() {
           <View style={styles.dualRow}>
             <View style={styles.flexOne}>
               <Field
-                label="Price"
+                label={t("property.postProperty.labels.price")}
                 value={draft.price}
                 onChangeText={(value) => updateDraft({ price: value })}
-                placeholder="0"
+                placeholder={t("property.postProperty.placeholders.price")}
                 keyboardType="numeric"
               />
             </View>
             <View style={styles.flexOne}>
               <Field
-                label="Bedrooms / Size"
+                label={t("property.postProperty.labels.bedroomsSize")}
                 value={draft.size}
                 onChangeText={(value) => updateDraft({ size: value })}
-                placeholder="e.g. 3 BR or 250m²"
+                placeholder={t(
+                  "property.postProperty.placeholders.bedroomsSize",
+                )}
               />
             </View>
           </View>
@@ -167,8 +201,8 @@ export default function PostPropertyStep2() {
       <AppBottomSheet
         visible={citySheetVisible}
         onClose={() => setCitySheetVisible(false)}
-        title="Choose City"
-        subtitle="Select the city where the property is located"
+        title={t("property.postProperty.citySheet.title")}
+        subtitle={t("property.postProperty.citySheet.subtitle")}
       >
         <View style={styles.sheetList}>
           {cityOptions.map((option) => {

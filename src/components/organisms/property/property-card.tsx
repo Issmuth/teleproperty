@@ -1,5 +1,6 @@
 import { useAuthGate } from "@/auth/use-auth-gate";
 import { type PropertyItem } from "@/data/property";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
 import { useRouter } from "expo-router";
@@ -21,6 +22,7 @@ type PropertyCardProps = {
 
 export function PropertyCard({ property }: PropertyCardProps) {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const { requireAuth } = useAuthGate();
 
@@ -51,12 +53,14 @@ export function PropertyCard({ property }: PropertyCardProps) {
           {property.featured && (
             <View style={[styles.badge, styles.featuredBadge]}>
               <Star size={12} color="white" fill="white" />
-              <Text style={styles.badgeText}>Featured</Text>
+              <Text style={styles.badgeText}>
+                {t("property.card.featured")}
+              </Text>
             </View>
           )}
           {property.forSale && (
             <View style={[styles.badge, styles.forSaleBadge]}>
-              <Text style={styles.badgeText}>For Sale</Text>
+              <Text style={styles.badgeText}>{t("property.card.forSale")}</Text>
             </View>
           )}
           {property.verified && (
@@ -68,7 +72,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                   { color: palette.brand.primaryStrong },
                 ]}
               >
-                Verified
+                {t("property.card.verified")}
               </Text>
             </View>
           )}
@@ -119,19 +123,19 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <View style={styles.specItem}>
             <Bed size={16} color={colors.textMuted} />
             <Text style={[styles.specText, { color: colors.textMuted }]}>
-              {property.beds} Beds
+              {t("property.card.beds", { count: property.beds })}
             </Text>
           </View>
           <View style={styles.specItem}>
             <Bath size={16} color={colors.textMuted} />
             <Text style={[styles.specText, { color: colors.textMuted }]}>
-              {property.baths} Baths
+              {t("property.card.baths", { count: property.baths })}
             </Text>
           </View>
           <View style={styles.specItem}>
             <Square size={16} color={colors.textMuted} />
             <Text style={[styles.specText, { color: colors.textMuted }]}>
-              {property.area} m²
+              {t("property.card.area", { area: property.area })}
             </Text>
           </View>
         </View>
@@ -141,7 +145,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         >
           <Lock size={16} color="white" />
           <Text style={styles.contactButtonText}>
-            Subscribe to View Broker Contact
+            {t("property.card.subscribeToViewBroker")}
           </Text>
         </Pressable>
       </View>

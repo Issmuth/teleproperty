@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -11,6 +12,7 @@ export type HistoryItem = {
 
 export function PaymentHistory({ items }: { items: HistoryItem[] }) {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
 
   return (
     <View
@@ -20,7 +22,7 @@ export function PaymentHistory({ items }: { items: HistoryItem[] }) {
       ]}
     >
       <Text style={[styles.header, { color: colors.text }]}>
-        Payment History
+        {t("payments.history.title")}
       </Text>
 
       {items.map((it) => (
@@ -45,7 +47,9 @@ export function PaymentHistory({ items }: { items: HistoryItem[] }) {
                   it.status === "Paid" ? styles.paid : styles.active,
                 ]}
               >
-                <Text style={styles.statusLabel}>{it.status}</Text>
+                <Text style={styles.statusLabel}>
+                  {t(`payments.status.${it.status?.toLowerCase()}`)}
+                </Text>
               </View>
             ) : null}
           </View>

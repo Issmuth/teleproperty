@@ -1,9 +1,11 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export function RewardsCard() {
   const { colors, isDark } = useAppTheme();
+  const { t } = useI18n();
 
   return (
     <LinearGradient
@@ -11,12 +13,12 @@ export function RewardsCard() {
       style={styles.container}
     >
       <View style={styles.rowTop}>
-        <Text style={styles.kicker}>Your Rewards Balance</Text>
+        <Text style={styles.kicker}>{t("payments.rewards.kicker")}</Text>
         <View style={styles.circle} />
       </View>
 
       <Text style={styles.points}>0</Text>
-      <Text style={styles.pointsLabel}>points</Text>
+      <Text style={styles.pointsLabel}>{t("payments.rewards.points")}</Text>
 
       <View style={styles.actionsRow}>
         <Pressable
@@ -26,7 +28,9 @@ export function RewardsCard() {
             { backgroundColor: colors.surfaceAccent },
           ]}
         >
-          <Text style={styles.primaryLabel}>Redeem</Text>
+          <Text style={styles.primaryLabel}>
+            {t("payments.rewards.redeem")}
+          </Text>
         </Pressable>
 
         <Pressable
@@ -40,7 +44,7 @@ export function RewardsCard() {
           ]}
         >
           <Text style={[styles.secondaryLabel, { color: colors.text }]}>
-            Earn More
+            {t("payments.rewards.earnMore")}
           </Text>
         </Pressable>
       </View>

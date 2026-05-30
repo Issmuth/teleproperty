@@ -14,6 +14,7 @@ type HomeListingCardProps = {
   price: string;
   agency: string;
   accent: string;
+  onPress?: () => void;
 };
 
 export function HomeListingCard({
@@ -26,11 +27,13 @@ export function HomeListingCard({
   price,
   agency,
   accent,
+  onPress,
 }: HomeListingCardProps) {
   const { colors } = useAppTheme();
 
   return (
     <Pressable
+      onPress={onPress}
       style={[
         styles.card,
         { backgroundColor: colors.surface, borderColor: colors.border },

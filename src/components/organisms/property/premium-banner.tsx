@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,6 +8,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export function PremiumBanner() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const [visible, setVisible] = useState(true);
 
   if (!visible) return null;
@@ -27,17 +29,15 @@ export function PremiumBanner() {
       </Pressable>
 
       <View style={styles.content}>
-        <Text style={styles.overline}>TELEPROPERTY PREMIUM</Text>
-        <Text style={styles.title}>Premium Property Listings</Text>
-        <Text style={styles.subtitle}>
-          Get featured placement and reach 10K+ buyers daily
-        </Text>
+        <Text style={styles.overline}>{t("property.premium.overline")}</Text>
+        <Text style={styles.title}>{t("property.premium.title")}</Text>
+        <Text style={styles.subtitle}>{t("property.premium.subtitle")}</Text>
 
         <Pressable
           style={[styles.actionButton, { backgroundColor: colors.surface }]}
         >
           <Text style={[styles.actionText, { color: colors.text }]}>
-            Post Premium
+            {t("property.premium.action")}
           </Text>
         </Pressable>
       </View>

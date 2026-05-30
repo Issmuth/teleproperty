@@ -16,8 +16,8 @@ import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useAuthGate } from "@/auth/use-auth-gate";
-import { featuredProperties } from "@/data/home";
 import { sampleProperties } from "@/data/property";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { shortenPriceLabel } from "@/utils/number-format";
 
@@ -207,36 +207,12 @@ function findDetail(id?: string) {
     };
   }
 
-  const fromFeaturedList = featuredProperties.find((item) => item.id === id);
-  if (fromFeaturedList) {
-    return {
-      title: fromFeaturedList.title,
-      location: fromFeaturedList.location,
-      price: fromFeaturedList.price,
-      image: fromFeaturedList.image,
-      gallery: [
-        fromFeaturedList.image,
-        fromFeaturedList.image,
-        fromFeaturedList.image,
-        fromFeaturedList.image,
-      ],
-      description:
-        "A featured home selected for its strong location, practical layout, and premium presentation.",
-      beds: 4,
-      baths: 3,
-      area: 260,
-      agentName: "Samuel Tadesse",
-      agentLabel: "Verified Agent · Addis Ababa",
-      rating: "4.8",
-      reviewsCount: "32 reviews",
-    };
-  }
-
   return fallbackDetail;
 }
 
 export default function PropertyDetails() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const { requireAuth } = useAuthGate();
   const { id, source } = useLocalSearchParams<{
@@ -356,31 +332,34 @@ export default function PropertyDetails() {
         <View style={styles.statsRow}>
           <StatCard
             label={`${detail.beds}`}
-            sublabel="Bedrooms"
+            sublabel={t("property.details.bedrooms")}
             colors={colors}
             icon="bed"
           />
           <StatCard
             label={`${detail.baths}`}
-            sublabel="Bathrooms"
+            sublabel={t("property.details.bathrooms")}
             colors={colors}
             icon="bath"
           />
           <StatCard
             label={`${detail.area} m²`}
-            sublabel="Area"
+            sublabel={t("property.details.area")}
             colors={colors}
             icon="square"
           />
         </View>
 
-        <SectionCard title="About This Property" colors={colors}>
+        <SectionCard
+          title={t("property.details.aboutProperty")}
+          colors={colors}
+        >
           <Text style={[styles.bodyText, { color: colors.textMuted }]}>
             {detail.description}
           </Text>
         </SectionCard>
 
-        <SectionCard title="Agent" colors={colors}>
+        <SectionCard title={t("property.details.agent")} colors={colors}>
           <View style={styles.agentRow}>
             <View
               style={[
@@ -411,7 +390,10 @@ export default function PropertyDetails() {
           </View>
         </SectionCard>
 
-        <SectionCard title="Contact Details Locked" colors={colors}>
+        <SectionCard
+          title={t("property.details.contactDetailsLocked")}
+          colors={colors}
+        >
           <View style={styles.lockBox}>
             <View
               style={[
@@ -422,10 +404,10 @@ export default function PropertyDetails() {
               <Lock size={22} color={colors.textMuted} />
             </View>
             <Text style={[styles.lockTitle, { color: colors.text }]}>
-              Contact Details Locked
+              {t("property.details.contactDetailsLocked")}
             </Text>
             <Text style={[styles.lockBody, { color: colors.textMuted }]}>
-              Subscribe to unlock agent phone, WhatsApp & Telegram
+              {t("property.details.lockedBody")}
             </Text>
             <Pressable
               style={[
@@ -433,13 +415,15 @@ export default function PropertyDetails() {
                 { backgroundColor: colors.activeText },
               ]}
             >
-              <Text style={styles.unlockButtonText}>Subscribe to Unlock →</Text>
+              <Text style={styles.unlockButtonText}>
+                {t("property.details.subscribeToUnlock")}
+              </Text>
             </Pressable>
           </View>
         </SectionCard>
 
         <SectionCard
-          title="Reviews"
+          title={t("property.details.reviews")}
           colors={colors}
           headerAction={
             <Pressable
@@ -449,12 +433,14 @@ export default function PropertyDetails() {
               ]}
             >
               <MessageCircleMore size={16} color="#fff" />
-              <Text style={styles.reviewButtonText}>Write Review</Text>
+              <Text style={styles.reviewButtonText}>
+                {t("property.details.writeReview")}
+              </Text>
             </Pressable>
           }
         >
           <Text style={[styles.reviewIntro, { color: colors.textMuted }]}>
-            No reviews yet. Be the first!
+            {t("property.details.noReviewsYet")}
           </Text>
           <View
             style={[
@@ -463,7 +449,7 @@ export default function PropertyDetails() {
             ]}
           >
             <Text style={[styles.emptyReviewText, { color: colors.textMuted }]}>
-              No reviews yet. Be the first to share your experience!
+              {t("property.details.noReviewsPrompt")}
             </Text>
           </View>
         </SectionCard>

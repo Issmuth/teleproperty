@@ -41,7 +41,9 @@ export default function MyListingsScreen() {
             }
           >
             <Edit3 size={16} color="#0B6BFF" />
-            <Text style={styles.actionLabel}>Edit</Text>
+            <Text style={[styles.actionLabel, { color: colors.activeText }]}>
+              {t("account.listings.edit")}
+            </Text>
           </Pressable>
 
           <Pressable
@@ -53,8 +55,10 @@ export default function MyListingsScreen() {
             ) : (
               <EyeOff size={16} color="#94A3B8" />
             )}
-            <Text style={styles.actionLabel}>
-              {item.forSale ? "Visible" : "Hidden"}
+            <Text style={[styles.actionLabel, { color: colors.textMuted }]}>
+              {item.forSale
+                ? t("account.listings.visible")
+                : t("account.listings.hidden")}
             </Text>
           </Pressable>
 
@@ -64,7 +68,7 @@ export default function MyListingsScreen() {
           >
             <Trash2 size={16} color="#EF4444" />
             <Text style={[styles.actionLabel, { color: "#EF4444" }]}>
-              Delete
+              {t("account.listings.delete")}
             </Text>
           </Pressable>
         </View>
@@ -75,16 +79,18 @@ export default function MyListingsScreen() {
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>My Listings</Text>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {t("account.listings.title")}
+        </Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text style={[styles.count, { color: colors.textMuted }]}>
-            {activeCount} active
+            {t("account.listings.activeCount", { count: activeCount })}
           </Text>
           <Pressable
             style={styles.addBtn}
             onPress={() => router.push("/post-property" as never)}
           >
-            <Text style={styles.addLabel}>Add Listing</Text>
+            <Text style={styles.addLabel}>{t("account.listings.add")}</Text>
           </Pressable>
         </View>
       </View>

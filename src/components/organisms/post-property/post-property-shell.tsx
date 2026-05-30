@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";
 import { ChevronLeft, Sparkles } from "lucide-react-native";
@@ -20,6 +21,7 @@ export function PostPropertyShell({
   footer,
 }: PostPropertyShellProps) {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
 
   return (
@@ -61,7 +63,7 @@ export function PostPropertyShell({
               <Text
                 style={[styles.heroBadgeText, { color: colors.activeText }]}
               >
-                Listing wizard
+                {t("property.postProperty.shell.listingWizard")}
               </Text>
             </View>
 
@@ -75,7 +77,7 @@ export function PostPropertyShell({
               ]}
             >
               <Text style={[styles.stepBadgeText, { color: colors.textMuted }]}>
-                Step {step} of 3
+                {t("property.postProperty.shell.stepOf", { step })}
               </Text>
             </View>
           </View>

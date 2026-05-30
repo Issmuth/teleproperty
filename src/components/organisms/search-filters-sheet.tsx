@@ -23,6 +23,8 @@ type SearchFiltersSheetProps = {
   visible: boolean;
   onClose: () => void;
   config: SearchFiltersConfig;
+  minFieldLabel?: string;
+  maxFieldLabel?: string;
 };
 
 type FilterState = Record<string, string | string[] | boolean>;
@@ -31,6 +33,8 @@ export function SearchFiltersSheet({
   visible,
   onClose,
   config,
+  minFieldLabel = "Min",
+  maxFieldLabel = "Max",
 }: SearchFiltersSheetProps) {
   const { colors } = useAppTheme();
   const [state, setState] = useState<FilterState>({});
@@ -118,6 +122,8 @@ export function SearchFiltersSheet({
             onSelectPress={handleSelectPress}
             onSelectOption={handleSelectOption}
             onRangeChange={handleRangeChange}
+            minFieldLabel={minFieldLabel}
+            maxFieldLabel={maxFieldLabel}
           />
         ))}
       </ScrollView>
@@ -139,6 +145,8 @@ type FilterSectionViewProps = {
   onSelectPress: (selectId: string) => void;
   onSelectOption: (groupId: string, option: SearchFilterOption) => void;
   onRangeChange: (groupId: string, which: "min" | "max", value: string) => void;
+  minFieldLabel: string;
+  maxFieldLabel: string;
 };
 
 function FilterSectionView({
@@ -151,6 +159,8 @@ function FilterSectionView({
   onSelectPress,
   onSelectOption,
   onRangeChange,
+  minFieldLabel,
+  maxFieldLabel,
 }: FilterSectionViewProps) {
   const { colors } = useAppTheme();
 
@@ -290,7 +300,7 @@ function FilterSectionView({
             ]}
           >
             <Text style={[styles.rangeFieldLabel, { color: colors.textMuted }]}>
-              Min
+              {minFieldLabel}
             </Text>
             <TextInput
               style={[styles.rangeInput, { color: colors.text }]}
@@ -312,7 +322,7 @@ function FilterSectionView({
             ]}
           >
             <Text style={[styles.rangeFieldLabel, { color: colors.textMuted }]}>
-              Max
+              {maxFieldLabel}
             </Text>
             <TextInput
               style={[styles.rangeInput, { color: colors.text }]}

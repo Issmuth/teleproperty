@@ -1,6 +1,6 @@
 export const propertySegments = [
-  { key: "buy", label: "Buy" },
-  { key: "rent", label: "Rent" },
+  { key: "buy", labelKey: "property.segments.buy" },
+  { key: "rent", labelKey: "property.segments.rent" },
 ] as const;
 
 export type PropertyItem = {
@@ -21,7 +21,7 @@ export type PropertyItem = {
 export const sampleProperties: PropertyItem[] = [
   {
     id: "1",
-    title: "5BR Executive Villa \u2013 Bole",
+    title: "5BR Executive Villa - Bole",
     location: "Bole, Addis Ababa",
     age: "New (0-2 yrs)",
     price: "ETB 9,500,000",
@@ -36,7 +36,7 @@ export const sampleProperties: PropertyItem[] = [
   },
   {
     id: "2",
-    title: "Modern 3BR Apartment \u2013 Kazanchis",
+    title: "Modern 3BR Apartment - Kazanchis",
     location: "Kazanchis, Addis Ababa",
     age: "Resale",
     price: "ETB 4,200,000",

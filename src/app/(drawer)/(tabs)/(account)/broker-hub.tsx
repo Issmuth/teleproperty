@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useRouter } from "expo-router";
 import {
     AlertCircle,
@@ -18,7 +19,7 @@ import {
     Sparkles,
     TrendingUp,
     Users,
-    Waves
+    Waves,
 } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -37,32 +38,35 @@ const tabs = [
 type TabKey = (typeof tabs)[number];
 
 const quickActions = [
-  { label: "Register as Broker", icon: Briefcase },
-  { label: "Upload Listings", icon: ClipboardList },
-  { label: "Verified Leads", icon: Users },
-  { label: "Client Inquiries", icon: MessageSquareMore },
+  { labelKey: "account.brokerHub.quick.register", icon: Briefcase },
+  { labelKey: "account.brokerHub.quick.uploadListings", icon: ClipboardList },
+  { labelKey: "account.brokerHub.quick.verifiedLeads", icon: Users },
+  {
+    labelKey: "account.brokerHub.quick.clientInquiries",
+    icon: MessageSquareMore,
+  },
 ] as const;
 
 const overviewBenefits = [
   {
     icon: Users,
-    title: "Receive verified buyer & tenant leads",
-    subtitle: "Capture serious enquiries from active property seekers.",
+    titleKey: "account.brokerHub.benefit.receive.title",
+    subtitleKey: "account.brokerHub.benefit.receive.subtitle",
   },
   {
     icon: TrendingUp,
-    title: "Grow your client base across Ethiopia",
-    subtitle: "Reach more buyers, renters, and investors in one place.",
+    titleKey: "account.brokerHub.benefit.grow.title",
+    subtitleKey: "account.brokerHub.benefit.grow.subtitle",
   },
   {
     icon: Sparkles,
-    title: "Featured placement for your listings",
-    subtitle: "Give priority visibility to premium properties.",
+    titleKey: "account.brokerHub.benefit.featured.title",
+    subtitleKey: "account.brokerHub.benefit.featured.subtitle",
   },
   {
     icon: ShieldCheck,
-    title: "Earn broker reputation & verified badge",
-    subtitle: "Build trust with a visible, verified profile.",
+    titleKey: "account.brokerHub.benefit.reputation.title",
+    subtitleKey: "account.brokerHub.benefit.reputation.subtitle",
   },
 ] as const;
 
@@ -139,6 +143,7 @@ const paymentItems = [
 export default function BrokerHubScreen() {
   const router = useRouter();
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const [selectedTab, setSelectedTab] = useState<TabKey>("Overview");
 
   const content = useMemo(() => {
@@ -518,10 +523,10 @@ export default function BrokerHubScreen() {
         </Pressable>
         <View>
           <Text style={[styles.pageTitle, { color: colors.text }]}>
-            Broker Hub
+            {t("account.brokerHub.title")}
           </Text>
           <Text style={[styles.pageSubtitle, { color: colors.textMuted }]}>
-            Manage listings, leads, and your brokerage business
+            {t("account.brokerHub.subtitle")}
           </Text>
         </View>
       </View>
@@ -536,20 +541,21 @@ export default function BrokerHubScreen() {
           <View style={styles.heroIconWrap}>
             <Waves size={24} color="#FFFFFF" />
           </View>
-          <Text style={styles.heroTitle}>Broker / Agent Hub</Text>
+          <Text style={styles.heroTitle}>
+            {t("account.brokerHub.hero.title")}
+          </Text>
           <Text style={styles.heroCopy}>
-            Join Ethiopia's fastest-growing property platform. Get verified
-            leads, manage listings, and grow your business.
+            {t("account.brokerHub.hero.copy")}
           </Text>
 
           <View style={styles.chipRow}>
             {quickActions.map((action) => {
-              const Icon = action.icon;
+              const Icon = action.icon as any;
 
               return (
-                <View key={action.label} style={styles.chip}>
+                <View key={action.labelKey} style={styles.chip}>
                   <Icon size={12} color="#FFFFFF" />
-                  <Text style={styles.chipLabel}>{action.label}</Text>
+                  <Text style={styles.chipLabel}>{t(action.labelKey)}</Text>
                 </View>
               );
             })}

@@ -1,5 +1,6 @@
 import { useAuth } from "@/auth/auth-context";
 import { useAuthGate } from "@/auth/use-auth-gate";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";
 import {
@@ -36,6 +37,15 @@ const tabs = [
   "Search",
   "Payments",
 ] as const;
+
+const tabLabelKeys = {
+  Overview: "account.admin.tabs.overview",
+  Listings: "account.admin.tabs.listings",
+  Agents: "account.admin.tabs.agents",
+  Users: "account.admin.tabs.users",
+  Search: "account.admin.tabs.search",
+  Payments: "account.admin.tabs.payments",
+} as const;
 
 type AdminTab = (typeof tabs)[number];
 
@@ -106,6 +116,7 @@ export default function AdminDashboard() {
   const { isAdmin, isAuthenticated } = useAuth();
   const { protectedRoute, isHydrated, openAuth } = useAuthGate();
   const router = useRouter();
+  const { t } = useI18n();
   const { colors } = useAppTheme();
   const [selectedTab, setSelectedTab] = useState<AdminTab>("Overview");
   const [searchValue, setSearchValue] = useState("");
@@ -128,7 +139,9 @@ export default function AdminDashboard() {
     if (selectedTab === "Listings") {
       return (
         <View style={styles.sectionStack}>
-          <Text style={styles.sectionLabel}>Pending Approval (3)</Text>
+          <Text style={styles.sectionLabel}>
+            {t("account.admin.listings.pendingApproval")}
+          </Text>
           {listingItems.map((item) => (
             <View
               key={item.title}
@@ -163,7 +176,7 @@ export default function AdminDashboard() {
                       { color: colors.activeText },
                     ]}
                   >
-                    pending
+                    {t("account.admin.status.pending")}
                   </Text>
                 </View>
               </View>
@@ -181,7 +194,7 @@ export default function AdminDashboard() {
                       { color: colors.textInverse },
                     ]}
                   >
-                    Approve
+                    {t("account.admin.actions.approve")}
                   </Text>
                 </Pressable>
                 <Pressable
@@ -195,7 +208,7 @@ export default function AdminDashboard() {
                 >
                   <AlertCircle size={14} color="#EF4444" />
                   <Text style={[styles.rejectBtnLabel, { color: colors.text }]}>
-                    Reject
+                    {t("account.admin.actions.reject")}
                   </Text>
                 </Pressable>
               </View>
@@ -208,7 +221,9 @@ export default function AdminDashboard() {
     if (selectedTab === "Agents") {
       return (
         <View style={styles.sectionStack}>
-          <Text style={styles.sectionLabel}>All Agents & Brokers (3)</Text>
+          <Text style={styles.sectionLabel}>
+            {t("account.admin.agents.title")}
+          </Text>
           {agentItems.map((item) => (
             <View
               key={item.name}
@@ -240,7 +255,7 @@ export default function AdminDashboard() {
                       { color: colors.textMuted },
                     ]}
                   >
-                    {item.status}
+                    {t(`account.admin.status.${item.status.toLowerCase()}`)}
                   </Text>
                 </View>
               </View>
@@ -273,7 +288,7 @@ export default function AdminDashboard() {
                       { color: colors.activeText },
                     ]}
                   >
-                    Verify
+                    {t("account.admin.actions.verify")}
                   </Text>
                 </Pressable>
                 <Pressable
@@ -289,7 +304,7 @@ export default function AdminDashboard() {
                   <Text
                     style={[styles.ghostBtnLabel, { color: colors.textMuted }]}
                   >
-                    Edit
+                    {t("account.admin.actions.edit")}
                   </Text>
                 </Pressable>
                 <Pressable
@@ -302,7 +317,7 @@ export default function AdminDashboard() {
                   ]}
                 >
                   <Text style={[styles.rejectBtnLabel, { color: colors.text }]}>
-                    Remove
+                    {t("account.admin.actions.remove")}
                   </Text>
                 </Pressable>
               </View>
@@ -315,7 +330,9 @@ export default function AdminDashboard() {
     if (selectedTab === "Users") {
       return (
         <View style={styles.sectionStack}>
-          <Text style={styles.sectionLabel}>Broker Applications (3)</Text>
+          <Text style={styles.sectionLabel}>
+            {t("account.admin.users.title")}
+          </Text>
           {[
             {
               name: "Dawit Bekele",
@@ -340,22 +357,30 @@ export default function AdminDashboard() {
                   <Text style={styles.listSubtitle}>{item.company}</Text>
                 </View>
                 <View style={styles.yellowPill}>
-                  <Text style={styles.yellowPillLabel}>{item.badge}</Text>
+                  <Text style={styles.yellowPillLabel}>
+                    {t(`account.admin.status.${item.badge.toLowerCase()}`)}
+                  </Text>
                 </View>
               </View>
               <View style={styles.actionRow}>
                 <Pressable style={styles.verifyBtn}>
                   <CheckCircle2 size={14} color="#FFFFFF" />
-                  <Text style={styles.approveBtnLabel}>Approve Broker</Text>
+                  <Text style={styles.approveBtnLabel}>
+                    {t("account.admin.actions.approveBroker")}
+                  </Text>
                 </Pressable>
                 <Pressable style={styles.rejectBtn}>
-                  <Text style={styles.rejectBtnLabel}>Reject</Text>
+                  <Text style={styles.rejectBtnLabel}>
+                    {t("account.admin.actions.reject")}
+                  </Text>
                 </Pressable>
               </View>
             </View>
           ))}
 
-          <Text style={styles.sectionLabel}>Recent Users</Text>
+          <Text style={styles.sectionLabel}>
+            {t("account.admin.users.recent")}
+          </Text>
           <View
             style={[
               styles.summaryPanel,
@@ -365,13 +390,13 @@ export default function AdminDashboard() {
             <View style={styles.summaryRow}>
               <Users size={16} color={colors.activeText} />
               <Text style={[styles.summaryText, { color: colors.textMuted }]}>
-                Buyer registrations, saved searches, and inquiries.
+                {t("account.admin.users.summaryOne")}
               </Text>
             </View>
             <View style={styles.summaryRow}>
               <ShieldCheck size={16} color={colors.activeText} />
               <Text style={[styles.summaryText, { color: colors.textMuted }]}>
-                Verified broker profiles shown at the top of search results.
+                {t("account.admin.users.summaryTwo")}
               </Text>
             </View>
           </View>
@@ -382,7 +407,9 @@ export default function AdminDashboard() {
     if (selectedTab === "Search") {
       return (
         <View style={styles.sectionStack}>
-          <Text style={styles.sectionLabel}>Universal Search</Text>
+          <Text style={styles.sectionLabel}>
+            {t("account.admin.search.title")}
+          </Text>
           <View
             style={[
               styles.searchBox,
@@ -393,7 +420,7 @@ export default function AdminDashboard() {
             <TextInput
               value={searchValue}
               onChangeText={setSearchValue}
-              placeholder="Name, phone, email, ref# or referral code..."
+              placeholder={t("account.admin.search.placeholder")}
               placeholderTextColor={colors.textMuted}
               style={[styles.searchInput, { color: colors.text }]}
             />
@@ -412,7 +439,7 @@ export default function AdminDashboard() {
                   { color: colors.activeText },
                 ]}
               >
-                All
+                {t("account.admin.search.filters.all")}
               </Text>{" "}
             </View>
             <View
@@ -427,7 +454,7 @@ export default function AdminDashboard() {
               <Text
                 style={[styles.filterPillLabel, { color: colors.textMuted }]}
               >
-                Users
+                {t("account.admin.search.filters.users")}
               </Text>
             </View>
             <View
@@ -442,7 +469,7 @@ export default function AdminDashboard() {
               <Text
                 style={[styles.filterPillLabel, { color: colors.textMuted }]}
               >
-                Properties
+                {t("account.admin.search.filters.properties")}
               </Text>
             </View>
             <View
@@ -457,7 +484,7 @@ export default function AdminDashboard() {
               <Text
                 style={[styles.filterPillLabel, { color: colors.textMuted }]}
               >
-                Referrals
+                {t("account.admin.search.filters.referrals")}
               </Text>
             </View>
           </View>
@@ -471,7 +498,7 @@ export default function AdminDashboard() {
               <Search size={28} color={colors.iconMuted} />
             </View>
             <Text style={[styles.emptySearchText, { color: colors.textMuted }]}>
-              Type to search users, properties, or referral codes
+              {t("account.admin.search.empty")}
             </Text>
           </View>
         </View>
@@ -499,7 +526,7 @@ export default function AdminDashboard() {
                   { color: colors.textMuted },
                 ]}
               >
-                Total Revenue (May)
+                {t("account.admin.payments.totalRevenue")}
               </Text>
             </View>
             <View
@@ -519,11 +546,13 @@ export default function AdminDashboard() {
                   { color: colors.textMuted },
                 ]}
               >
-                Transactions
+                {t("account.admin.payments.transactions")}
               </Text>
             </View>
           </View>
-          <Text style={styles.sectionLabel}>Recent Payments</Text>
+          <Text style={styles.sectionLabel}>
+            {t("account.admin.payments.recent")}
+          </Text>
           {paymentItems.map((item) => (
             <View
               key={item.title}
@@ -569,7 +598,7 @@ export default function AdminDashboard() {
                         : [styles.failedPillLabel, { color: colors.text }]
                     }
                   >
-                    {item.status}
+                    {t(`account.admin.status.${item.status}`)}
                   </Text>
                 </View>
               </View>
@@ -597,10 +626,10 @@ export default function AdminDashboard() {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={[styles.noticeTitle, { color: colors.activeText }]}>
-              3 Listings Pending Approval
+              {t("account.admin.notice.listings.title")}
             </Text>
             <Text style={[styles.noticeText, { color: colors.textMuted }]}>
-              Review and approve property submissions
+              {t("account.admin.notice.listings.body")}
             </Text>
           </View>
           <Pressable
@@ -612,7 +641,7 @@ export default function AdminDashboard() {
             <Text
               style={[styles.noticeButtonLabel, { color: colors.activeText }]}
             >
-              Review
+              {t("account.admin.actions.review")}
             </Text>
           </Pressable>
         </View>
@@ -633,10 +662,10 @@ export default function AdminDashboard() {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={[styles.noticeTitleBlue, { color: colors.text }]}>
-              3 Broker Applications
+              {t("account.admin.notice.brokers.title")}
             </Text>
             <Text style={[styles.noticeTextBlue, { color: colors.textMuted }]}>
-              New broker / agent registrations awaiting approval
+              {t("account.admin.notice.brokers.body")}
             </Text>
           </View>
           <Pressable
@@ -651,19 +680,43 @@ export default function AdminDashboard() {
             <Text
               style={[styles.noticeButtonLabelBlue, { color: colors.text }]}
             >
-              Review
+              {t("account.admin.actions.review")}
             </Text>
           </Pressable>
         </View>
 
         <View style={styles.metricsGrid}>
           {[
-            { value: "287", label: "Active Listings", icon: Building2 },
-            { value: "1.2K", label: "Total Users", icon: Users },
-            { value: "ETB 42K", label: "Monthly Revenue", icon: Banknote },
-            { value: "24", label: "New Projects", icon: Sparkles },
-            { value: "56", label: "Service Bookings", icon: Wrench },
-            { value: "94", label: "Subscriptions", icon: Star },
+            {
+              value: "287",
+              label: t("account.admin.metrics.activeListings"),
+              icon: Building2,
+            },
+            {
+              value: "1.2K",
+              label: t("account.admin.metrics.totalUsers"),
+              icon: Users,
+            },
+            {
+              value: "ETB 42K",
+              label: t("account.admin.metrics.monthlyRevenue"),
+              icon: Banknote,
+            },
+            {
+              value: "24",
+              label: t("account.admin.metrics.newProjects"),
+              icon: Sparkles,
+            },
+            {
+              value: "56",
+              label: t("account.admin.metrics.serviceBookings"),
+              icon: Wrench,
+            },
+            {
+              value: "94",
+              label: t("account.admin.metrics.subscriptions"),
+              icon: Star,
+            },
           ].map((item) => {
             const Icon = item.icon;
 
@@ -704,7 +757,7 @@ export default function AdminDashboard() {
     return (
       <View style={[styles.center, { backgroundColor: colors.background }]}>
         <Text style={[styles.emptyTitle, { color: colors.text }]}>
-          Loading admin dashboard...
+          {t("account.admin.loading")}
         </Text>
       </View>
     );
@@ -738,10 +791,10 @@ export default function AdminDashboard() {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={[styles.title, { color: colors.text }]}>
-              Admin Dashboard
+              {t("account.admin.title")}
             </Text>
             <Text style={[styles.sub, { color: colors.textMuted }]}>
-              TeleProperty Management Console
+              {t("account.admin.subtitle")}
             </Text>
           </View>
           <Pressable
@@ -754,17 +807,17 @@ export default function AdminDashboard() {
             }
           >
             <Text style={[styles.headerActionLabel, { color: colors.text }]}>
-              Access
+              {t("account.admin.access")}
             </Text>
           </Pressable>
         </View>
 
         <View style={styles.statsRow}>
           {[
-            { value: "1.2K", label: "Users" },
-            { value: "340", label: "Listings" },
-            { value: "ETB 42K", label: "Revenue" },
-            { value: "28", label: "Pending" },
+            { value: "1.2K", label: t("account.admin.stats.users") },
+            { value: "340", label: t("account.admin.stats.listings") },
+            { value: "ETB 42K", label: t("account.admin.stats.revenue") },
+            { value: "28", label: t("account.admin.stats.pending") },
           ].map((item) => (
             <View
               key={item.label}
@@ -800,7 +853,7 @@ export default function AdminDashboard() {
                       : [styles.tab, { color: colors.textMuted }]
                   }
                 >
-                  {tab}
+                  {t(tabLabelKeys[tab])}
                 </Text>
                 {selected ? (
                   <View

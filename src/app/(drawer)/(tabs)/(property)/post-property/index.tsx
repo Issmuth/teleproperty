@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PostPropertyChoiceGrid } from "@/components/organisms/post-property/post-property-choice-grid";
 import { usePostPropertyDraft } from "@/components/organisms/post-property/post-property-draft-context";
 import { PostPropertyShell } from "@/components/organisms/post-property/post-property-shell";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import {
     ChevronRight,
@@ -15,21 +16,24 @@ import {
 
 export default function PostPropertyStep1() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const { draft, updateDraft } = usePostPropertyDraft();
 
   return (
     <PostPropertyShell
       step={1}
-      title="I am a..."
-      subtitle="Select your role to personalize the experience"
+      title={t("property.postProperty.step1.title")}
+      subtitle={t("property.postProperty.step1.subtitle")}
       footer={
         <Pressable
           onPress={() => router.push("/post-property/details" as never)}
           style={[styles.primaryButton, { backgroundColor: colors.activeText }]}
         >
           <View style={styles.primaryButtonContent}>
-            <Text style={styles.primaryLabel}>Continue</Text>
+            <Text style={styles.primaryLabel}>
+              {t("property.postProperty.continue")}
+            </Text>
             <ChevronRight size={16} color="#FFFFFF" />
           </View>
         </Pressable>
@@ -49,26 +53,28 @@ export default function PostPropertyStep1() {
             options={[
               {
                 key: "owner",
-                label: "Owner",
-                subtitle: "List my property",
+                label: t("property.postProperty.roles.owner.label"),
+                subtitle: t("property.postProperty.roles.owner.subtitle"),
                 icon: House,
               },
               {
                 key: "broker-agent",
-                label: "Broker / Agent",
-                subtitle: "Represent buyers or sellers",
+                label: t("property.postProperty.roles.brokerAgent.label"),
+                subtitle: t("property.postProperty.roles.brokerAgent.subtitle"),
                 icon: UserRound,
               },
               {
                 key: "developer",
-                label: "Developer",
-                subtitle: "Manage projects & units",
+                label: t("property.postProperty.roles.developer.label"),
+                subtitle: t("property.postProperty.roles.developer.subtitle"),
                 icon: LayoutGrid,
               },
               {
                 key: "property-manager",
-                label: "Property Manager",
-                subtitle: "Manage listings & tenants",
+                label: t("property.postProperty.roles.propertyManager.label"),
+                subtitle: t(
+                  "property.postProperty.roles.propertyManager.subtitle",
+                ),
                 icon: Sparkles,
               },
             ]}

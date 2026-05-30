@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";
 import { ChevronLeft, MessageSquareDashed, Star } from "lucide-react-native";
@@ -5,6 +6,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function ReviewsScreen() {
   const router = useRouter();
+  const { t } = useI18n();
   const { colors } = useAppTheme();
   const averageRating = 0;
   const totalReviews = 0;
@@ -19,13 +21,17 @@ export default function ReviewsScreen() {
         >
           <ChevronLeft size={18} color={colors.text} />
         </Pressable>
-        <Text style={[styles.backLabel, { color: colors.text }]}>Back</Text>
+        <Text style={[styles.backLabel, { color: colors.text }]}>
+          {t("account.reviews.back")}
+        </Text>
       </View>
 
       <View style={styles.content}>
-        <Text style={[styles.title, { color: colors.text }]}>My Reviews</Text>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {t("account.reviews.title")}
+        </Text>
         <Text style={[styles.subtitle, { color: colors.textMuted }]}>
-          Manage and track your reviews
+          {t("account.reviews.subtitle")}
         </Text>
 
         <View style={styles.statsRow}>
@@ -36,7 +42,7 @@ export default function ReviewsScreen() {
             ]}
           >
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>
-              Average Rating
+              {t("account.reviews.averageRating")}
             </Text>
             <View style={styles.ratingRow}>
               <Text style={[styles.statValue, { color: colors.text }]}>
@@ -59,13 +65,13 @@ export default function ReviewsScreen() {
             ]}
           >
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>
-              Total Reviews
+              {t("account.reviews.totalReviews")}
             </Text>
             <Text style={[styles.statValue, { color: colors.text }]}>
               {totalReviews}
             </Text>
             <Text style={[styles.pendingText, { color: colors.textMuted }]}>
-              {pendingApproval} pending approval
+              {t("account.reviews.pendingApproval", { count: pendingApproval })}
             </Text>
           </View>
         </View>
@@ -78,7 +84,11 @@ export default function ReviewsScreen() {
               { backgroundColor: colors.activeSurface },
             ]}
           >
-            <Text style={styles.filterActiveLabel}>All (0)</Text>
+            <Text
+              style={[styles.filterActiveLabel, { color: colors.activeText }]}
+            >
+              {t("account.reviews.filters.all", { count: totalReviews })}
+            </Text>
           </Pressable>
           <Pressable
             style={[
@@ -86,7 +96,9 @@ export default function ReviewsScreen() {
               { backgroundColor: colors.surfaceMuted },
             ]}
           >
-            <Text style={styles.filterLabel}>Pending (0)</Text>
+            <Text style={[styles.filterLabel, { color: colors.textMuted }]}>
+              {t("account.reviews.filters.pending", { count: pendingApproval })}
+            </Text>
           </Pressable>
           <Pressable
             style={[
@@ -94,7 +106,9 @@ export default function ReviewsScreen() {
               { backgroundColor: colors.surfaceMuted },
             ]}
           >
-            <Text style={styles.filterLabel}>Approved (0)</Text>
+            <Text style={[styles.filterLabel, { color: colors.textMuted }]}>
+              {t("account.reviews.filters.approved", { count: 0 })}
+            </Text>
           </Pressable>
         </View>
 
@@ -113,10 +127,10 @@ export default function ReviewsScreen() {
             <MessageSquareDashed size={34} color={colors.iconMuted} />
           </View>
           <Text style={[styles.emptyTitle, { color: colors.text }]}>
-            No reviews yet.
+            {t("account.reviews.emptyTitle")}
           </Text>
           <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-            Your reviews will appear here after you submit them.
+            {t("account.reviews.emptyBody")}
           </Text>
         </View>
       </View>
@@ -168,8 +182,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   filterActive: {},
-  filterLabel: { color: "#CBD5E1", fontWeight: "800", fontSize: 12 },
-  filterActiveLabel: { color: "#ECFDF5", fontWeight: "800", fontSize: 12 },
+  filterLabel: { fontWeight: "800", fontSize: 12 },
+  filterActiveLabel: { fontWeight: "800", fontSize: 12 },
   emptyCard: {
     borderRadius: 16,
     borderWidth: 1,

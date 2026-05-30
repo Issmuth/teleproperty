@@ -64,7 +64,9 @@ export default function AccountScreen() {
                 style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
               >
                 <Shield size={18} color="white" />
-                <Text style={styles.adminLabel}>Admin Dashboard</Text>
+                <Text style={styles.adminLabel}>
+                  {t("account.adminDashboard")}
+                </Text>
               </View>
             </Pressable>
           )}
@@ -76,68 +78,68 @@ export default function AccountScreen() {
             ]}
           >
             <AccountRow
-              title="My Subscription"
-              subtitle="Upgrade your plan"
+              title={t("account.mySubscription.title")}
+              subtitle={t("account.mySubscription.subtitle")}
               icon={<Star size={18} color="#F59E0B" />}
               accentColor="#FFF7E6"
             />
             <View style={styles.divider} />
             <AccountRow
-              title="Saved Properties"
-              subtitle="8 saved properties"
+              title={t("account.savedProperties.title")}
+              subtitle={t("account.savedProperties.subtitle")}
               icon={<Heart size={18} color="#FB7185" />}
               accentColor="#FFF1F2"
               onPress={() => router.push("/saved" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
-              title="My Listings"
-              subtitle="0 active listings"
+              title={t("account.myListings.title")}
+              subtitle={t("account.myListings.subtitle")}
               icon={<Building2 size={18} color="#3B82F6" />}
               accentColor="#EFF6FF"
               onPress={() => router.push("/listings" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
-              title="My Callbacks"
-              subtitle="2 pending"
+              title={t("account.myCallbacks.title")}
+              subtitle={t("account.myCallbacks.subtitle")}
               icon={<PhoneCall size={18} color="#22C55E" />}
               accentColor="#ECFDF5"
               onPress={() => router.push("/callbacks" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
-              title="My Payments"
-              subtitle="Payment history"
+              title={t("account.myPayments.title")}
+              subtitle={t("account.myPayments.subtitle")}
               icon={<CreditCard size={18} color="#F59E0B" />}
               accentColor="#FFF7E6"
             />
             <View style={styles.divider} />
             <AccountRow
-              title="My Reviews"
-              subtitle="My reviews (3)"
+              title={t("account.myReviews.title")}
+              subtitle={t("account.myReviews.subtitle")}
               icon={<MessageSquareHeart size={18} color="#F59E0B" />}
               accentColor="#FFF7E6"
               onPress={() => router.push("/reviews" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
-              title="Notifications"
-              subtitle="Manage alerts"
+              title={t("account.notifications.title")}
+              subtitle={t("account.notifications.subtitle")}
               icon={<Bell size={18} color="#A855F7" />}
               accentColor="#F3E8FF"
             />
             <View style={styles.divider} />
             <AccountRow
-              title="Privacy & Security"
-              subtitle="Account protection"
+              title={t("account.privacy.title")}
+              subtitle={t("account.privacy.subtitle")}
               icon={<Shield size={18} color="#64748B" />}
               accentColor="#F8FAFC"
             />
             <View style={styles.divider} />
             <AccountRow
-              title="Support"
-              subtitle="Help center · Call 8181"
+              title={t("account.support.title")}
+              subtitle={t("account.support.subtitle")}
               icon={<Headphones size={18} color="#14B8A6" />}
               accentColor="#ECFEFF"
             />
@@ -150,7 +152,7 @@ export default function AccountScreen() {
             ]}
           >
             <AccountRow
-              title="App Language"
+              title={t("account.appLanguage.title")}
               subtitle={t("languages.en") ?? "English"}
               icon={<Globe size={18} color="#22C55E" />}
               accentColor="#ECFDF5"
@@ -159,14 +161,14 @@ export default function AccountScreen() {
 
           {isAuthenticated ? (
             <Pressable style={styles.signOutBtn} onPress={() => void signOut()}>
-              <Text style={styles.signOutLabel}>Sign Out</Text>
+              <Text style={styles.signOutLabel}>{t("account.signOut")}</Text>
             </Pressable>
           ) : (
             <Pressable
               style={styles.signOutBtn}
               onPress={() => router.push("/auth" as never)}
             >
-              <Text style={styles.signOutLabel}>Sign In / Register</Text>
+              <Text style={styles.signOutLabel}>{t("account.signIn")}</Text>
             </Pressable>
           )}
         </View>

@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
 type ProjectDetailsModel = {
@@ -85,6 +86,7 @@ function buildProjectFromParams(
 
 export default function ProjectDetailsScreen() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<Record<string, string | string[]>>();
@@ -137,7 +139,8 @@ export default function ProjectDetailsScreen() {
               {project.price}
             </Text>
             <Text style={[styles.subLabel, { color: colors.textMuted }]}>
-              30% down · {project.status.toLowerCase()} plan
+              {t("projects.details.finance", { percent: "30%" })} ·{" "}
+              {project.status.toLowerCase()} {t("projects.details.plan")}
             </Text>
           </View>
 
@@ -145,24 +148,24 @@ export default function ProjectDetailsScreen() {
             <StatCard
               icon={<Building2 size={16} color="#14B37B" />}
               value={project.units}
-              label="Units"
+              label={t("projects.details.units")}
               colors={colors}
             />
             <StatCard
               icon={<CalendarDays size={16} color="#14B37B" />}
               value={project.completion}
-              label="Completion"
+              label={t("projects.details.completion")}
               colors={colors}
             />
             <StatCard
               icon={<BadgeCheck size={16} color="#14B37B" />}
               value={project.status}
-              label="Status"
+              label={t("projects.details.status")}
               colors={colors}
             />
           </View>
 
-          <SectionCard title="Unit Types" colors={colors}>
+          <SectionCard title={t("projects.details.unitTypes")} colors={colors}>
             <View style={styles.chipRow}>
               {project.chips.map((chip) => (
                 <View
@@ -180,7 +183,7 @@ export default function ProjectDetailsScreen() {
             </View>
           </SectionCard>
 
-          <SectionCard title="Amenities" colors={colors}>
+          <SectionCard title={t("projects.details.amenities")} colors={colors}>
             <View style={styles.amenityList}>
               {project.amenities.map((amenity) => (
                 <View key={amenity} style={styles.amenityRow}>
@@ -193,7 +196,7 @@ export default function ProjectDetailsScreen() {
             </View>
           </SectionCard>
 
-          <SectionCard title="About This Project" colors={colors}>
+          <SectionCard title={t("projects.details.about")} colors={colors}>
             <Text style={[styles.bodyText, { color: colors.textMuted }]}>
               {project.about}
             </Text>
@@ -244,7 +247,7 @@ export default function ProjectDetailsScreen() {
               ]}
             >
               <Phone size={16} color="#FFFFFF" />
-              <Text style={styles.callLabel}>Call</Text>
+              <Text style={styles.callLabel}>{t("projects.details.call")}</Text>
             </Pressable>
             <Pressable
               style={[
@@ -259,7 +262,7 @@ export default function ProjectDetailsScreen() {
               <Text
                 style={[styles.whatsAppLabel, { color: colors.activeText }]}
               >
-                WhatsApp
+                {t("projects.details.whatsApp")}
               </Text>
             </Pressable>
           </View>
@@ -271,7 +274,7 @@ export default function ProjectDetailsScreen() {
             ]}
           >
             <Text style={[styles.advisorLabel, { color: colors.text }]}>
-              📋 Request Advisor
+              📋 {t("projects.details.requestAdvisor")}
             </Text>
           </Pressable>
         </View>

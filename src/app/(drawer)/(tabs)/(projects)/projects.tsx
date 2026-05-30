@@ -16,6 +16,7 @@ import { PromoBanner } from "@/components/molecules/promo-banner";
 import { SearchFiltersSheet } from "@/components/organisms/search-filters-sheet";
 import { featuredProjects } from "@/data/home";
 import { projectsSearchFiltersConfig } from "@/data/search-filters";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
 type ProjectCardData = {
@@ -86,6 +87,7 @@ function ProjectCard({
 }: ProjectCardData) {
   const { colors } = useAppTheme();
   const router = useRouter();
+  const { t } = useI18n();
 
   const openDetails = () => {
     router.push({
@@ -119,7 +121,9 @@ function ProjectCard({
           {featured ? (
             <View style={[styles.badge, styles.featuredBadge]}>
               <Sparkles size={11} color="#B45309" />
-              <Text style={styles.featuredBadgeText}>Featured</Text>
+              <Text style={styles.featuredBadgeText}>
+                {t("projects.featured")}
+              </Text>
             </View>
           ) : null}
         </View>
@@ -151,7 +155,7 @@ function ProjectCard({
           ]}
         >
           <Text style={[styles.detailsLabel, { color: colors.activeText }]}>
-            View Details →
+            {t("projects.viewDetails")}
           </Text>
         </View>
       </View>
@@ -161,23 +165,33 @@ function ProjectCard({
 
 export default function ProjectsScreen() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [filtersVisible, setFiltersVisible] = useState(false);
 
+  const localizedFeaturedProjects = useMemo(
+    () =>
+      featuredProjects.map((project) => ({
+        ...project,
+      })),
+    [],
+  );
+
+  const localizedProjectCards = useMemo(() => projectCards, []);
+
   const visibleProjects = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    if (!needle) {
-      return projectCards;
-    }
+    if (!needle) return localizedProjectCards;
 
-    return projectCards.filter((project) =>
-      [project.title, project.developer, project.location].some((value) =>
-        value.toLowerCase().includes(needle),
-      ),
+    return localizedProjectCards.filter((project) =>
+      [project.title, project.developer, project.location]
+        .join(" ")
+        .toLowerCase()
+        .includes(needle),
     );
-  }, [query]);
+  }, [query, localizedProjectCards, t]);
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
@@ -198,13 +212,15 @@ export default function ProjectsScreen() {
           />
           <View style={styles.heroOverlay} />
           <View style={styles.heroContent}>
-            <Text style={styles.heroKicker}>Capital Real Estate</Text>
-            <Text style={styles.heroHeadline}>New Project Launch</Text>
+            <Text style={styles.heroKicker}>{t("projects.heroKicker")}</Text>
+            <Text style={styles.heroHeadline}>{t("projects.heroTitle")}</Text>
             <Text style={styles.heroSubheadline}>
-              Capital Towers · Limited units available
+              {t("projects.heroSubtitle")}
             </Text>
             <Pressable style={styles.heroButton} onPress={() => router.back()}>
-              <Text style={styles.heroButtonLabel}>View Project</Text>
+              <Text style={styles.heroButtonLabel}>
+                {t("projects.heroButton")}
+              </Text>
             </Pressable>
           </View>
           <Pressable style={styles.heroClose}>
@@ -214,7 +230,7 @@ export default function ProjectsScreen() {
 
         <View style={{ backgroundColor: colors.background }}>
           <AppSearchBar
-            placeholder="Search project or developer..."
+            placeholder={t("projects.searchPlaceholder")}
             variant="elevated"
             onFilterPress={() => setFiltersVisible(true)}
             containerStyle={styles.searchBar}
@@ -234,7 +250,7 @@ export default function ProjectsScreen() {
               50+
             </Text>
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>
-              Projects
+              {t("projects.stats.projects")}
             </Text>
           </View>
           <View
@@ -247,7 +263,7 @@ export default function ProjectsScreen() {
               30+
             </Text>
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>
-              Developers
+              {t("projects.stats.developers")}
             </Text>
           </View>
           <View
@@ -260,14 +276,14 @@ export default function ProjectsScreen() {
               1000+
             </Text>
             <Text style={[styles.statLabel, { color: colors.textMuted }]}>
-              Units
+              {t("projects.stats.units")}
             </Text>
           </View>
         </View>
 
         <View style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            ★ Featured Projects
+            {t("projects.featuredHeader")}
           </Text>
         </View>
 
@@ -277,14 +293,14 @@ export default function ProjectsScreen() {
           contentContainerStyle={styles.featuredRow}
         >
           {featuredProjects.map((project) => (
-            <View key={project.title} style={styles.featuredCardWrap}>
+            <View key={project.id} style={styles.featuredCardWrap}>
               <ProjectCard
-                id={project.title}
-                badge={project.badge}
-                title={project.title}
-                developer={project.agency}
-                price={project.price}
-                location={project.location}
+                id={project.id}
+                badge={project.badge ?? ""}
+                title={project.title ?? ""}
+                developer={project.agency ?? ""}
+                price={project.price ?? ""}
+                location={project.location ?? ""}
                 image={project.image}
                 featured
               />
@@ -294,7 +310,7 @@ export default function ProjectsScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            All Projects ({visibleProjects.length})
+            {`${t("projects.allProjects")} (${visibleProjects.length})`}
           </Text>
         </View>
 
@@ -317,18 +333,36 @@ export default function ProjectsScreen() {
 
       <PromoBanner
         absoluteBottom
-        kicker="Project Valuation"
-        title="Book a site visit"
-        subtitle="Free consultation with a project manager"
-        primaryLabel="Book Now"
-        secondaryLabel="Schedule Visit →"
+        kicker={t("projects.promo.kicker")}
+        title={t("projects.promo.title")}
+        subtitle={t("projects.promo.subtitle")}
+        primaryLabel={t("projects.promo.primaryLabel")}
+        secondaryLabel={t("projects.promo.secondaryLabel")}
         colors={["#14B37B", "#0F9D58"]}
       />
 
       <SearchFiltersSheet
         visible={filtersVisible}
         onClose={() => setFiltersVisible(false)}
-        config={projectsSearchFiltersConfig}
+        config={useMemo(() => {
+          const translate = (v: string) => v;
+          return {
+            ...projectsSearchFiltersConfig,
+            title: projectsSearchFiltersConfig.title
+              ? translate(projectsSearchFiltersConfig.title)
+              : undefined,
+            sections: projectsSearchFiltersConfig.sections.map((section) => {
+              if (section.kind === "segmented") {
+                return {
+                  ...section,
+                  label: section.label,
+                  options: section.options.map((o) => ({ ...o })),
+                };
+              }
+              return section;
+            }),
+          };
+        }, [t])}
       />
     </View>
   );

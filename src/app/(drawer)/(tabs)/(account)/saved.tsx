@@ -59,7 +59,7 @@ export default function SavedScreen() {
           {t("nav.saved")}
         </Text>
         <Text style={[styles.sub, { color: colors.textMuted }]}>
-          {savedProperties.length} saved
+          {t("account.saved.count", { count: savedProperties.length })}
         </Text>
 
         {savedProperties.length === 0 ? (
@@ -70,10 +70,10 @@ export default function SavedScreen() {
             ]}
           >
             <Text style={[styles.emptyTitle, { color: colors.text }]}>
-              No saved properties yet
+              {t("account.saved.emptyTitle")}
             </Text>
             <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-              Tap the heart on a property to save it here.
+              {t("account.saved.emptyBody")}
             </Text>
           </View>
         ) : (
@@ -87,12 +87,16 @@ export default function SavedScreen() {
                     { backgroundColor: colors.activeText },
                   ]}
                 >
-                  <Text style={styles.callLabel}>Call</Text>
+                  <Text style={styles.callLabel}>
+                    {t("account.actions.call")}
+                  </Text>
                 </Pressable>
                 <Pressable
                   style={[styles.whatsappBtn, { backgroundColor: "#059669" }]}
                 >
-                  <Text style={styles.whatsappLabel}>WhatsApp</Text>
+                  <Text style={styles.whatsappLabel}>
+                    {t("account.actions.whatsApp")}
+                  </Text>
                 </Pressable>
                 <Pressable
                   style={[
@@ -103,7 +107,9 @@ export default function SavedScreen() {
                     },
                   ]}
                 >
-                  <Text style={styles.detailsLabel}>Details</Text>
+                  <Text style={styles.detailsLabel}>
+                    {t("account.actions.details")}
+                  </Text>
                 </Pressable>
                 <Pressable
                   style={[
@@ -115,7 +121,9 @@ export default function SavedScreen() {
                   ]}
                   onPress={() => void removeSaved(p.id)}
                 >
-                  <Text style={styles.removeLabel}>Remove</Text>
+                  <Text style={styles.removeLabel}>
+                    {t("account.actions.remove")}
+                  </Text>
                 </Pressable>
               </View>
             </View>

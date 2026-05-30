@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { type LucideIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -23,6 +24,7 @@ export function PostPropertyChoiceGrid({
   twoColumn = false,
 }: PostPropertyChoiceGridProps) {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
 
   return (
     <View style={[styles.grid, twoColumn && styles.twoColumnGrid]}>
@@ -63,7 +65,9 @@ export function PostPropertyChoiceGrid({
 
               {selected ? (
                 <View style={styles.checkPill}>
-                  <Text style={styles.checkPillText}>Selected</Text>
+                  <Text style={styles.checkPillText}>
+                    {t("property.postProperty.selected")}
+                  </Text>
                 </View>
               ) : null}
             </View>

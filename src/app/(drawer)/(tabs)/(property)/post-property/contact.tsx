@@ -11,25 +11,29 @@ import {
 
 import { usePostPropertyDraft } from "@/components/organisms/post-property/post-property-draft-context";
 import { PostPropertyShell } from "@/components/organisms/post-property/post-property-shell";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
 export default function PostPropertyStep3() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const router = useRouter();
   const { draft, updateDraft } = usePostPropertyDraft();
 
   return (
     <PostPropertyShell
       step={3}
-      title="Contact & Media"
-      subtitle="Add contact options and photos"
+      title={t("property.postProperty.step3.title")}
+      subtitle={t("property.postProperty.step3.subtitle")}
       footer={
         <Pressable
           onPress={() => router.replace("/" as never)}
           style={[styles.primaryButton, { backgroundColor: colors.activeText }]}
         >
           <View style={styles.primaryButtonContent}>
-            <Text style={styles.primaryLabel}>Review Packages</Text>
+            <Text style={styles.primaryLabel}>
+              {t("property.postProperty.reviewPackages")}
+            </Text>
             <ChevronRight size={16} color="#FFFFFF" />
           </View>
         </Pressable>
@@ -46,28 +50,28 @@ export default function PostPropertyStep3() {
           ]}
         >
           <Text style={[styles.label, { color: colors.text }]}>
-            Contact Options (shown to buyers)
+            {t("property.postProperty.contactOptions")}
           </Text>
 
           <Field
-            label="WhatsApp Number"
+            label={t("property.postProperty.fields.whatsAppNumber")}
             value={draft.whatsapp}
             onChangeText={(value) => updateDraft({ whatsapp: value })}
-            placeholder="e.g. 0912345678"
+            placeholder={t("property.postProperty.placeholders.whatsapp")}
             prefix="WA"
           />
           <Field
-            label="Telegram Username or Link"
+            label={t("property.postProperty.fields.telegram")}
             value={draft.telegram}
             onChangeText={(value) => updateDraft({ telegram: value })}
-            placeholder="@username or t.me/link"
+            placeholder={t("property.postProperty.placeholders.telegram")}
             prefix="TG"
           />
           <Field
-            label="Contact Email"
+            label={t("property.postProperty.fields.contactEmail")}
             value={draft.email}
             onChangeText={(value) => updateDraft({ email: value })}
-            placeholder="agent@email.com"
+            placeholder={t("property.postProperty.placeholders.email")}
           />
         </View>
 
@@ -78,12 +82,12 @@ export default function PostPropertyStep3() {
           ]}
         >
           <Text style={[styles.label, { color: colors.text }]}>
-            Description
+            {t("property.postProperty.fields.description")}
           </Text>
           <TextInput
             value={draft.description}
             onChangeText={(value) => updateDraft({ description: value })}
-            placeholder="Describe your property..."
+            placeholder={t("property.postProperty.placeholders.description")}
             placeholderTextColor={colors.textMuted}
             multiline
             style={[
@@ -104,7 +108,7 @@ export default function PostPropertyStep3() {
           ]}
         >
           <Text style={[styles.label, { color: colors.text }]}>
-            Upload Photos
+            {t("property.postProperty.uploadPhotos")}
           </Text>
           <Pressable
             style={[
@@ -117,10 +121,10 @@ export default function PostPropertyStep3() {
           >
             <Camera size={24} color={colors.textMuted} />
             <Text style={[styles.uploadTitle, { color: colors.text }]}>
-              Tap to upload photos
+              {t("property.postProperty.tapToUpload")}
             </Text>
             <Text style={[styles.uploadSub, { color: colors.textMuted }]}>
-              Max 10 photos
+              {t("property.postProperty.maxPhotos")}
             </Text>
           </Pressable>
         </View>
@@ -132,13 +136,24 @@ export default function PostPropertyStep3() {
           ]}
         >
           <Text style={[styles.label, { color: colors.text }]}>
-            Verification (Optional)
+            {t("property.postProperty.verificationOptional")}
           </Text>
           <View style={styles.radioList}>
             {[
-              { key: "owner-id", label: "Owner ID" },
-              { key: "broker-license", label: "Broker License" },
-              { key: "developer-document", label: "Developer Document" },
+              {
+                key: "owner-id",
+                label: t("property.postProperty.verification.ownerId"),
+              },
+              {
+                key: "broker-license",
+                label: t("property.postProperty.verification.brokerLicense"),
+              },
+              {
+                key: "developer-document",
+                label: t(
+                  "property.postProperty.verification.developerDocument",
+                ),
+              },
             ].map((item) => {
               const selected = draft.verificationType === item.key;
 

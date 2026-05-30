@@ -1,3 +1,4 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
 import { StyleSheet, Text, View } from "react-native";
@@ -55,6 +56,7 @@ function OptionRow({
 
 export function PayOptionsCard() {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
 
   return (
     <View
@@ -64,35 +66,35 @@ export function PayOptionsCard() {
       ]}
     >
       <View style={[styles.header, { backgroundColor: palette.brand.primary }]}>
-        <Text style={styles.headerTitle}>Pay with Telebirr</Text>
+        <Text style={styles.headerTitle}>{t("payments.payWith")}</Text>
         <Text style={styles.headerSubtitle}>
-          Fast · Secure · Cashback eligible
+          {t("payments.payWithSubtitle")}
         </Text>
       </View>
 
       <View style={styles.optionsList}>
         <OptionRow
-          title="Lead Access"
-          subtitle="Unlock property contact details"
+          title={t("payments.options.leadAccess.title")}
+          subtitle={t("payments.options.leadAccess.subtitle")}
           price="ETB 50"
           color="#60A5FA"
         />
         <OptionRow
-          title="Pro Subscription"
-          subtitle="Unlimited leads · Featured listing"
+          title={t("payments.options.proSubscription.title")}
+          subtitle={t("payments.options.proSubscription.subtitle")}
           price="ETB 500/mo"
           color="#C4B5FD"
         />
         <OptionRow
-          title="List Property"
-          subtitle="Basic listing (30 days)"
+          title={t("payments.options.listProperty.title")}
+          subtitle={t("payments.options.listProperty.subtitle")}
           price="ETB 200"
           color="#A7F3D0"
         />
         <OptionRow
-          title="Service Payment"
-          subtitle="Pay for booked home services"
-          price="Variable"
+          title={t("payments.options.servicePayment.title")}
+          subtitle={t("payments.options.servicePayment.subtitle")}
+          price={t("payments.options.servicePayment.price")}
           color="#FED7AA"
         />
       </View>
