@@ -13,8 +13,15 @@ function OptionRow({
   price?: string;
   color?: string;
 }) {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.optionRow}>
+    <View
+      style={[
+        styles.optionRow,
+        { backgroundColor: colors.surfaceMuted, borderColor: colors.border },
+      ]}
+    >
       <View
         style={[
           styles.leftIcon,
@@ -22,16 +29,24 @@ function OptionRow({
         ]}
       />
       <View style={styles.optionBody}>
-        <Text style={styles.optionTitle}>{title}</Text>
+        <Text style={[styles.optionTitle, { color: colors.text }]}>
+          {title}
+        </Text>
         {subtitle ? (
-          <Text style={styles.optionSubtitle}>{subtitle}</Text>
+          <Text style={[styles.optionSubtitle, { color: colors.textMuted }]}>
+            {subtitle}
+          </Text>
         ) : null}
       </View>
       <View style={styles.optionPriceArea}>
         {price ? (
-          <Text style={styles.optionPrice}>{price}</Text>
+          <Text style={[styles.optionPrice, { color: colors.text }]}>
+            {price}
+          </Text>
         ) : (
-          <Text style={styles.optionChevron}>›</Text>
+          <Text style={[styles.optionChevron, { color: colors.iconMuted }]}>
+            ›
+          </Text>
         )}
       </View>
     </View>
@@ -42,7 +57,12 @@ export function PayOptionsCard() {
   const { colors } = useAppTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: colors.surface, borderColor: colors.border },
+      ]}
+    >
       <View style={[styles.header, { backgroundColor: palette.brand.primary }]}>
         <Text style={styles.headerTitle}>Pay with Telebirr</Text>
         <Text style={styles.headerSubtitle}>
@@ -85,7 +105,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: palette.border.subtle,
   },
   header: {
     padding: 12,
@@ -107,9 +126,9 @@ const styles = StyleSheet.create({
   optionRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
     borderRadius: 10,
     padding: 12,
+    borderWidth: 1,
     shadowColor: "rgba(0,0,0,0.04)",
     elevation: 1,
   },
@@ -126,7 +145,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   optionSubtitle: {
-    color: palette.text.muted,
     fontSize: 13,
     marginTop: 4,
   },
@@ -139,6 +157,5 @@ const styles = StyleSheet.create({
   },
   optionChevron: {
     fontSize: 20,
-    color: palette.text.muted,
   },
 });

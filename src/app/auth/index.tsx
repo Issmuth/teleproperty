@@ -1,10 +1,5 @@
 import { useRouter } from "expo-router";
-import {
-    CircleDollarSign,
-    Mail,
-    Phone,
-    UserRound
-} from "lucide-react-native";
+import { Phone } from "lucide-react-native";
 import { useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -34,7 +29,7 @@ export default function AuthIndexScreen() {
   return (
     <AuthShell
       title="TeleProperty"
-      subtitle="Finder Ethiopia"
+      subtitle="Phone sign-in"
       onClosePress={() => router.replace("/")}
     >
       <ScrollView
@@ -43,20 +38,21 @@ export default function AuthIndexScreen() {
       >
         <View style={styles.copyBlock}>
           <Text style={[styles.heading, { color: colors.text }]}>
-            Sign In or Create Account
+            Sign in with your phone number
           </Text>
           <Text style={[styles.subheading, { color: colors.textMuted }]}>
-            Choose a login method to continue
+            Use OTP to continue to your account
           </Text>
         </View>
 
         <View style={styles.options}>
           <AuthOptionCard
-            title="Phone Number"
+            title="Continue with Phone"
             subtitle="Quick login with OTP"
             icon={Phone}
             accentColor="#E8FFF0"
             tintColor="#22C55E"
+            active
             onPress={() =>
               router.push({
                 pathname: "/auth/phone" as never,
@@ -67,52 +63,11 @@ export default function AuthIndexScreen() {
               })
             }
           />
-          <AuthOptionCard
-            title="Fayda Digital ID"
-            subtitle="Secure identity verification"
-            icon={CircleDollarSign}
-            accentColor="#E6F0FF"
-            tintColor="#2563EB"
-            active
-            onPress={() =>
-              router.push({
-                pathname: "/auth/fayda" as never,
-                params: {
-                  redirectTo: params.redirectTo ?? "/",
-                  intent: params.intent ?? "authenticate",
-                },
-              })
-            }
-          />
-          <AuthOptionCard
-            title="Email & Password"
-            subtitle="Register or login with email"
-            icon={Mail}
-            accentColor="#EEF2FF"
-            tintColor="#3B82F6"
-            onPress={() =>
-              router.push({
-                pathname: "/auth/email" as never,
-                params: {
-                  redirectTo: params.redirectTo ?? "/",
-                  intent: params.intent ?? "authenticate",
-                },
-              })
-            }
-          />
-          <AuthOptionCard
-            title="Continue as Guest"
-            subtitle="Browse properties"
-            icon={UserRound}
-            accentColor="#F3F4F6"
-            tintColor="#6B7280"
-            onPress={() => router.replace("/" as never)}
-          />
         </View>
 
         <View style={styles.footerNoteWrap}>
           <Text style={[styles.footerNote, { color: colors.textMuted }]}>
-            By signing in, you agree to our Terms of Service and Privacy Policy
+            By continuing, you agree to our Terms of Service and Privacy Policy
           </Text>
         </View>
       </ScrollView>

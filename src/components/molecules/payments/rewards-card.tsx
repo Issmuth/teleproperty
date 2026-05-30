@@ -3,10 +3,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export function RewardsCard() {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
 
   return (
-    <LinearGradient colors={["#F59E0B", "#FBBF24"]} style={styles.container}>
+    <LinearGradient
+      colors={isDark ? ["#7C4A00", "#A16207"] : ["#F59E0B", "#FBBF24"]}
+      style={styles.container}
+    >
       <View style={styles.rowTop}>
         <Text style={styles.kicker}>Your Rewards Balance</Text>
         <View style={styles.circle} />
@@ -16,12 +19,29 @@ export function RewardsCard() {
       <Text style={styles.pointsLabel}>points</Text>
 
       <View style={styles.actionsRow}>
-        <Pressable style={[styles.actionBtn, styles.primaryBtn]}>
+        <Pressable
+          style={[
+            styles.actionBtn,
+            styles.primaryBtn,
+            { backgroundColor: colors.surfaceAccent },
+          ]}
+        >
           <Text style={styles.primaryLabel}>Redeem</Text>
         </Pressable>
 
-        <Pressable style={[styles.actionBtn, styles.secondaryBtn]}>
-          <Text style={styles.secondaryLabel}>Earn More</Text>
+        <Pressable
+          style={[
+            styles.actionBtn,
+            styles.secondaryBtn,
+            {
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+            },
+          ]}
+        >
+          <Text style={[styles.secondaryLabel, { color: colors.text }]}>
+            Earn More
+          </Text>
         </Pressable>
       </View>
     </LinearGradient>
@@ -69,19 +89,19 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 10,
+    borderWidth: 1,
   },
   primaryBtn: {
-    backgroundColor: "rgba(255,255,255,0.14)",
+    borderColor: "rgba(255,255,255,0.12)",
   },
   secondaryBtn: {
-    backgroundColor: "white",
+    borderWidth: 1,
   },
   primaryLabel: {
     color: "white",
     fontWeight: "800",
   },
   secondaryLabel: {
-    color: "#B45309",
     fontWeight: "800",
   },
 });

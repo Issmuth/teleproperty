@@ -1,10 +1,32 @@
+import { useAppTheme } from "@/theme/app-theme";
 import { LinearGradient } from "expo-linear-gradient";
 import { User } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export function ProfileCard({ onPress }: { onPress?: () => void }) {
+type ProfileCardProps = {
+  onPress?: () => void;
+  isAuthenticated?: boolean;
+  name?: string;
+  contact?: string;
+  plan?: string;
+  ctaLabel?: string;
+};
+
+export function ProfileCard({
+  onPress,
+  isAuthenticated = false,
+  name,
+  contact,
+  plan,
+  ctaLabel = "Sign In / Register",
+}: ProfileCardProps) {
+  const { isDark } = useAppTheme();
+
   return (
-    <LinearGradient colors={["#0B8F55", "#14B37B"]} style={styles.container}>
+    <LinearGradient
+      colors={isDark ? ["#0B8F55", "#10B981"] : ["#0B8F55", "#14B37B"]}
+      style={styles.container}
+    >
       <View style={styles.left}>
         <View style={styles.avatarWrap}>
           <User color="white" />
@@ -12,13 +34,25 @@ export function ProfileCard({ onPress }: { onPress?: () => void }) {
       </View>
 
       <View style={styles.body}>
-        <Text style={styles.title}>Your Profile</Text>
-        <Text style={styles.subtitle}>
-          Sign in to save properties & manage listings
-        </Text>
-        <Pressable style={styles.signBtn} onPress={onPress}>
-          <Text style={styles.signLabel}>Sign In / Register</Text>
-        </Pressable>
+        {isAuthenticated ? (
+          <>
+            <Text style={styles.title}>{name ?? "TeleProperty User"}</Text>
+            <Text style={styles.subtitle}>{contact ?? "No contact added"}</Text>
+            <View style={styles.planPill}>
+              <Text style={styles.planLabel}>{plan ?? "Basic Plan"}</Text>
+            </View>
+          </>
+        ) : (
+          <>
+            <Text style={styles.title}>Your Profile</Text>
+            <Text style={styles.subtitle}>
+              Sign in to save properties & manage listings
+            </Text>
+            <Pressable style={styles.signBtn} onPress={onPress}>
+              <Text style={styles.signLabel}>{ctaLabel}</Text>
+            </Pressable>
+          </>
+        )}
       </View>
     </LinearGradient>
   );
@@ -53,6 +87,18 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: "rgba(255,255,255,0.9)",
+  },
+  planPill: {
+    marginTop: 4,
+    backgroundColor: "rgba(255,255,255,0.18)",
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  planLabel: {
+    color: "white",
+    fontWeight: "800",
+    fontSize: 12,
   },
   signBtn: {
     backgroundColor: "white",

@@ -25,6 +25,9 @@ export default function VerifyAuthScreen() {
   );
 
   const code = draft.otp;
+  const phoneLabel = draft.phoneNumber.trim()
+    ? `+251 ${draft.phoneNumber.trim()}`
+    : "+251";
   const isContinueDisabled = useMemo(
     () => code.some((item) => item.trim().length === 0),
     [code],
@@ -55,7 +58,7 @@ export default function VerifyAuthScreen() {
           </Text>
           <Text style={[styles.subheading, { color: colors.textMuted }]}>
             We&apos;ll send a one-time code{" "}
-            <Text style={styles.emphasis}>+251 4234343434</Text>
+            <Text style={styles.emphasis}>{phoneLabel}</Text>
           </Text>
         </View>
 

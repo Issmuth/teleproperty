@@ -8,6 +8,7 @@ export const om: typeof en = {
   nav: {
     home: "Fuula jalqabaa",
     property: "Qabeenya",
+    projects: "Pirojektoota",
     services: "Tajaajiloota",
     payments: "Kafaltii",
     account: "Herrega",
@@ -27,7 +28,7 @@ export const om: typeof en = {
     switchToDark: "Gara haala dukkanaa ce'i",
   },
   home: {
-    heroKicker: "ET TeleProperty",
+    heroKicker: "ET TeleProperty Finder",
     heroTitle: "Bakka Tokko",
     heroSubtitle: "Fedhii Qabeenya Keetif Hundaa",
     buy: "Bitu",

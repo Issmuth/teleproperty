@@ -1,12 +1,12 @@
 import {
+    Briefcase,
     Building2,
     DraftingCompass,
-    Gift,
     Home,
-    Palette,
-    Truck,
+    Plus,
+    Search,
+    ShieldCheck,
     UserCheck,
-    Wrench,
     type LucideIcon,
 } from "lucide-react-native";
 
@@ -15,7 +15,7 @@ import { palette } from "@/theme/palette";
 export const homeSegments = [
   { key: "buy", label: "Buy" },
   { key: "rent", label: "Rent" },
-  { key: "projects", label: "New Projects" },
+  { key: "projects", label: "Projects" },
 ] as const;
 
 export type HomeSegmentKey = (typeof homeSegments)[number]["key"];
@@ -30,11 +30,10 @@ export const homeCategories: HomeCategory[] = [
   { label: "Buy", icon: Home, color: palette.brand.primary },
   { label: "Rent", icon: Building2, color: palette.blue.strong },
   { label: "Projects", icon: DraftingCompass, color: palette.purple.strong },
-  { label: "Services", icon: Wrench, color: palette.red.muted },
-  { label: "Interior", icon: Palette, color: palette.pink.primary },
-  { label: "Movers", icon: Truck, color: "#00B4D8" },
-  { label: "Agents", icon: UserCheck, color: palette.brand.accent },
-  { label: "Rewards", icon: Gift, color: palette.orange.primary },
+  { label: "Agents", icon: UserCheck, color: palette.pink.primary },
+  // { label: "Services", icon: Wrench, color: palette.red.muted },
+  // { label: "Interior", icon: Palette, color: palette.pink.primary },
+  // { label: "Movers", icon: Truck, color: "#00B4D8" },
 ];
 
 export const featuredProjects = [
@@ -98,6 +97,171 @@ export type Story = {
   subtitle?: string;
   cta?: string;
 };
+
+export type HomeServiceBannerItem = {
+  size?: "full" | "half";
+  backgroundColor: string;
+  icon: LucideIcon;
+  title: string;
+  subtitle: string;
+  image: string;
+  actions?: HomeServiceBannerAction[];
+};
+
+export type HomeServiceBannerAction = {
+  label: string;
+  pathname: string;
+  params?: Record<string, string>;
+};
+
+export type HomeServicesGroup =
+  | {
+      id: string;
+      layout: "single";
+      item: HomeServiceBannerItem;
+    }
+  | {
+      id: string;
+      layout: "pair";
+      items: [HomeServiceBannerItem, HomeServiceBannerItem];
+    };
+
+export const homeServiceBanners: HomeServicesGroup[] = [
+  {
+    id: "search-property",
+    layout: "single",
+    item: {
+      backgroundColor: "#0B3C2A",
+      icon: Search,
+      title: "Search Property",
+      subtitle: "Buy & Rent Effortlessly",
+      image:
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80",
+
+      actions: [{ label: "properties", pathname: "/property" }],
+    },
+  },
+  {
+    id: "post-property-new-projects",
+    layout: "pair",
+    items: [
+      {
+        size: "half",
+        backgroundColor: "#0B3C2A",
+        icon: Plus,
+        title: "Post your Property",
+        subtitle: "Free & Easy Listing",
+        image:
+          "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80",
+        actions: [
+          {
+            label: "create-property",
+            pathname: "/post-property",
+          },
+        ],
+      },
+      {
+        size: "half",
+        backgroundColor: "#0B3C2A",
+        icon: Building2,
+        title: "New Projects",
+        subtitle: "Off-Plan Developments",
+        image:
+          "https://images.unsplash.com/photo-1541881451213-911293a9d905?auto=format&fit=crop&w=500&q=80",
+        actions: [
+          {
+            pathname: "/projects",
+            label: "projects",
+          },
+        ],
+      },
+    ],
+  },
+  // {
+  //   id: "home-services",
+  //   layout: "single",
+  //   item: {
+  //     backgroundColor: "#0B3C2A",
+  //     icon: Wrench,
+  //     title: "Home Services",
+  //     subtitle: "Cleaning, Plumbing & More",
+  //     image:
+  //       "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80",
+  //   },
+  // },
+  // {
+  //   id: "interiors-packers",
+  //   layout: "pair",
+  //   items: [
+  //     {
+  //       size: "half",
+  //       backgroundColor: "#0B3C2A",
+  //       icon: Sofa,
+  //       title: "Interiors",
+  //       subtitle: "Design & Furniture",
+  //       image:
+  //         "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=500&q=80",
+  //     },
+  //     {
+  //       size: "half",
+  //       backgroundColor: "#0B3C2A",
+  //       icon: Truck,
+  //       title: "Packers & Movers",
+  //       subtitle: "Safe Moving Services",
+  //       image:
+  //         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
+  //     },
+  //   ],
+  // },
+  {
+    id: "property-news-verified-brokers",
+    layout: "pair",
+    items: [
+      {
+        size: "half",
+        backgroundColor: "#0B3C2A",
+        icon: Briefcase,
+        title: "Developer Hub",
+        subtitle: "Build & Partner",
+        image:
+          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+        actions: [
+          {
+            label: "Open Hub",
+            pathname: "/developer-hub",
+          },
+        ],
+      },
+      {
+        size: "half",
+        backgroundColor: "#0B3C2A",
+        icon: ShieldCheck,
+        title: "Verified Brokers",
+        subtitle: "Professional Agents",
+        image:
+          "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80",
+        actions: [
+          {
+            label: "Open Hub",
+            pathname: "/broker-hub",
+          },
+        ],
+      },
+    ],
+  },
+  // {
+  //   id: "telecom-integration",
+  //   layout: "single",
+  //   item: {
+  //     backgroundColor: "#1A3A32",
+  //     icon: Wrench,
+  //     title: "Telecom Integration",
+  //     subtitle: "Telebirr - IVR - USSD - SMS",
+  //     image:
+  //       "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=800&q=80",
+  //   },
+  // },
+];
 
 export const categoryStories: Record<string, Story[]> = {
   Buy: [

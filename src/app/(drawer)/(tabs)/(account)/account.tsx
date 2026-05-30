@@ -1,9 +1,10 @@
+import { useAuth } from "@/auth/auth-context";
 import { AccountRow } from "@/components/molecules/account/account-row";
 import { ProfileCard } from "@/components/molecules/account/profile-card";
 import { useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";
 import {
-    BadgeCheck,
     Bell,
     Building2,
     CreditCard,
@@ -21,14 +22,59 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 export default function AccountScreen() {
   const { t } = useI18n();
   const router = useRouter();
+  const { colors } = useAppTheme();
+  const { isAdmin, isAuthenticated, session, signOut } = useAuth();
+
+  const contactLine =
+    session?.phoneNumber ?? session?.email ?? "No contact added";
+  const planLabel =
+    session?.role === "developer"
+      ? "Developer Plan"
+      : session?.role === "broker"
+        ? "Broker Plan"
+        : session?.role === "agent"
+          ? "Agent Plan"
+          : session?.role === "owner"
+            ? "Owner Plan"
+            : session?.role === "hotel-partner"
+              ? "Partner Plan"
+              : "Basic Plan";
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView
+      style={{ backgroundColor: colors.background }}
+      contentContainerStyle={{ backgroundColor: colors.background }}
+    >
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.content}>
-          <ProfileCard onPress={() => router.push("/auth" as never)} />
+          <ProfileCard
+            isAuthenticated={isAuthenticated}
+            name={session?.displayName}
+            contact={contactLine}
+            plan={planLabel}
+            onPress={() => router.push("/auth" as never)}
+          />
 
-          <View style={styles.listCard}>
+          {isAdmin && (
+            <Pressable
+              style={styles.adminBtn}
+              onPress={() => router.push("/admin" as never)}
+            >
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+              >
+                <Shield size={18} color="white" />
+                <Text style={styles.adminLabel}>Admin Dashboard</Text>
+              </View>
+            </Pressable>
+          )}
+
+          <View
+            style={[
+              styles.listCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}
+          >
             <AccountRow
               title="My Subscription"
               subtitle="Upgrade your plan"
@@ -49,6 +95,7 @@ export default function AccountScreen() {
               subtitle="0 active listings"
               icon={<Building2 size={18} color="#3B82F6" />}
               accentColor="#EFF6FF"
+              onPress={() => router.push("/listings" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
@@ -56,6 +103,7 @@ export default function AccountScreen() {
               subtitle="2 pending"
               icon={<PhoneCall size={18} color="#22C55E" />}
               accentColor="#ECFDF5"
+              onPress={() => router.push("/callbacks" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
@@ -70,20 +118,7 @@ export default function AccountScreen() {
               subtitle="My reviews (3)"
               icon={<MessageSquareHeart size={18} color="#F59E0B" />}
               accentColor="#FFF7E6"
-            />
-            <View style={styles.divider} />
-            <AccountRow
-              title="Referral & Rewards"
-              subtitle="Earn 25% cashback"
-              icon={<GiftIcon />}
-              accentColor="#ECFDF5"
-            />
-            <View style={styles.divider} />
-            <AccountRow
-              title="Fayda Verification"
-              subtitle="Fayda Digital ID"
-              icon={<BadgeCheck size={18} color="#60A5FA" />}
-              accentColor="#EFF6FF"
+              onPress={() => router.push("/reviews" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
@@ -108,7 +143,12 @@ export default function AccountScreen() {
             />
           </View>
 
-          <View style={styles.langCard}>
+          <View
+            style={[
+              styles.langCard,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+            ]}
+          >
             <AccountRow
               title="App Language"
               subtitle={t("languages.en") ?? "English"}
@@ -117,9 +157,18 @@ export default function AccountScreen() {
             />
           </View>
 
-          <Pressable style={styles.signOutBtn}>
-            <Text style={styles.signOutLabel}>Sign In / Register</Text>
-          </Pressable>
+          {isAuthenticated ? (
+            <Pressable style={styles.signOutBtn} onPress={() => void signOut()}>
+              <Text style={styles.signOutLabel}>Sign Out</Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              style={styles.signOutBtn}
+              onPress={() => router.push("/auth" as never)}
+            >
+              <Text style={styles.signOutLabel}>Sign In / Register</Text>
+            </Pressable>
+          )}
         </View>
       </View>
     </ScrollView>
@@ -130,19 +179,15 @@ const styles = StyleSheet.create({
   container: { paddingBottom: 120 },
   content: { gap: 12, padding: 16 },
   listCard: {
-    backgroundColor: "white",
     borderRadius: 16,
     padding: 8,
     gap: 0,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
   },
   langCard: {
-    backgroundColor: "white",
     borderRadius: 16,
     padding: 8,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
   },
   divider: {
     height: 8,
@@ -154,6 +199,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signOutLabel: { color: "white", fontWeight: "800" },
+  adminBtn: {
+    backgroundColor: "#0B6BFF",
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  adminLabel: { color: "white", fontWeight: "800" },
 });
 
 function GiftIcon() {

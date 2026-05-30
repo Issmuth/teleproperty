@@ -5,10 +5,12 @@ import {
 } from "@/components/molecules/payments/payment-history";
 import { RewardsCard } from "@/components/molecules/payments/rewards-card";
 import { useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function PaymentsScreen() {
   const { t } = useI18n();
+  const { colors } = useAppTheme();
 
   const history: HistoryItem[] = [
     {
@@ -35,8 +37,11 @@ export default function PaymentsScreen() {
   ];
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView
+      style={{ backgroundColor: colors.background }}
+      contentContainerStyle={{ backgroundColor: colors.background }}
+    >
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.headerArea}></View>
 
         <View style={styles.content}>

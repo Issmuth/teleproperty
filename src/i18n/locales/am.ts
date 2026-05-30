@@ -8,6 +8,7 @@ export const am: typeof en = {
   nav: {
     home: "መነሻ",
     property: "ንብረት",
+    projects: "ፕሮጀክቶች",
     services: "አገልግሎቶች",
     payments: "ክፍያዎች",
     account: "መለያ",
@@ -27,7 +28,7 @@ export const am: typeof en = {
     switchToDark: "ወደ ጨለማ ሁነታ ቀይር",
   },
   home: {
-    heroKicker: "ET TeleProperty",
+    heroKicker: "ET TeleProperty Finder",
     heroTitle: "አንድ መድረክ",
     heroSubtitle: "ለሁሉም የንብረት ፍላጎቶችዎ",
     buy: "ግዛ",

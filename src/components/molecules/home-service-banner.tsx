@@ -1,7 +1,9 @@
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { type LucideIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
 
+import type { HomeServiceBannerAction } from "@/data/home";
 import { useAppTheme } from "@/theme/app-theme";
 
 type HomeServiceBannerProps = {
@@ -14,6 +16,8 @@ type HomeServiceBannerProps = {
   textColor?: string;
   size?: "full" | "half" | "full-tall";
   style?: ViewStyle;
+  actions?: HomeServiceBannerAction[];
+  onPress?: () => void;
 };
 
 export function HomeServiceBanner({
@@ -26,11 +30,26 @@ export function HomeServiceBanner({
   textColor = "#FFFFFF",
   size = "full",
   style,
+  actions,
+  onPress,
 }: HomeServiceBannerProps) {
   const { colors } = useAppTheme();
+  const router = useRouter();
+  const primaryAction = actions?.[0];
+  const handlePress =
+    onPress ??
+    (primaryAction
+      ? () =>
+          router.push({
+            pathname: primaryAction.pathname as never,
+            params: primaryAction.params as never,
+          })
+      : undefined);
 
   return (
     <Pressable
+      onPress={handlePress}
+      disabled={!handlePress}
       style={[
         styles.container,
         size === "half" ? styles.containerHalf : undefined,
@@ -58,6 +77,21 @@ export function HomeServiceBanner({
         <Text style={[styles.subtitle, { color: textColor, opacity: 0.85 }]}>
           {subtitle}
         </Text>
+        {actions?.length ? (
+          <View style={styles.actionRow}>
+            {actions.map((action) => (
+              <Pressable
+                key={action.label}
+                onPress={() =>
+                  router.push({
+                    pathname: action.pathname as never,
+                    params: action.params as never,
+                  })
+                }
+              ></Pressable>
+            ))}
+          </View>
+        ) : null}
       </View>
       {image && (
         <View
@@ -121,6 +155,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "500",
     lineHeight: 16,
+  },
+  actionRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: 12,
+  },
+  actionPill: {
+    minHeight: 28,
+    paddingHorizontal: 12,
+    borderRadius: 999,
+    justifyContent: "center",
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(255,255,255,0.18)",
+  },
+  actionLabel: {
+    fontSize: 11,
+    fontWeight: "800",
   },
   imageWrap: {
     position: "absolute",

@@ -10,6 +10,7 @@ export const en = {
   nav: {
     home: "Home",
     property: "Property",
+    projects: "Projects",
     services: "Services",
     payments: "Payments",
     account: "Account",
@@ -29,7 +30,7 @@ export const en = {
     switchToDark: "Switch to dark mode",
   },
   home: {
-    heroKicker: "ET TeleProperty",
+    heroKicker: "ET TeleProperty Finder",
     heroTitle: "One Stop Shop",
     heroSubtitle: "For All Your Property Needs",
     buy: "Buy",

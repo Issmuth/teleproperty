@@ -55,16 +55,6 @@ export function HomeHero({
       >
         <View style={styles.topRow}>
           <Text style={styles.kicker}>{kicker}</Text>
-          <View
-            style={[
-              styles.localePill,
-              { backgroundColor: colors.surfaceMuted },
-            ]}
-          >
-            <Text style={[styles.localePillText, { color: colors.textMuted }]}>
-              {localePill}
-            </Text>
-          </View>
         </View>
         <View style={styles.titleBlock}>
           <Text style={styles.title}>{title.toUpperCase()}</Text>

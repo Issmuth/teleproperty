@@ -1,20 +1,4 @@
 import { useRouter } from "expo-router";
-import {
-    Briefcase,
-    Building,
-    Building2,
-    Gift,
-    Newspaper,
-    Package,
-    Plus,
-    Search,
-    ShieldCheck,
-    Sofa,
-    Truck,
-    Wallet,
-    Wifi,
-    Wrench,
-} from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -22,7 +6,6 @@ import { HomeListingCard } from "@/components/molecules/home-listing-card";
 import { HomePropertyCard } from "@/components/molecules/home-property-card";
 import { HomeSectionHeader } from "@/components/molecules/home-section-header";
 import { HomeServiceBanner } from "@/components/molecules/home-service-banner";
-import { QuickServiceCard } from "@/components/molecules/quick-service-card";
 import { HomeCarousel } from "@/components/organisms/home-carousel";
 import { HomeCategoryRow } from "@/components/organisms/home-category-row";
 import { HomeCategoryStory } from "@/components/organisms/home-category-story";
@@ -33,12 +16,12 @@ import {
     featuredProperties,
     homeCategories,
     homeSegments,
+    homeServiceBanners,
     type HomeSegmentKey,
 } from "@/data/home";
 import { homeSearchFiltersConfig } from "@/data/search-filters";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
-import { palette } from "@/theme/palette";
 
 export default function HomeScreen() {
   const { t } = useI18n();
@@ -138,7 +121,8 @@ export default function HomeScreen() {
           />
         </View>
 
-        <View style={styles.sectionBlock}>
+        {/* Quick Services Section */}
+        {/* <View style={styles.sectionBlock}>
           <View style={styles.headerPad}>
             <Text style={[styles.sectionTitle, { color: colors.text }]}>
               Quick Services
@@ -146,22 +130,6 @@ export default function HomeScreen() {
           </View>
           <ScrollView
             horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={[styles.cardsRow, { paddingHorizontal: 16 }]}
-          >
-            <QuickServiceCard
-              title="Home Services"
-              subtitle="Cleaning, plumbing, electrical & more"
-              icon={Wrench}
-              backgroundColor="#1CA1E3"
-              style={{ width: 320 }}
-            />
-            <QuickServiceCard
-              title="Interior Design"
-              subtitle="Design, furniture & decoration"
-              icon={Sofa}
-              backgroundColor={palette.purple.primary}
-              style={{ width: 280 }}
             />
             <QuickServiceCard
               title="Packers & Movers"
@@ -178,7 +146,7 @@ export default function HomeScreen() {
               style={{ width: 280 }}
             />
           </ScrollView>
-        </View>
+        </View> */}
 
         <View style={[styles.sectionBlock, styles.headerPad]}>
           <Text
@@ -189,112 +157,19 @@ export default function HomeScreen() {
           >
             All Services
           </Text>
-
+          
           <View style={styles.grid}>
-            <HomeServiceBanner
-              backgroundColor="#0B3C2A"
-              icon={Search}
-              title="Search Property"
-              subtitle="Buy & Rent Effortlessly"
-              image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80"
-            />
-
-            <View style={styles.halfGrid}>
-              <HomeServiceBanner
-                size="half"
-                backgroundColor="#0B3C2A"
-                icon={Plus}
-                title="Post your Property"
-                subtitle="Free & Easy Listing"
-                image="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80"
-              />
-              <HomeServiceBanner
-                size="half"
-                backgroundColor="#0B3C2A"
-                icon={Building2}
-                title="New Projects"
-                subtitle="Off-Plan Developments"
-                image="https://images.unsplash.com/photo-1541881451213-911293a9d905?auto=format&fit=crop&w=500&q=80"
-              />
-            </View>
-
-            <HomeServiceBanner
-              backgroundColor={palette.brand.accent}
-              icon={Gift}
-              title="Home Rewards"
-              subtitle="Win Prizes & Rewards"
-              image="https://images.unsplash.com/photo-1555626906-fcf10d6851b4?auto=format&fit=crop&w=800&q=80"
-            />
-
-            <HomeServiceBanner
-              backgroundColor="#0B3C2A"
-              icon={Wallet}
-              title="Telebirr Pay"
-              subtitle="Mobile Payments"
-              image="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80"
-            />
-
-            <HomeServiceBanner
-              backgroundColor="#0B3C2A"
-              icon={Wrench}
-              title="Home Services"
-              subtitle="Cleaning, Plumbing & More"
-              image="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80"
-            />
-
-            <View style={styles.halfGrid}>
-              <HomeServiceBanner
-                size="half"
-                backgroundColor="#0B3C2A"
-                icon={Sofa}
-                title="Interiors"
-                subtitle="Design & Furniture"
-                image="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=500&q=80"
-              />
-              <HomeServiceBanner
-                size="half"
-                backgroundColor="#0B3C2A"
-                icon={Truck}
-                title="Packers & Movers"
-                subtitle="Safe Moving Services"
-                image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80"
-              />
-            </View>
-
-            <View style={styles.halfGrid}>
-              <HomeServiceBanner
-                size="half"
-                backgroundColor="#0B3C2A"
-                icon={Newspaper}
-                title="Property News"
-                subtitle="Market & Land Updates"
-                image="https://images.unsplash.com/photo-1554774853-719586f82d77?auto=format&fit=crop&w=500&q=80"
-              />
-              <HomeServiceBanner
-                size="half"
-                backgroundColor="#0B3C2A"
-                icon={ShieldCheck}
-                title="Verified Brokers"
-                subtitle="Professional Agents"
-                image="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80"
-              />
-            </View>
-
-            <HomeServiceBanner
-              backgroundColor="#0B3C2A"
-              icon={Briefcase}
-              title="Developer Hub"
-              subtitle="Build & Partner"
-              image="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
-            />
-
-            <HomeServiceBanner
-              backgroundColor="#1A3A32"
-              icon={Wifi}
-              title="Telecom Integration"
-              subtitle="Telebirr - IVR - USSD - SMS"
-              image="https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=800&q=80"
-            />
+            {homeServiceBanners.map((section) =>
+              section.layout === "single" ? (
+                <HomeServiceBanner key={section.id} {...section.item} />
+              ) : (
+                <View key={section.id} style={styles.halfGrid}>
+                  {section.items.map((item) => (
+                    <HomeServiceBanner key={item.title} {...item} />
+                  ))}
+                </View>
+              ),
+            )}
           </View>
         </View>
         <HomeCategoryStory

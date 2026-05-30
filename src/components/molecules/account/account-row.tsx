@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/theme/app-theme";
 import { ChevronRight } from "lucide-react-native";
 import { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -15,17 +16,26 @@ export function AccountRow({
   accentColor?: string;
   onPress?: () => void;
 }) {
+  const { colors } = useAppTheme();
+
   return (
-    <Pressable onPress={onPress} style={styles.row}>
+    <Pressable
+      onPress={onPress}
+      style={[styles.row, { backgroundColor: colors.surfaceMuted }]}
+    >
       <View style={[styles.leftIcon, { backgroundColor: accentColor }]}>
         {icon}
       </View>
       <View style={styles.body}>
-        <Text style={styles.title}>{title}</Text>
-        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
+        {subtitle ? (
+          <Text style={[styles.subtitle, { color: colors.textMuted }]}>
+            {subtitle}
+          </Text>
+        ) : null}
       </View>
       <View style={styles.chev}>
-        <ChevronRight color="#94A3B8" />
+        <ChevronRight color={colors.iconMuted} />
       </View>
     </Pressable>
   );

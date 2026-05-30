@@ -6,6 +6,7 @@ import {
 } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { LogBox } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { AuthProvider, useAuth } from "@/auth/auth-context";
@@ -18,6 +19,11 @@ import { I18nProvider } from "@/i18n";
 import { AppThemeProvider, useAppTheme } from "@/theme/app-theme";
 
 export default function RootLayout() {
+  useEffect(() => {
+    LogBox.ignoreLogs([
+      "InteractionManager has been deprecated and will be removed in a future release",
+    ]);
+  }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nProvider>

@@ -282,3 +282,54 @@ export const propertySearchFiltersConfig: SearchFiltersConfig = {
     },
   ],
 };
+
+export const projectsSearchFiltersConfig: SearchFiltersConfig = {
+  title: "Project Filters",
+  subtitle: "Filter by city, project status, and verified developers",
+  leadingIcon: "filters",
+  sections: [
+    {
+      kind: "dual-select",
+      id: "cityAndDeveloper",
+      fields: [
+        {
+          id: "city",
+          label: "City",
+          value: "All Cities",
+          options: cityOptions,
+        },
+        {
+          id: "developer",
+          label: "Developer",
+          value: "All Developers",
+          options: [
+            { key: "all-developers", label: "All Developers" },
+            { key: "capital-real-estate", label: "Capital Real Estate" },
+            { key: "sunshine-developers", label: "Sunshine Developers PLC" },
+            { key: "modern-developments", label: "Modern Developments Ltd" },
+            { key: "blue-horizon", label: "Blue Horizon Homes" },
+          ],
+        },
+      ],
+    },
+    {
+      kind: "segmented",
+      id: "projectStatus",
+      label: "Status",
+      options: [
+        { key: "all", label: "All" },
+        { key: "off-plan", label: "Off-plan" },
+        { key: "u-c", label: "U/C" },
+        { key: "ready", label: "Ready" },
+      ],
+      selectedKey: "all",
+    },
+    {
+      kind: "toggle",
+      id: "verifiedDevelopersOnly",
+      label: "Verified Developers Only",
+      description: "Show only developers verified by TeleProperty",
+      value: true,
+    },
+  ],
+};

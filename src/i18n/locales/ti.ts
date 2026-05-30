@@ -8,6 +8,7 @@ export const ti: typeof en = {
   nav: {
     home: "ገዛ",
     property: "ንብረት",
+    projects: "ፕሮጀክትታት",
     services: "ኣገልግሎታት",
     payments: "ክፍሊት",
     account: "ሕሳብ",

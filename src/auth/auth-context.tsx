@@ -9,7 +9,7 @@ import {
     useState,
 } from "react";
 
-export type AuthMethod = "phone" | "email" | "fayda" | "guest";
+export type AuthMethod = "phone";
 
 export type AuthRole =
   | "buyer"
@@ -43,18 +43,15 @@ export type AuthDraft = {
   acceptedTerms: boolean;
 };
 
-type AuthCompletionInput = {
-  method: AuthMethod;
-};
-
 type AuthContextValue = {
   isHydrated: boolean;
   session: AuthSession | null;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   draft: AuthDraft;
   updateDraft: (patch: Partial<AuthDraft>) => void;
   resetDraft: () => void;
-  completeAuth: (input: AuthCompletionInput) => Promise<void>;
+  completeAuth: () => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -116,28 +113,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setDraft(defaultDraft);
   }, []);
 
-  const completeAuth = useCallback(
-    async ({ method }: AuthCompletionInput) => {
-      const nextSession: AuthSession = {
-        id: `session-${Date.now()}`,
-        displayName: draft.fullName.trim() || "TeleProperty User",
-        loginMethod: method,
-        phoneNumber: draft.phoneNumber.trim() || undefined,
-        email: draft.email.trim() || undefined,
-        role: draft.role,
-        faydaId: draft.faydaId.trim() || undefined,
-        verifiedAt: new Date().toISOString(),
-      };
+  const completeAuth = useCallback(async () => {
+    const nextSession: AuthSession = {
+      id: `session-${Date.now()}`,
+      displayName: draft.fullName.trim() || "TeleProperty User",
+      loginMethod: "phone",
+      phoneNumber: draft.phoneNumber.trim() || undefined,
+      email: draft.email.trim() || undefined,
+      role: draft.role,
+      faydaId: draft.faydaId.trim() || undefined,
+      verifiedAt: new Date().toISOString(),
+    };
 
-      setSession(nextSession);
-      await AsyncStorage.setItem(
-        sessionStorageKey,
-        JSON.stringify(nextSession),
-      );
-      setDraft(defaultDraft);
-    },
-    [draft],
-  );
+    setSession(nextSession);
+    await AsyncStorage.setItem(sessionStorageKey, JSON.stringify(nextSession));
+    setDraft(defaultDraft);
+  }, [draft]);
 
   const signOut = useCallback(async () => {
     setSession(null);
@@ -145,11 +136,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await AsyncStorage.removeItem(sessionStorageKey);
   }, []);
 
+  const isAdmin = useMemo(() => {
+    if (!session) return false;
+    return session.role === "developer" || session.role === "owner";
+  }, [session]);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       isHydrated,
       session,
       isAuthenticated: Boolean(session),
+      isAdmin,
       draft,
       updateDraft,
       resetDraft,

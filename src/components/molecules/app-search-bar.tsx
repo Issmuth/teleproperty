@@ -25,6 +25,8 @@ type AppSearchBarProps = {
   onFilterPress?: () => void;
   rightAccessory?: ReactNode;
   containerStyle?: ViewStyle | ViewStyle[];
+  value?: string;
+  onChangeText?: (value: string) => void;
 };
 
 export function AppSearchBar({
@@ -34,6 +36,8 @@ export function AppSearchBar({
   onFilterPress,
   rightAccessory,
   containerStyle,
+  value,
+  onChangeText,
 }: AppSearchBarProps) {
   const { colors } = useAppTheme();
   const isElevated = variant === "elevated";
@@ -76,6 +80,8 @@ export function AppSearchBar({
       >
         <Search size={18} color={colors.textMuted} strokeWidth={2.1} />
         <TextInput
+          value={value}
+          onChangeText={onChangeText}
           placeholder={placeholder}
           placeholderTextColor={colors.textMuted}
           style={[styles.input, { color: colors.text }]}

@@ -47,27 +47,6 @@ export default function DrawerLayout() {
           drawerLabel: t("nav.home"),
         }}
       />
-      <Drawer.Screen
-        name="saved"
-        options={{
-          title: t("nav.saved"),
-          drawerLabel: t("nav.saved"),
-        }}
-      />
-      <Drawer.Screen
-        name="messages"
-        options={{
-          title: t("nav.messages"),
-          drawerLabel: t("nav.messages"),
-        }}
-      />
-      <Drawer.Screen
-        name="settings"
-        options={{
-          title: t("nav.settings"),
-          drawerLabel: t("nav.settings"),
-        }}
-      />
     </Drawer>
   );
 }

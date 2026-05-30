@@ -92,7 +92,7 @@ export default function RoleAuthScreen() {
   const canContinue = useMemo(() => Boolean(draft.role), [draft.role]);
 
   const handleContinue = async () => {
-    await completeAuth({ method: "phone" });
+    await completeAuth();
     router.replace((params.redirectTo ?? "/") as never);
   };
 

@@ -148,7 +148,7 @@ export default function PhoneAuthScreen() {
               { color: isContinueDisabled ? colors.textMuted : "#FFFFFF" },
             ]}
           >
-            sendOtp
+            Send OTP
           </Text>
         </Pressable>
 

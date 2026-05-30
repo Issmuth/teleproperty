@@ -2,9 +2,9 @@ import { Tabs } from "expo-router";
 import {
     Building2,
     CreditCard,
+    DraftingCompass,
     House,
     User,
-    Wrench,
 } from "lucide-react-native";
 import { Pressable, StyleSheet, type PressableProps } from "react-native";
 import Animated, {
@@ -119,6 +119,15 @@ export default function TabsLayout() {
         })}
       />
       <Tabs.Screen
+        name="(projects)"
+        options={{
+          title: t("nav.projects"),
+          tabBarIcon: ({ color }) => (
+            <DraftingCompass color={color} size={18} strokeWidth={2.1} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
         name="services"
         options={{
           title: t("nav.services"),
@@ -126,7 +135,7 @@ export default function TabsLayout() {
             <Wrench color={color} size={18} strokeWidth={2.1} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="payments"
         options={{
@@ -137,7 +146,7 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="account"
+        name="(account)"
         options={{
           title: t("nav.account"),
           tabBarIcon: ({ color }) => (

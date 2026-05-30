@@ -1,9 +1,9 @@
 import { useAppTheme } from "@/theme/app-theme";
 import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
 } from "react-native-reanimated";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -59,38 +59,42 @@ function SegmentItem({
         styles.segment,
         animatedStyle,
         isGlassy ? styles.glassySegment : styles.solidSegment,
-        isActive &&
-          (isGlassy
-            ? {
-                backgroundColor: colors.surface,
-                shadowColor: colors.shadow,
-              }
-            : {
-                backgroundColor: colors.activeText,
-                shadowColor: colors.shadow,
-                elevation: 2,
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.1,
-                shadowRadius: 2,
-              }),
         pressed && !isActive ? styles.pressed : null,
       ]}
     >
-      <Text
+      <View
         style={
           isGlassy
             ? [
-                styles.glassyLabel,
-                { color: isActive ? colors.activeText : "white" },
+                styles.glassyLabelWrap,
+                {
+                  backgroundColor: isActive
+                    ? colors.activeSurface + "55"
+                    : "transparent",
+                  borderColor: isActive ? colors.activeBorder : "transparent",
+                },
               ]
             : [
-                styles.solidLabel,
-                { color: isActive ? "#FFFFFF" : colors.textMuted },
+                styles.solidLabelWrap,
+                {
+                  backgroundColor: isActive ? colors.activeText : "transparent",
+                },
               ]
         }
       >
-        {segment.label}
-      </Text>
+        <Text
+          style={
+            isGlassy
+              ? styles.glassyLabel
+              : [
+                  styles.solidLabel,
+                  { color: isActive ? "#FFFFFF" : colors.textMuted },
+                ]
+          }
+        >
+          {segment.label}
+        </Text>
+      </View>
     </AnimatedPressable>
   );
 }
@@ -158,11 +162,10 @@ const styles = StyleSheet.create({
   },
   segment: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "center",
   },
   glassySegment: {
-    minHeight: 44,
     borderRadius: 16,
   },
   solidSegment: {
@@ -175,9 +178,23 @@ const styles = StyleSheet.create({
   glassyLabel: {
     fontSize: 13,
     fontWeight: "700",
+    textAlign: "center",
+  },
+  glassyLabelWrap: {
+    width: "100%",
+    padding: 12,
+    borderRadius: 16,
+    overflow: "hidden",
   },
   solidLabel: {
     fontSize: 14,
     fontWeight: "600",
+    textAlign: "center",
+  },
+  solidLabelWrap: {
+    width: "100%",
+    padding: 8,
+    borderRadius: 8,
+    overflow: "hidden",
   },
 });
