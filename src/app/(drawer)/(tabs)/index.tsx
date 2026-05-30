@@ -279,33 +279,6 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Quick Services Section */}
-        {/* <View style={styles.sectionBlock}>
-          <View style={styles.headerPad}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>
-              Quick Services
-            </Text>
-          </View>
-          <ScrollView
-            horizontal
-            />
-            <QuickServiceCard
-              title="Packers & Movers"
-              subtitle="Safe moving & relocation services"
-              icon={Package}
-              backgroundColor={palette.orange.primary}
-              style={{ width: 280 }}
-            />
-            <QuickServiceCard
-              title="Hotel Booking"
-              subtitle="Hotels & guest houses"
-              icon={Building}
-              backgroundColor={palette.brand.accent}
-              style={{ width: 280 }}
-            />
-          </ScrollView>
-        </View> */}
-
         <View style={[styles.sectionBlock, styles.headerPad]}>
           <Text
             style={[

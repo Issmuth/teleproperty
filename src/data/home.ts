@@ -52,9 +52,6 @@ export const homeCategories: HomeCategory[] = [
     icon: UserCheck,
     color: palette.pink.primary,
   },
-  // { label: "Services", icon: Wrench, color: palette.red.muted },
-  // { label: "Interior", icon: Palette, color: palette.pink.primary },
-  // { label: "Movers", icon: Truck, color: "#00B4D8" },
 ];
 
 export const featuredProjects = [
@@ -205,42 +202,6 @@ export const homeServiceBanners: HomeServicesGroup[] = [
       },
     ],
   },
-  // {
-  //   id: "home-services",
-  //   layout: "single",
-  //   item: {
-  //     backgroundColor: "#0B3C2A",
-  //     icon: Wrench,
-  //     title: "Home Services",
-  //     subtitle: "Cleaning, Plumbing & More",
-  //     image:
-  //       "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80",
-  //   },
-  // },
-  // {
-  //   id: "interiors-packers",
-  //   layout: "pair",
-  //   items: [
-  //     {
-  //       size: "half",
-  //       backgroundColor: "#0B3C2A",
-  //       icon: Sofa,
-  //       title: "Interiors",
-  //       subtitle: "Design & Furniture",
-  //       image:
-  //         "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=500&q=80",
-  //     },
-  //     {
-  //       size: "half",
-  //       backgroundColor: "#0B3C2A",
-  //       icon: Truck,
-  //       title: "Packers & Movers",
-  //       subtitle: "Safe Moving Services",
-  //       image:
-  //         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
-  //     },
-  //   ],
-  // },
   {
     id: "property-news-verified-brokers",
     layout: "pair",
@@ -277,18 +238,6 @@ export const homeServiceBanners: HomeServicesGroup[] = [
       },
     ],
   },
-  // {
-  //   id: "telecom-integration",
-  //   layout: "single",
-  //   item: {
-  //     backgroundColor: "#1A3A32",
-  //     icon: Wrench,
-  //     title: "Telecom Integration",
-  //     subtitle: "Telebirr - IVR - USSD - SMS",
-  //     image:
-  //       "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=800&q=80",
-  //   },
-  // },
 ];
 
 export const categoryStories: Record<string, Story[]> = {
