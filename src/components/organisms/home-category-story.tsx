@@ -34,21 +34,28 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
   const total = stories.length;
 
   useEffect(() => {
-    if (!visible) return;
-    // reset
-    setIndex(0);
-    indexRef.current = 0;
-    progress.setValue(0);
-    // stop any previous animation
-    animRef.current?.stop?.();
-  }, [visible, categoryKey, progress]);
+    if (!visible) {
+      setIndex(0);
+      indexRef.current = 0;
+      progress.setValue(0);
+      animRef.current?.stop?.();
+    }
+  }, [visible, progress]);
+
+  useEffect(() => {
+    if (visible) {
+      setIndex(0);
+      indexRef.current = 0;
+    }
+  }, [categoryKey, visible]);
 
   useEffect(() => {
     if (!visible || total === 0) return;
 
     progress.setValue(0);
-    // stop any running animation first
+    indexRef.current = index;
     animRef.current?.stop?.();
+
     const anim = Animated.timing(progress, {
       toValue: 1,
       duration: STORY_DURATION,
@@ -69,12 +76,6 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
 
     return () => anim.stop();
   }, [index, visible, total, progress, onClose]);
-
-  useEffect(() => {
-    // reset progress when index changes
-    progress.setValue(0);
-    indexRef.current = index;
-  }, [index, progress]);
 
   if (!categoryKey || total === 0) return null;
 
@@ -162,15 +163,15 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
           }}
         >
           <View style={styles.bottomMeta} pointerEvents="none">
-            {active.titleKey ? (
-              <Text style={styles.storyTitle}>{t(active.titleKey)}</Text>
+            {active.title ? (
+              <Text style={styles.storyTitle}>{active.title}</Text>
             ) : null}
-            {active.subtitleKey ? (
-              <Text style={styles.storySubtitle}>{t(active.subtitleKey)}</Text>
+            {active.subtitle ? (
+              <Text style={styles.storySubtitle}>{active.subtitle}</Text>
             ) : null}
-            {active.ctaKey ? (
+            {active.cta ? (
               <View style={styles.ctaBtn}>
-                <Text style={styles.ctaText}>{t(active.ctaKey)}</Text>
+                <Text style={styles.ctaText}>{active.cta}</Text>
               </View>
             ) : null}
           </View>

@@ -16,6 +16,7 @@ import {
     readAuthRouteParams,
 } from "@/auth/auth-routing";
 import { I18nProvider } from "@/i18n";
+import { TanstackProvider } from "@/lib/tanstack/tanstack-provider";
 import { AppThemeProvider, useAppTheme } from "@/theme/app-theme";
 
 export default function RootLayout() {
@@ -28,20 +29,22 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nProvider>
         <AppThemeProvider>
-          <AuthProvider>
-            <NavigationMiddleware />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(drawer)" />
-              <Stack.Screen
-                name="auth"
-                options={{
-                  presentation: "fullScreenModal",
-                  animation: "fade",
-                }}
-              />
-            </Stack>
-            <ThemeStatusBar />
-          </AuthProvider>
+          <TanstackProvider>
+            <AuthProvider>
+              <NavigationMiddleware />
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="(drawer)" />
+                <Stack.Screen
+                  name="auth"
+                  options={{
+                    presentation: "fullScreenModal",
+                    animation: "fade",
+                  }}
+                />
+              </Stack>
+              <ThemeStatusBar />
+            </AuthProvider>
+          </TanstackProvider>
         </AppThemeProvider>
       </I18nProvider>
     </GestureHandlerRootView>
