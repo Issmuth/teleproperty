@@ -110,7 +110,7 @@ export default function DeveloperHubScreen() {
           </View>
 
           <Pressable
-            onPress={() => router.replace("/(account)/register" as never)}
+            onPress={() => router.push("/(account)/developer-register" as never)}
             style={[
               styles.primaryButton,
               { backgroundColor: colors.surface, borderColor: colors.border },

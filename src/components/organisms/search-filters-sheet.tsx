@@ -25,6 +25,7 @@ type SearchFiltersSheetProps = {
   config: SearchFiltersConfig;
   minFieldLabel?: string;
   maxFieldLabel?: string;
+  onChange?: (state: FilterState) => void;
 };
 
 type FilterState = Record<string, string | string[] | boolean>;
@@ -35,6 +36,7 @@ export function SearchFiltersSheet({
   config,
   minFieldLabel = "Min",
   maxFieldLabel = "Max",
+  onChange,
 }: SearchFiltersSheetProps) {
   const { colors } = useAppTheme();
   const [state, setState] = useState<FilterState>({});
@@ -45,9 +47,17 @@ export function SearchFiltersSheet({
       return;
     }
 
-    setState(createInitialState(config.sections));
+    const initialState = createInitialState(config.sections);
+    setState(initialState);
     setExpandedSelectId(null);
+    onChange?.(initialState);
   }, [config.sections, visible]);
+
+  useEffect(() => {
+    if (visible) {
+      onChange?.(state);
+    }
+  }, [state, visible]);
 
   const handleSegmentPress = (groupId: string, key: string) => {
     setState((current) => ({ ...current, [groupId]: key }));

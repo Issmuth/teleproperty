@@ -5,17 +5,17 @@ import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";
 import {
-    Bell,
-    Building2,
-    CreditCard,
-    Globe,
-    Headphones,
-    Heart,
-    MessageSquareHeart,
-    PhoneCall,
-    Shield,
-    Star,
-    Wallet,
+  Bell,
+  Building2,
+  CreditCard,
+  Globe,
+  Headphones,
+  Heart,
+  MessageSquareHeart,
+  PhoneCall,
+  Shield,
+  Star,
+  Wallet,
 } from "lucide-react-native";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -82,6 +82,7 @@ export default function AccountScreen() {
               subtitle={t("account.mySubscription.subtitle")}
               icon={<Star size={18} color="#F59E0B" />}
               accentColor="#FFF7E6"
+              onPress={() => router.push("/subscriptions" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
@@ -113,6 +114,7 @@ export default function AccountScreen() {
               subtitle={t("account.myPayments.subtitle")}
               icon={<CreditCard size={18} color="#F59E0B" />}
               accentColor="#FFF7E6"
+              onPress={() => router.push("/payment-history" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
@@ -128,6 +130,7 @@ export default function AccountScreen() {
               subtitle={t("account.notifications.subtitle")}
               icon={<Bell size={18} color="#A855F7" />}
               accentColor="#F3E8FF"
+              onPress={() => router.push("/notifications" as never)}
             />
             <View style={styles.divider} />
             <AccountRow
@@ -135,6 +138,7 @@ export default function AccountScreen() {
               subtitle={t("account.privacy.subtitle")}
               icon={<Shield size={18} color="#64748B" />}
               accentColor="#F8FAFC"
+              onPress={() => router.push("/privacy-security" as never)}
             />
             <View style={styles.divider} />
             <AccountRow

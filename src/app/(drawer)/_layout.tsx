@@ -20,7 +20,7 @@ export default function DrawerLayout() {
         drawerPosition: "right",
         drawerStyle: {
           backgroundColor: colors.drawerBackground,
-          width: 250,
+          width: 280,
           borderBottomLeftRadius: 0,
           borderTopLeftRadius: 0,
         },

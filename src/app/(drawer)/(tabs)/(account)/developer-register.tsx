@@ -153,7 +153,7 @@ export default function DeveloperRegisterScreen() {
 
           <Pressable
             disabled={isSubmitDisabled}
-            onPress={() => router.replace("/developer-hub" as never)}
+            onPress={() => router.replace("/developer-dashboard" as never)}
             style={({ pressed }) => [
               styles.submitButton,
               {

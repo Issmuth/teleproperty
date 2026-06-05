@@ -19,7 +19,10 @@ import {
     homeServiceBanners,
     type HomeSegmentKey,
 } from "@/data/home";
-import { homeSearchFiltersConfig } from "@/data/search-filters";
+import {
+    projectsSearchFiltersConfig,
+    propertySearchFiltersConfig,
+} from "@/data/search-filters";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
@@ -32,6 +35,8 @@ export default function HomeScreen() {
     null,
   );
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [filtersState, setFiltersState] = useState<Record<string, any>>({});
+  const [searchQuery, setSearchQuery] = useState("");
 
   const segments = homeSegments.map((segment) => ({
     key: segment.key,
@@ -80,11 +85,23 @@ export default function HomeScreen() {
     [t],
   );
 
-  const localizedHomeSearchFiltersConfig = useMemo(() => {
+  const localizedSearchFiltersConfig = useMemo(() => {
+    const rawConfig =
+      activeSegment === "projects"
+        ? projectsSearchFiltersConfig
+        : propertySearchFiltersConfig;
+
     const labelMap: Record<string, string> = {
       "Advanced Filters": t("home.filters.title"),
+      "Project Filters": t("home.filters.title"), // fallback if needed
       "Refine home searches by listing type, location, and property details": t(
         "home.filters.subtitle",
+      ),
+      "Refine property listings and sort by what matters most": t(
+        "home.filters.subtitle", // use same subtitle or handle differently?
+      ),
+      "Filter by city, project status, and verified developers": t(
+        "home.filters.subtitle", // fallback
       ),
       City: t("home.filters.city"),
       "Property Type": t("home.filters.propertyType"),
@@ -132,17 +149,38 @@ export default function HomeScreen() {
       "WiFi / Fibre": t("home.filters.wifiFibre"),
       Gym: t("home.filters.gym"),
       "Swimming Pool": t("home.filters.swimmingPool"),
+      // specific project filters mappings if they don't have localization yet:
+      Developer: "Developer",
+      "All Developers": "All Developers",
+      "Capital Real Estate": "Capital Real Estate",
+      "Sunshine Developers PLC": "Sunshine Developers PLC",
+      "Modern Developments Ltd": "Modern Developments Ltd",
+      "Blue Horizon Homes": "Blue Horizon Homes",
+      Status: "Status",
+      All: "All",
+      "Off-plan": "Off-plan",
+      "U/C": "U/C",
+      Ready: "Ready",
+      "Verified Developers Only": "Verified Developers Only",
+      "Show only developers verified by TeleProperty":
+        "Show only developers verified by TeleProperty",
+      "Verified Listings Only": "Verified Listings Only",
+      "Show only TeleProperty verified properties":
+        "Show only TeleProperty verified properties",
+      "Sort By": "Sort By",
+      Newest: "Newest",
+      "Price: Low-High": "Price: Low-High",
+      "Price: High-Low": "Price: High-Low",
+      "Most Popular": "Most Popular",
     };
 
     const translate = (value: string) => labelMap[value] ?? value;
 
     return {
-      ...homeSearchFiltersConfig,
-      title: translate(homeSearchFiltersConfig.title),
-      subtitle: homeSearchFiltersConfig.subtitle
-        ? translate(homeSearchFiltersConfig.subtitle)
-        : undefined,
-      sections: homeSearchFiltersConfig.sections.map((section) => {
+      ...rawConfig,
+      title: translate(rawConfig.title),
+      subtitle: rawConfig.subtitle ? translate(rawConfig.subtitle) : undefined,
+      sections: rawConfig.sections.map((section) => {
         if (section.kind === "segmented") {
           return {
             ...section,
@@ -215,6 +253,26 @@ export default function HomeScreen() {
           segments={segments}
           onFilterPress={() => setFiltersVisible(true)}
           onPostPress={() => router.push("/post-property" as never)}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          onSearchPress={() => {
+            const params = new URLSearchParams();
+            if (searchQuery) params.append("q", searchQuery);
+
+            Object.entries(filtersState).forEach(([k, v]) => {
+              if (Array.isArray(v)) {
+                v.forEach((val) => params.append(k, String(val)));
+              } else if (v !== undefined && v !== null && v !== "") {
+                params.append(k, String(v));
+              }
+            });
+
+            if (activeSegment === "projects") {
+              router.push(`/projects?${params.toString()}` as never);
+            } else {
+              router.push(`/property?${params.toString()}` as never);
+            }
+          }}
           kicker={t("home.heroKicker")}
           title={t("home.heroTitle")}
           subtitle={t("home.heroSubtitle")}
@@ -311,9 +369,10 @@ export default function HomeScreen() {
         <SearchFiltersSheet
           visible={filtersVisible}
           onClose={() => setFiltersVisible(false)}
-          config={localizedHomeSearchFiltersConfig}
+          config={localizedSearchFiltersConfig}
           minFieldLabel={t("home.filters.min")}
           maxFieldLabel={t("home.filters.max")}
+          onChange={setFiltersState}
         />
       </View>
     </ScrollView>

@@ -16,8 +16,8 @@ export function DrawerHeaderActions() {
       <ThemeToggle />
       <HeaderIconButton
         icon={Bell}
-        label="Open messages"
-        onPress={() => router.push("/messages")}
+        label="Open Notifications"
+        onPress={() => router.push("/notifications")}
       />
       <HeaderIconButton
         icon={Menu}

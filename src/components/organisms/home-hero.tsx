@@ -22,6 +22,9 @@ type HomeHeroProps = {
   subtitle: string;
   searchPlaceholder: string;
   searchAction: string;
+  onSearchPress?: () => void;
+  searchQuery?: string;
+  onSearchQueryChange?: (val: string) => void;
   postLabel: string;
   localePill: string;
 };
@@ -32,6 +35,9 @@ export function HomeHero({
   segments,
   onFilterPress,
   onPostPress,
+  onSearchPress,
+  searchQuery,
+  onSearchQueryChange,
   kicker,
   title,
   subtitle,
@@ -67,6 +73,8 @@ export function HomeHero({
         />
       </LinearGradient>
       <AppSearchBar
+        value={searchQuery}
+        onChangeText={onSearchQueryChange}
         placeholder={searchPlaceholder}
         showFilter={true}
         onFilterPress={onFilterPress}
@@ -75,6 +83,7 @@ export function HomeHero({
             label={searchAction}
             icon={Search}
             backgroundColor={colors.activeText}
+            onPress={onSearchPress}
           />
         }
       />

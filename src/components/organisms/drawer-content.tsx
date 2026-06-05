@@ -1,91 +1,109 @@
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-
-type DrawerRoute = {
-  key: string;
-  name: string;
-};
-
-type DrawerState = {
-  index: number;
-  routes: DrawerRoute[];
-};
-
-type DescriptorOptions = {
-  drawerLabel?: string | React.ReactNode;
-  title?: string | React.ReactNode;
-};
-
-type DrawerDescriptor = unknown;
+import { ChevronRight } from "lucide-react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 type DrawerContentProps = {
-  navigation: { navigate: (name: string) => void };
-  state: DrawerState;
-  descriptors: Record<string, unknown>;
+  navigation: {
+    navigate: (name: string, params?: Record<string, unknown>) => void;
+    closeDrawer: () => void;
+  };
 };
 
-export default function DrawerContent(props: DrawerContentProps) {
-  const { navigation, state } = props;
+type MenuItem = {
+  labelKey: string;
+  onPress: () => void;
+};
+
+export default function DrawerContent({ navigation }: DrawerContentProps) {
   const { colors } = useAppTheme();
+  const { t } = useI18n();
+
+  const close = () => navigation.closeDrawer();
+
+  const nav = (screen: string, params?: Record<string, unknown>) => {
+    close();
+    navigation.navigate(screen, params);
+  };
+
+  const menuItems: MenuItem[] = [
+    { labelKey: t("nav.home"), onPress: () => nav("(tabs)") },
+    {
+      labelKey: t("drawer.searchProperty"),
+      onPress: () => nav("(tabs)", { screen: "(property)" }),
+    },
+    {
+      labelKey: t("drawer.postProperty"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(property)", params: { screen: "post-property" } }),
+    },
+    {
+      labelKey: t("drawer.newProjects"),
+      onPress: () => nav("(tabs)", { screen: "(projects)" }),
+    },
+    { labelKey: t("drawer.homeRewards"), onPress: close },
+    { labelKey: t("drawer.homeServices"), onPress: close },
+    { labelKey: t("drawer.propertyNews"), onPress: close },
+    {
+      labelKey: t("drawer.verifiedBrokers"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "broker-hub" } }),
+    },
+    { labelKey: t("drawer.telebirrPay"), onPress: close },
+    { labelKey: t("drawer.telecomIntegration"), onPress: close },
+    {
+      labelKey: t("drawer.subscriptionPlans"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "subscriptions" } }),
+    },
+    {
+      labelKey: t("drawer.mySubscription"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "subscriptions" } }),
+    },
+    {
+      labelKey: t("drawer.myPayments"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "payment-history" } }),
+    },
+    { labelKey: t("drawer.myRewards"), onPress: close },
+    { labelKey: t("drawer.faydaVerification"), onPress: close },
+    {
+      labelKey: t("nav.settings"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "privacy-security" } }),
+    },
+    {
+      labelKey: t("account.appLanguage.title"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "account" } }),
+    },
+  ];
 
   return (
-    <View
-      style={[styles.container, { backgroundColor: colors.drawerBackground }]}
-    >
-      {state.routes.map((route: DrawerRoute, idx: number) => {
-        const focused = state.index === idx;
-        let label = route.name;
-
-        const desc = props.descriptors[route.key];
-        if (desc && typeof desc === "object" && "options" in desc) {
-          const options = (desc as { options?: Record<string, unknown> })
-            .options;
-          if (options) {
-            const dl = options.drawerLabel;
-            const ti = options.title;
-            if (typeof dl === "string") label = dl;
-            else if (typeof ti === "string") label = ti;
-          }
-        }
-
-        return (
+    <View style={[styles.container, { backgroundColor: colors.drawerBackground }]}>
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>
+          {t("drawer.menuTitle")}
+        </Text>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.list}>
+        {menuItems.map((item, index) => (
           <Pressable
-            key={route.key}
-            onPress={() => navigation.navigate(route.name)}
+            key={index}
+            onPress={item.onPress}
             style={({ pressed }) => [
               styles.item,
-              {
-                backgroundColor: focused
-                  ? colors.activeSurface
-                  : pressed
-                    ? colors.surfaceMuted
-                    : "transparent",
-              },
+              { backgroundColor: pressed ? colors.surfaceMuted : "transparent" },
             ]}
           >
-            <View
-              style={[
-                styles.accent,
-                {
-                  backgroundColor: focused
-                    ? colors.activeBorder
-                    : "transparent",
-                },
-              ]}
-            />
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={[
-                styles.label,
-                { color: focused ? colors.activeText : colors.iconMuted },
-              ]}
-            >
-              {String(label)}
+            <Text style={[styles.label, { color: colors.text }]}>
+              {item.labelKey}
             </Text>
+            <ChevronRight size={16} color={colors.iconMuted} strokeWidth={2} />
           </Pressable>
-        );
-      })}
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -93,24 +111,28 @@ export default function DrawerContent(props: DrawerContentProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 48,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 52,
+    paddingBottom: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+  },
+  list: {
+    paddingVertical: 8,
   },
   item: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    marginHorizontal: 8,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  accent: {
-    width: 4,
-    height: 28,
-    borderRadius: 4,
-    marginRight: 12,
+    justifyContent: "space-between",
+    paddingVertical: 14,
+    paddingHorizontal: 20,
   },
   label: {
-    fontSize: 16,
+    fontSize: 15,
   },
 });

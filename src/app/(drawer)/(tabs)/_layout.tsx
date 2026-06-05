@@ -149,6 +149,7 @@ export default function TabsLayout() {
         name="(account)"
         options={{
           title: t("nav.account"),
+          popToTopOnBlur: true,
           tabBarIcon: ({ color }) => (
             <User color={color} size={18} strokeWidth={2.1} />
           ),
