@@ -11,6 +11,7 @@ export default function AccountLayout() {
       <Stack.Screen name="broker-verified-leads" />
       <Stack.Screen name="broker-wallet" />
       <Stack.Screen name="subscriptions" />
+      <Stack.Screen name="my-subscription" />
       <Stack.Screen name="broker-whatsapp" />
       <Stack.Screen name="payment-history" />
       <Stack.Screen name="broker-profile-verification" />

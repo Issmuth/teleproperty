@@ -41,16 +41,16 @@ export default function DrawerContent({ navigation }: DrawerContentProps) {
       labelKey: t("drawer.newProjects"),
       onPress: () => nav("(tabs)", { screen: "(projects)" }),
     },
-    { labelKey: t("drawer.homeRewards"), onPress: close },
-    { labelKey: t("drawer.homeServices"), onPress: close },
-    { labelKey: t("drawer.propertyNews"), onPress: close },
+    {
+      labelKey: t("drawer.developersHub"),
+      onPress: () =>
+        nav("(tabs)", { screen: "(account)", params: { screen: "developer-hub" } }),
+    },
     {
       labelKey: t("drawer.verifiedBrokers"),
       onPress: () =>
         nav("(tabs)", { screen: "(account)", params: { screen: "broker-hub" } }),
     },
-    { labelKey: t("drawer.telebirrPay"), onPress: close },
-    { labelKey: t("drawer.telecomIntegration"), onPress: close },
     {
       labelKey: t("drawer.subscriptionPlans"),
       onPress: () =>
@@ -66,17 +66,10 @@ export default function DrawerContent({ navigation }: DrawerContentProps) {
       onPress: () =>
         nav("(tabs)", { screen: "(account)", params: { screen: "payment-history" } }),
     },
-    { labelKey: t("drawer.myRewards"), onPress: close },
-    { labelKey: t("drawer.faydaVerification"), onPress: close },
     {
       labelKey: t("nav.settings"),
       onPress: () =>
         nav("(tabs)", { screen: "(account)", params: { screen: "privacy-security" } }),
-    },
-    {
-      labelKey: t("account.appLanguage.title"),
-      onPress: () =>
-        nav("(tabs)", { screen: "(account)", params: { screen: "account" } }),
     },
   ];
 

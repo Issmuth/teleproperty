@@ -1,13 +1,13 @@
 import {
-    Briefcase,
-    Building2,
-    DraftingCompass,
-    Home,
-    Plus,
-    Search,
-    ShieldCheck,
-    UserCheck,
-    type LucideIcon,
+  Briefcase,
+  Building2,
+  DraftingCompass,
+  Home,
+  Plus,
+  Search,
+  ShieldCheck,
+  UserCheck,
+  type LucideIcon,
 } from "lucide-react-native";
 
 import { palette } from "@/theme/palette";
@@ -232,7 +232,7 @@ export const homeServiceBanners: HomeServicesGroup[] = [
         actions: [
           {
             labelKey: "home.services.verifiedBrokers.action",
-            pathname: "/broker-hub",
+            pathname: "/(account)/broker-hub",
           },
         ],
       },

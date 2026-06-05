@@ -718,6 +718,7 @@ export const am: typeof en = {
     myPayments: "የእኔ ክፍያዎች",
     myRewards: "የእኔ ሽልማቶች",
     faydaVerification: "Fayda ማረጋገጫ",
+    developersHub: "Developer Hub",
   },
   payments: {
     title: "ክፍያዎች እና ሽልማቶች",

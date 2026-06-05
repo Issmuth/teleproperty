@@ -1,5 +1,5 @@
 import { useI18n } from "@/i18n";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import {
   Briefcase,
   ClipboardList,
@@ -49,6 +49,7 @@ const benefits = [
 
 export default function BrokerHubScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
   const { colors, isDark } = useAppTheme();
   const { t } = useI18n();
 
@@ -56,7 +57,13 @@ export default function BrokerHubScreen() {
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       <View style={[styles.topBar, { backgroundColor: colors.background }]}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => {
+            const state = navigation.getState();
+            const routes = state?.routeNames;
+
+            router.replace('/(drawer)/(tabs)/(account)/account')
+            router.back()
+          }}
           style={[styles.backButton, { backgroundColor: colors.surface }]}
         >
           <Text style={[styles.backLabel, { color: colors.text }]}>‹</Text>

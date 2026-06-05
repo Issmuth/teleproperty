@@ -706,6 +706,7 @@ export const om: typeof en = {
     myPayments: "Kafaltii Koo",
     myRewards: "Badhaasa Koo",
     faydaVerification: "Fayda Mirkaneessuu",
+    developersHub: "Developer Hub",
   },
   payments: {
     title: "Payments & Rewards",

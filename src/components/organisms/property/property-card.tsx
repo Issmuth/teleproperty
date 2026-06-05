@@ -5,14 +5,14 @@ import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
 import { useRouter } from "expo-router";
 import {
-    BadgeCheck,
-    Bath,
-    Bed,
-    Heart,
-    Lock,
-    MapPin,
-    Square,
-    Star,
+  BadgeCheck,
+  Bath,
+  Bed,
+  Heart,
+  Lock,
+  MapPin,
+  Square,
+  Star,
 } from "lucide-react-native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -142,6 +142,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
         <Pressable
           style={[styles.contactButton, { backgroundColor: colors.activeText }]}
+          onPress={() => router.push('/subscriptions')}
         >
           <Lock size={16} color="white" />
           <Text style={styles.contactButtonText}>

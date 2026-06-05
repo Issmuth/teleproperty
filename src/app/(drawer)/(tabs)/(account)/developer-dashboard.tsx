@@ -1,11 +1,11 @@
 import { useRouter } from "expo-router";
 import {
-    Building2,
-    CalendarDays,
-    CheckCircle2,
-    CirclePlus,
-    MapPin,
-    Phone,
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  CirclePlus,
+  MapPin,
+  Phone,
 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -67,7 +67,10 @@ export default function DeveloperDashboardScreen() {
       {/* Top bar */}
       <View style={[styles.topBar, { backgroundColor: colors.background }]}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => {
+            router.dismiss()}
+          }
+
           style={[styles.backBtn, { backgroundColor: colors.surface }]}
         >
           <Text style={[styles.backLabel, { color: colors.text }]}>‹</Text>
@@ -138,7 +141,9 @@ export default function DeveloperDashboardScreen() {
         {selectedTab === "Projects" && (
           <View style={styles.tabContent}>
             <Pressable
-              onPress={() => router.navigate("/(drawer)/(tabs)/(property)/post-property" as never)}
+              onPress={() => {
+                router.navigate("/(drawer)/(tabs)/(property)/post-property" as never)
+              }}
               style={[styles.addBtn, { backgroundColor: accent }]}>
               <CirclePlus size={18} color="#FFFFFF" />
               <Text style={styles.addBtnLabel}>Add New Project</Text>

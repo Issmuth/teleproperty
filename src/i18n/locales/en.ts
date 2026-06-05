@@ -752,6 +752,7 @@ export const en = {
     homeServices: "Home Services",
     propertyNews: "Property News",
     verifiedBrokers: "Verified Brokers",
+    developersHub: "Developers Hub",
     telebirrPay: "Telebirr Pay",
     telecomIntegration: "Telecom Integration",
     subscriptionPlans: "Subscription Plans",
