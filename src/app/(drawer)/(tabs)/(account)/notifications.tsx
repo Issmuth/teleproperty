@@ -121,7 +121,10 @@ export default function NotificationsScreen() {
       {/* Top bar */}
       <View style={[styles.topBar, { backgroundColor: colors.background }]}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => {
+            router.replace('/(drawer)/(tabs)/(account)/account');
+            router.back();
+          }}
           style={[styles.backBtn, { backgroundColor: colors.surface }]}
         >
           <Text style={[styles.backLabel, { color: colors.text }]}>‹</Text>

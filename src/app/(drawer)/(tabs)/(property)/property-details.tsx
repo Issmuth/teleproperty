@@ -1,22 +1,24 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import {
-    Bath,
-    Bed,
-    ChevronLeft,
-    Heart,
-    Lock,
-    MapPin,
-    MessageCircleMore,
-    Share2,
-    Square,
-    Star,
+  Bath,
+  Bed,
+  Camera,
+  ChevronLeft,
+  Heart,
+  Lock,
+  MapPin,
+  MessageCircleMore,
+  Share2,
+  Square,
+  Star,
+  Upload
 } from "lucide-react-native";
-import { useMemo } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
-import { useAuthGate } from "@/auth/use-auth-gate";
 import { sampleProperties } from "@/data/property";
+import { usePropertySaved } from "@/hooks/use-saved-properties";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { shortenPriceLabel } from "@/utils/number-format";
@@ -214,7 +216,6 @@ export default function PropertyDetails() {
   const { colors } = useAppTheme();
   const { t } = useI18n();
   const router = useRouter();
-  const { requireAuth } = useAuthGate();
   const { id, source } = useLocalSearchParams<{
     id?: string;
     source?: string;
@@ -225,6 +226,25 @@ export default function PropertyDetails() {
     () => shortenPriceLabel(detail.price),
     [detail.price],
   );
+
+  const { isSaved, toggleSaved } = usePropertySaved(id || "");
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
+
+  const handleToggleSave = async () => {
+    try {
+      await toggleSaved({
+        id: id || "",
+        title: detail.title,
+        location: detail.location,
+        price: detail.price,
+        image: detail.image,
+      });
+    } catch (error) {
+      console.error("Failed to toggle save:", error);
+    }
+  };
 
   const handleBackPress = () => {
     if (source === "home") {
@@ -240,6 +260,15 @@ export default function PropertyDetails() {
     router.replace("/property");
   };
 
+  const handleSubmitReview = () => {
+    if (reviewText.trim() && reviewRating > 0) {
+      // TODO: Submit review to backend
+      console.log("Review submitted:", { rating: reviewRating, text: reviewText });
+      setReviewText("");
+      setReviewRating(0);
+    }
+  };
+
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       <ScrollView
@@ -249,7 +278,7 @@ export default function PropertyDetails() {
       >
         <View style={styles.heroWrap}>
           <Image
-            source={{ uri: detail.image }}
+            source={{ uri: detail.gallery[selectedImageIndex] }}
             style={styles.heroImage}
             contentFit="cover"
           />
@@ -258,59 +287,77 @@ export default function PropertyDetails() {
               onPress={handleBackPress}
               style={[
                 styles.heroIconButton,
-                { backgroundColor: "rgba(0,0,0,0.35)" },
+                { backgroundColor: "rgba(0,0,0,0.5)" },
               ]}
             >
-              <ChevronLeft size={22} color="#fff" />
+              <ChevronLeft size={22} color="#fff" strokeWidth={2.5} />
             </Pressable>
 
             <View style={styles.heroActions}>
               <Pressable
                 style={[
                   styles.heroIconButton,
-                  { backgroundColor: "rgba(0,0,0,0.35)" },
+                  { backgroundColor: "rgba(0,0,0,0.5)" },
                 ]}
               >
-                <Share2 size={18} color="#fff" />
+                <Share2 size={18} color="#fff" strokeWidth={2.5} />
               </Pressable>
               <Pressable
                 style={[
                   styles.heroIconButton,
-                  { backgroundColor: "rgba(0,0,0,0.35)" },
+                  { backgroundColor: "rgba(0,0,0,0.5)" },
                 ]}
-                onPress={() =>
-                  requireAuth(() => router.push("/saved" as never), {
-                    intent: "save-property",
-                    redirectTo: `/property-details?id=${id ?? ""}&source=${source ?? "property"}`,
-                  })
-                }
+                onPress={handleToggleSave}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
-                <Heart size={18} color="#fff" fill="transparent" />
+                <Heart
+                  size={18}
+                  color={isSaved ? "#EF4444" : "#fff"}
+                  fill={isSaved ? "#EF4444" : "transparent"}
+                  strokeWidth={2.5}
+                />
               </Pressable>
             </View>
           </View>
+
+          {/* Image counter badge */}
+          <View style={styles.imageCounter}>
+            <Camera size={14} color="#fff" />
+            <Text style={styles.imageCounterText}>
+              {selectedImageIndex + 1} / {detail.gallery.length}
+            </Text>
+          </View>
         </View>
 
-        <View style={styles.thumbnailRow}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.thumbnailScroll}
+          contentContainerStyle={styles.thumbnailRow}
+        >
           {detail.gallery.map((image, index) => (
-            <View
+            <Pressable
               key={`${image}-${index}`}
-              style={[
-                styles.thumbnail,
-                index === 0 && {
-                  borderColor: colors.activeText,
-                  borderWidth: 2,
-                },
-              ]}
+              onPress={() => setSelectedImageIndex(index)}
             >
-              <Image
-                source={{ uri: image }}
-                style={styles.thumbnailImage}
-                contentFit="cover"
-              />
-            </View>
+              <View
+                style={[
+                  styles.thumbnail,
+                  index === selectedImageIndex && {
+                    borderColor: colors.activeText,
+                    borderWidth: 2,
+                  },
+                ]}
+              >
+                <Image
+                  source={{ uri: image }}
+                  style={styles.thumbnailImage}
+                  contentFit="cover"
+                />
+              </View>
+            </Pressable>
           ))}
-        </View>
+        </ScrollView>
 
         <View style={styles.titleRow}>
           <View style={styles.titleBlock}>
@@ -414,6 +461,7 @@ export default function PropertyDetails() {
                 styles.unlockButton,
                 { backgroundColor: colors.activeText },
               ]}
+              onPress={() => router.push("/subscriptions" as never)}
             >
               <Text style={styles.unlockButtonText}>
                 {t("property.details.subscribeToUnlock")}
@@ -426,28 +474,90 @@ export default function PropertyDetails() {
           title={t("property.details.reviews")}
           colors={colors}
           headerAction={
-            <Pressable
-              style={[
-                styles.reviewButton,
-                { backgroundColor: colors.activeText },
-              ]}
-            >
-              <MessageCircleMore size={16} color="#fff" />
-              <Text style={styles.reviewButtonText}>
-                {t("property.details.writeReview")}
+            <View style={styles.ratingDisplay}>
+              <Star size={16} color="#F59E0B" fill="#F59E0B" />
+              <Text style={[styles.ratingText, { color: colors.text }]}>
+                {detail.rating}
               </Text>
-            </Pressable>
+            </View>
           }
         >
+          {/* Write Review Section */}
+          <View style={[styles.writeReviewCard, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+            <Text style={[styles.writeReviewTitle, { color: colors.text }]}>
+              Write a Review
+            </Text>
+            
+            {/* Star Rating */}
+            <View style={styles.starRatingRow}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Pressable
+                  key={star}
+                  onPress={() => setReviewRating(star)}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Star
+                    size={28}
+                    color="#F59E0B"
+                    fill={star <= reviewRating ? "#F59E0B" : "transparent"}
+                    strokeWidth={2}
+                  />
+                </Pressable>
+              ))}
+            </View>
+
+            {/* Review Text Input */}
+            <TextInput
+              style={[
+                styles.reviewInput,
+                { 
+                  backgroundColor: colors.surface,
+                  borderColor: colors.border,
+                  color: colors.text,
+                }
+              ]}
+              placeholder="Share your experience with this property..."
+              placeholderTextColor={colors.textMuted}
+              value={reviewText}
+              onChangeText={setReviewText}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
+            />
+
+            {/* Photo Upload (Optional) */}
+            <Pressable style={[styles.photoUploadBtn, { borderColor: colors.border }]}>
+              <Upload size={16} color={colors.textMuted} />
+              <Text style={[styles.photoUploadText, { color: colors.textMuted }]}>
+                Add Photo (Optional)
+              </Text>
+            </Pressable>
+
+            {/* Submit Button */}
+            <Pressable
+              style={[
+                styles.submitReviewBtn,
+                { backgroundColor: reviewText.trim() && reviewRating > 0 ? colors.activeText : colors.surfaceMuted },
+              ]}
+              onPress={handleSubmitReview}
+              disabled={!reviewText.trim() || reviewRating === 0}
+            >
+              <MessageCircleMore size={16} color="#fff" />
+              <Text style={styles.submitReviewText}>Submit Review</Text>
+            </Pressable>
+          </View>
+
+          {/* No Reviews Yet */}
           <Text style={[styles.reviewIntro, { color: colors.textMuted }]}>
             {t("property.details.noReviewsYet")}
           </Text>
           <View
             style={[
               styles.emptyReviewCard,
-              { backgroundColor: colors.surface },
+              { backgroundColor: colors.surface, borderColor: colors.border },
             ]}
           >
+            <MessageCircleMore size={32} color={colors.textMuted} />
             <Text style={[styles.emptyReviewText, { color: colors.textMuted }]}>
               {t("property.details.noReviewsPrompt")}
             </Text>
@@ -556,11 +666,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  thumbnailRow: {
+  imageCounter: {
+    position: "absolute",
+    bottom: 14,
+    right: 14,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  imageCounterText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  thumbnailScroll: {
+    marginTop: 14,
+  },
+  thumbnailRow: {
     gap: 10,
     paddingHorizontal: 16,
-    marginTop: 14,
   },
   thumbnail: {
     width: 74,
@@ -730,6 +858,69 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "900",
   },
+  ratingDisplay: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "rgba(245, 158, 11, 0.1)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+  },
+  ratingText: {
+    fontSize: 14,
+    fontWeight: "800",
+  },
+  writeReviewCard: {
+    borderRadius: 16,
+    padding: 16,
+    gap: 14,
+    borderWidth: 1,
+  },
+  writeReviewTitle: {
+    fontSize: 15,
+    fontWeight: "800",
+  },
+  starRatingRow: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
+  },
+  reviewInput: {
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    fontSize: 14,
+    minHeight: 100,
+    fontWeight: "500",
+  },
+  photoUploadBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    borderWidth: 1.5,
+    borderStyle: "dashed",
+    borderRadius: 12,
+    paddingVertical: 14,
+  },
+  photoUploadText: {
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  submitReviewBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    paddingVertical: 14,
+    borderRadius: 12,
+  },
+  submitReviewText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "800",
+  },
   reviewButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -746,10 +937,14 @@ const styles = StyleSheet.create({
   reviewIntro: {
     fontSize: 13,
     fontWeight: "500",
+    marginTop: 8,
   },
   emptyReviewCard: {
     borderRadius: 16,
-    padding: 18,
+    padding: 24,
+    alignItems: "center",
+    gap: 12,
+    borderWidth: 1,
   },
   emptyReviewText: {
     fontSize: 13,

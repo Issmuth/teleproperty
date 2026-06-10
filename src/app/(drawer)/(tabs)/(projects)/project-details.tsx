@@ -1,31 +1,35 @@
+import { usePropertySaved } from "@/hooks/use-saved-properties";
+import { useI18n } from "@/i18n";
+import { useAppTheme } from "@/theme/app-theme";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import {
-    BadgeCheck,
-    Building2,
-    CalendarDays,
-    ChevronLeft,
-    CircleCheckBig,
-    Heart,
-    MapPin,
-    MessageCircle,
-    Phone,
-    ShieldCheck,
-    Star,
+  BadgeCheck,
+  Building2,
+  CalendarDays,
+  Camera,
+  ChevronLeft,
+  CircleCheckBig,
+  ClipboardList,
+  Heart,
+  MapPin,
+  MessageCircle,
+  Phone,
+  ShieldCheck,
+  Star
 } from "lucide-react-native";
-import { useMemo } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useI18n } from "@/i18n";
-import { useAppTheme } from "@/theme/app-theme";
-
 type ProjectDetailsModel = {
+  id: string;
   title: string;
   developer: string;
   location: string;
   price: string;
   image: string;
+  gallery: string[];
   units: string;
   completion: string;
   status: string;
@@ -34,15 +38,23 @@ type ProjectDetailsModel = {
   reviews: string;
   chips: string[];
   amenities: string[];
+  phone?: string;
 };
 
 const defaultProject: ProjectDetailsModel = {
+  id: "sunrise-residences",
   title: "Sunrise Residences",
   developer: "Sunshine Developers PLC",
   location: "Bole, Addis Ababa",
   price: "From ETB 2,800,000",
   image:
     "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1400&q=80",
+  gallery: [
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80",
+  ],
   units: "48 Units",
   completion: "Dec 2026",
   status: "Off-plan",
@@ -52,6 +64,7 @@ const defaultProject: ProjectDetailsModel = {
   reviews: "24",
   chips: ["1BR", "2BR", "3BR", "Penthouse"],
   amenities: ["Pool", "Gym", "Security", "Parking", "Garden"],
+  phone: "+251911234567",
 };
 
 function readValue(value: string | string[] | undefined) {
@@ -66,13 +79,16 @@ function buildProjectFromParams(
   params: Record<string, string | string[] | undefined>,
 ) {
   const title = readValue(params.title) ?? defaultProject.title;
+  const id = readValue(params.id) ?? defaultProject.id;
 
   return {
+    id,
     title,
     developer: readValue(params.developer) ?? defaultProject.developer,
     location: readValue(params.location) ?? defaultProject.location,
     price: readValue(params.price) ?? defaultProject.price,
     image: readValue(params.image) ?? defaultProject.image,
+    gallery: defaultProject.gallery,
     units: defaultProject.units,
     completion: defaultProject.completion,
     status: defaultProject.status,
@@ -81,6 +97,7 @@ function buildProjectFromParams(
     reviews: defaultProject.reviews,
     chips: defaultProject.chips,
     amenities: defaultProject.amenities,
+    phone: defaultProject.phone,
   } satisfies ProjectDetailsModel;
 }
 
@@ -92,6 +109,35 @@ export default function ProjectDetailsScreen() {
   const params = useLocalSearchParams<Record<string, string | string[]>>();
 
   const project = useMemo(() => buildProjectFromParams(params), [params]);
+  const { isSaved, toggleSaved } = usePropertySaved(project.id);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const handleToggleSave = async () => {
+    try {
+      await toggleSaved({
+        id: project.id,
+        title: project.title,
+        location: project.location,
+        price: project.price,
+        image: project.image,
+      });
+    } catch (error) {
+      console.error("Failed to toggle save:", error);
+    }
+  };
+
+  const handleCallPress = () => {
+    if (project.phone) {
+      Linking.openURL(`tel:${project.phone}`);
+    }
+  };
+
+  const handleWhatsAppPress = () => {
+    if (project.phone) {
+      const message = encodeURIComponent(`Hi, I'm interested in ${project.title}`);
+      Linking.openURL(`whatsapp://send?phone=${project.phone}&text=${message}`);
+    }
+  };
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
@@ -101,7 +147,7 @@ export default function ProjectDetailsScreen() {
       >
         <View style={styles.heroWrap}>
           <Image
-            source={{ uri: project.image }}
+            source={{ uri: project.gallery[selectedImageIndex] }}
             style={styles.heroImage}
             contentFit="cover"
           />
@@ -111,18 +157,71 @@ export default function ProjectDetailsScreen() {
             onPress={() => router.back()}
             style={[styles.heroIconButton, styles.heroLeftIcon]}
           >
-            <ChevronLeft size={16} color="#FFFFFF" />
+            <ChevronLeft size={20} color="#FFFFFF" strokeWidth={2.5} />
           </Pressable>
-          <Pressable style={[styles.heroIconButton, styles.heroRightIcon]}>
-            <Heart size={16} color="#FFFFFF" />
+          <Pressable
+            style={[styles.heroIconButton, styles.heroRightIcon]}
+            onPress={handleToggleSave}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Heart
+              size={18}
+              color={isSaved ? "#EF4444" : "#FFFFFF"}
+              fill={isSaved ? "#EF4444" : "transparent"}
+              strokeWidth={2.5}
+            />
           </Pressable>
 
+          {/* Image counter badge */}
+          <View style={styles.imageCounter}>
+            <Camera size={14} color="#fff" />
+            <Text style={styles.imageCounterText}>
+              {selectedImageIndex + 1} / {project.gallery.length}
+            </Text>
+          </View>
+
           <View style={styles.dotsRow}>
-            <View style={[styles.dot, styles.dotActive]} />
-            <View style={styles.dot} />
-            <View style={styles.dot} />
+            {project.gallery.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.dot,
+                  index === selectedImageIndex && styles.dotActive,
+                ]}
+              />
+            ))}
           </View>
         </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.thumbnailScroll}
+          contentContainerStyle={styles.thumbnailRow}
+        >
+          {project.gallery.map((image, index) => (
+            <Pressable
+              key={`${image}-${index}`}
+              onPress={() => setSelectedImageIndex(index)}
+            >
+              <View
+                style={[
+                  styles.thumbnail,
+                  index === selectedImageIndex && {
+                    borderColor: colors.activeText,
+                    borderWidth: 2,
+                  },
+                ]}
+              >
+                <Image
+                  source={{ uri: image }}
+                  style={styles.thumbnailImage}
+                  contentFit="cover"
+                />
+              </View>
+            </Pressable>
+          ))}
+        </ScrollView>
 
         <View style={styles.content}>
           <View style={styles.titleBlock}>
@@ -245,8 +344,9 @@ export default function ProjectDetailsScreen() {
                 styles.callButton,
                 { backgroundColor: colors.activeText },
               ]}
+              onPress={handleCallPress}
             >
-              <Phone size={16} color="#FFFFFF" />
+              <Phone size={16} color="#FFFFFF" strokeWidth={2.5} />
               <Text style={styles.callLabel}>{t("projects.details.call")}</Text>
             </Pressable>
             <Pressable
@@ -257,8 +357,9 @@ export default function ProjectDetailsScreen() {
                   borderColor: colors.activeText,
                 },
               ]}
+              onPress={handleWhatsAppPress}
             >
-              <MessageCircle size={16} color="#14B37B" />
+              <MessageCircle size={16} color="#14B37B" strokeWidth={2.5} />
               <Text
                 style={[styles.whatsAppLabel, { color: colors.activeText }]}
               >
@@ -273,8 +374,9 @@ export default function ProjectDetailsScreen() {
               { backgroundColor: colors.surface, borderColor: colors.border },
             ]}
           >
+            <ClipboardList size={18} color={colors.textMuted} strokeWidth={2} />
             <Text style={[styles.advisorLabel, { color: colors.text }]}>
-              📋 {t("projects.details.requestAdvisor")}
+              {t("projects.details.requestAdvisor")}
             </Text>
           </Pressable>
         </View>
@@ -377,10 +479,10 @@ const styles = StyleSheet.create({
   heroIconButton: {
     position: "absolute",
     top: 12,
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: "rgba(51,65,85,0.72)",
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "rgba(0,0,0,0.5)",
     alignItems: "center",
     justifyContent: "center",
     zIndex: 2,
@@ -390,6 +492,24 @@ const styles = StyleSheet.create({
   },
   heroRightIcon: {
     right: 12,
+  },
+  imageCounter: {
+    position: "absolute",
+    top: 12,
+    alignSelf: "center",
+    backgroundColor: "rgba(0,0,0,0.7)",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    zIndex: 2,
+  },
+  imageCounterText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "700",
   },
   dotsRow: {
     position: "absolute",
@@ -408,6 +528,26 @@ const styles = StyleSheet.create({
   dotActive: {
     width: 20,
     backgroundColor: "#FFFFFF",
+  },
+  thumbnailScroll: {
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  thumbnailRow: {
+    gap: 10,
+    paddingHorizontal: 12,
+  },
+  thumbnail: {
+    width: 74,
+    height: 74,
+    borderRadius: 18,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "transparent",
+  },
+  thumbnailImage: {
+    width: "100%",
+    height: "100%",
   },
   content: {
     padding: 12,
@@ -577,11 +717,13 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   advisorButton: {
-    minHeight: 44,
+    minHeight: 48,
     borderRadius: 12,
     borderWidth: 1,
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    gap: 10,
   },
   advisorLabel: {
     fontSize: 13,
