@@ -5,14 +5,16 @@ import { Image } from "expo-image";
 import { X } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import {
-    Animated,
-    Dimensions,
-    Modal,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  Animated,
+  BackHandler,
+  Dimensions,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
   visible: boolean;
@@ -25,6 +27,7 @@ const STORY_DURATION = 4200;
 export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
   const { colors } = useAppTheme();
   const { t } = useI18n();
+  const insets = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
   const progress = useRef(new Animated.Value(0)).current;
   const animRef = useRef<Animated.CompositeAnimation | null>(null);
@@ -32,6 +35,21 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
 
   const stories: Story[] = (categoryKey && categoryStories[categoryKey]) || [];
   const total = stories.length;
+
+  // Handle hardware back button and gestures
+  useEffect(() => {
+    if (!visible) return;
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        onClose();
+        return true;
+      }
+    );
+
+    return () => backHandler.remove();
+  }, [visible, onClose]);
 
   useEffect(() => {
     if (!visible) {
@@ -116,6 +134,7 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
       visible={visible}
       animationType="slide"
       presentationStyle="fullScreen"
+      onRequestClose={onClose}
     >
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Image
@@ -124,7 +143,7 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
           contentFit="cover"
         />
 
-        <View style={styles.topBar}>
+        <View style={[styles.topBar, { top: insets.top + 20 }]}>
           <View style={styles.progressRow}>
             {stories.map((s, i) => (
               <View key={s.id} style={styles.progressTrack}>
@@ -148,11 +167,17 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
             <Text style={styles.headerLabel}>
               {t(`home.categories.${categoryKey}`)}
             </Text>
-            <Pressable onPress={onClose} style={styles.closeBtn}>
-              <X color="white" />
-            </Pressable>
           </View>
         </View>
+
+        {/* Close button with larger touch area - positioned absolutely */}
+        <Pressable 
+          onPress={onClose} 
+          style={[styles.closeBtn, { top: insets.top + 28 }]}
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        >
+          <X color="white" size={20} />
+        </Pressable>
 
         <Pressable
           style={styles.interactionArea}
@@ -162,7 +187,10 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
             else next();
           }}
         >
-          <View style={styles.bottomMeta} pointerEvents="none">
+          <View 
+            style={[styles.bottomMeta, { paddingBottom: Math.max(insets.bottom, 20) + 20 }]} 
+            pointerEvents="none"
+          >
             {active.title ? (
               <Text style={styles.storyTitle}>{active.title}</Text>
             ) : null}
@@ -184,7 +212,7 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "black" },
   hero: { width: "100%", position: "absolute", top: 0, left: 0 },
-  topBar: { position: "absolute", top: 20, left: 16, right: 16 },
+  topBar: { position: "absolute", left: 16, right: 16 },
   progressRow: { flexDirection: "row", gap: 6 },
   progressTrack: {
     height: 3,
@@ -203,18 +231,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingRight: 48,
   },
   headerLabel: { color: "white", fontWeight: "700", fontSize: 16 },
   closeBtn: {
+    position: "absolute",
+    right: 16,
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 100,
   },
   interactionArea: { flex: 1, justifyContent: "flex-end" },
-  bottomMeta: { padding: 20, paddingBottom: 40 },
+  bottomMeta: { padding: 20 },
   storyTitle: {
     color: "white",
     fontSize: 28,

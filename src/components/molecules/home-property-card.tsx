@@ -1,9 +1,9 @@
+import { usePropertySaved } from "@/hooks/use-saved-properties";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { Heart } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { useAuthGate } from "@/auth/use-auth-gate";
 import { useAppTheme } from "@/theme/app-theme";
 
 type HomePropertyCardProps = {
@@ -23,13 +23,21 @@ export function HomePropertyCard({
 }: HomePropertyCardProps) {
   const { colors } = useAppTheme();
   const router = useRouter();
-  const { requireAuth } = useAuthGate();
+  const { isSaved, toggleSaved } = usePropertySaved(id);
 
   const handlePress = () => {
     router.push({
       pathname: "/property-details",
       params: { id, source: "home" },
     });
+  };
+
+  const handleToggleSave = async () => {
+    try {
+      await toggleSaved({ id, title, location, price, image });
+    } catch (error) {
+      console.error("Failed to toggle save:", error);
+    }
   };
 
   return (
@@ -47,18 +55,14 @@ export function HomePropertyCard({
           contentFit="cover"
         />
         <Pressable
-          onPress={() =>
-            requireAuth(() => router.push("/saved" as never), {
-              intent: "save-property",
-              redirectTo: `/property-details?id=${id}&source=home`,
-            })
-          }
+          onPress={handleToggleSave}
           style={[styles.heartButton, { backgroundColor: colors.surface }]}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Heart
             size={14}
-            color={colors.activeText}
-            fill={colors.surface}
+            color={isSaved ? "#EF4444" : colors.activeText}
+            fill={isSaved ? "#EF4444" : colors.surface}
             strokeWidth={2.1}
           />
         </Pressable>

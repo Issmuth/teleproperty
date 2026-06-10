@@ -1,133 +1,99 @@
 import { PropertyCard } from "@/components/organisms/property/property-card";
-import { sampleProperties } from "@/data/property";
+import { useSavedProperties } from "@/hooks/use-saved-properties";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useMemo, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-
-const STORAGE_KEY = "teleproperty.saved";
+import { useFocusEffect, useRouter } from "expo-router";
+import { Heart } from "lucide-react-native";
+import { useCallback } from "react";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function SavedScreen() {
   const { t } = useI18n();
   const { colors } = useAppTheme();
-  const [savedIds, setSavedIds] = useState<string[]>([]);
+  const router = useRouter();
+  const { savedProperties, loading, refresh } = useSavedProperties();
 
-  useEffect(() => {
-    let cancelled = false;
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
 
-    async function load() {
-      const raw = await AsyncStorage.getItem(STORAGE_KEY);
-      if (cancelled) return;
-      if (!raw) {
-        setSavedIds([]);
-        return;
-      }
-
-      try {
-        const parsed = JSON.parse(raw) as string[];
-        setSavedIds(parsed || []);
-      } catch {
-        setSavedIds([]);
-      }
-    }
-
-    void load();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const savedProperties = useMemo(() => {
-    return sampleProperties.filter((p) => savedIds.includes(p.id));
-  }, [savedIds]);
-
-  async function removeSaved(id: string) {
-    const next = savedIds.filter((s) => s !== id);
-    setSavedIds(next);
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  if (loading) {
+    return (
+      <View style={[styles.screen, styles.center, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.activeText} />
+      </View>
+    );
   }
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      {/* Header with back button */}
+      <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
+        <Pressable
+          onPress={() => {
+            router.replace('/(drawer)/(tabs)/(account)/account')
+            router.back()
+          }}
+          style={[styles.backButton, { backgroundColor: colors.surface }]}
+        >
+          <Text style={[styles.backLabel, { color: colors.text }]}>‹</Text>
+        </Pressable>
+        <View style={styles.headerText}>
+          <Text style={[styles.headerTitle, { color: colors.text }]}>
+            {t("nav.saved")}
+          </Text>
+          <Text style={[styles.headerSub, { color: colors.textMuted }]}>
+            {savedProperties.length} {savedProperties.length === 1 ? 'property' : 'properties'}
+          </Text>
+        </View>
+      </View>
+
       <ScrollView
         style={{ backgroundColor: colors.background }}
         contentContainerStyle={styles.content}
       >
-        <Text style={[styles.header, { color: colors.text }]}>
-          {t("nav.saved")}
-        </Text>
-        <Text style={[styles.sub, { color: colors.textMuted }]}>
-          {t("account.saved.count", { count: savedProperties.length })}
-        </Text>
-
         {savedProperties.length === 0 ? (
-          <View
-            style={[
-              styles.empty,
-              { backgroundColor: colors.surface, borderColor: colors.border },
-            ]}
-          >
-            <Text style={[styles.emptyTitle, { color: colors.text }]}>
-              {t("account.saved.emptyTitle")}
-            </Text>
-            <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-              {t("account.saved.emptyBody")}
-            </Text>
+          <View style={styles.emptyContainer}>
+            <View
+              style={[
+                styles.emptyCard,
+                { backgroundColor: colors.surface, borderColor: colors.border },
+              ]}
+            >
+              <View style={[styles.emptyIcon, { backgroundColor: colors.surfaceMuted }]}>
+                <Heart size={32} color={colors.textMuted} strokeWidth={1.5} />
+              </View>
+              <Text style={[styles.emptyTitle, { color: colors.text }]}>
+                {t("account.saved.emptyTitle")}
+              </Text>
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>
+                {t("account.saved.emptyBody")}
+              </Text>
+            </View>
           </View>
         ) : (
-          savedProperties.map((p) => (
-            <View key={p.id} style={styles.cardWrap}>
-              <PropertyCard property={p} />
-              <View style={styles.cardActions}>
-                <Pressable
-                  style={[
-                    styles.callBtn,
-                    { backgroundColor: colors.activeText },
-                  ]}
-                >
-                  <Text style={styles.callLabel}>
-                    {t("account.actions.call")}
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.whatsappBtn, { backgroundColor: "#059669" }]}
-                >
-                  <Text style={styles.whatsappLabel}>
-                    {t("account.actions.whatsApp")}
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    styles.detailsBtn,
-                    {
-                      backgroundColor: colors.surfaceMuted,
-                      borderColor: colors.border,
-                    },
-                  ]}
-                >
-                  <Text style={styles.detailsLabel}>
-                    {t("account.actions.details")}
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    styles.removeBtn,
-                    {
-                      backgroundColor: "rgba(239, 68, 68, 0.14)",
-                      borderColor: "rgba(239, 68, 68, 0.24)",
-                    },
-                  ]}
-                  onPress={() => void removeSaved(p.id)}
-                >
-                  <Text style={styles.removeLabel}>
-                    {t("account.actions.remove")}
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          ))
+          savedProperties.map((property) => {
+            // Convert saved property format to PropertyItem format
+            const propertyItem = {
+              id: property.id,
+              title: property.title,
+              location: property.location,
+              price: property.price,
+              image: property.image,
+              age: "N/A",
+              beds: 0,
+              baths: 0,
+              area: 0,
+              featured: false,
+              forSale: true,
+              verified: false,
+            };
+
+            return <PropertyCard key={property.id} property={propertyItem} onSaveToggle={refresh} />;
+          })
         )}
       </ScrollView>
     </View>
@@ -136,47 +102,73 @@ export default function SavedScreen() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1 },
-  content: { padding: 16, paddingBottom: 120, gap: 12 },
-  header: { fontSize: 18, fontWeight: "900" },
-  sub: { marginTop: 4, marginBottom: 8 },
-  empty: { marginTop: 40, alignItems: "center" },
-  emptyTitle: { fontWeight: "800", fontSize: 16 },
-  emptyText: { marginTop: 8 },
-  cardWrap: { gap: 8 },
-  cardActions: {
+  center: { justifyContent: "center", alignItems: "center" },
+  header: {
+    paddingTop: 14,
+    paddingHorizontal: 16,
+    paddingBottom: 10,
     flexDirection: "row",
-    gap: 8,
-    marginHorizontal: 16,
+    alignItems: "center",
+    gap: 12,
+    borderBottomWidth: 1,
+  },
+  backButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backLabel: {
+    fontSize: 24,
+    lineHeight: 24,
+    fontWeight: "700",
+    marginTop: -2,
+  },
+  headerText: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "900",
+  },
+  headerSub: {
+    fontSize: 12,
+    fontWeight: "600",
+    marginTop: 2,
+  },
+  content: {
+    padding: 16,
+    paddingBottom: 120,
+    gap: 12,
+  },
+  emptyContainer: {
+    flex: 1,
+    paddingTop: 60,
+  },
+  emptyCard: {
+    borderWidth: 1,
+    borderRadius: 24,
+    padding: 32,
+    alignItems: "center",
+    gap: 12,
+  },
+  emptyIcon: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 8,
   },
-  callBtn: {
-    flex: 1,
-    borderRadius: 10,
-    padding: 10,
-    alignItems: "center",
+  emptyTitle: {
+    fontWeight: "800",
+    fontSize: 18,
+    textAlign: "center",
   },
-  callLabel: { color: "white", fontWeight: "800" },
-  whatsappBtn: {
-    flex: 1,
-    borderRadius: 10,
-    padding: 10,
-    alignItems: "center",
+  emptyText: {
+    fontSize: 14,
+    textAlign: "center",
+    lineHeight: 20,
   },
-  whatsappLabel: { color: "white", fontWeight: "800" },
-  detailsBtn: {
-    flex: 1,
-    borderRadius: 10,
-    padding: 10,
-    alignItems: "center",
-    borderWidth: 1,
-  },
-  detailsLabel: { color: "#1D4ED8", fontWeight: "800" },
-  removeBtn: {
-    flex: 1,
-    borderRadius: 10,
-    padding: 10,
-    alignItems: "center",
-    borderWidth: 1,
-  },
-  removeLabel: { color: "#EF4444", fontWeight: "800" },
 });

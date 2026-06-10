@@ -1,5 +1,5 @@
-import { useAuthGate } from "@/auth/use-auth-gate";
 import { type PropertyItem } from "@/data/property";
+import { usePropertySaved } from "@/hooks/use-saved-properties";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
@@ -18,19 +18,35 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 type PropertyCardProps = {
   property: PropertyItem;
+  onSaveToggle?: () => void;
 };
 
-export function PropertyCard({ property }: PropertyCardProps) {
+export function PropertyCard({ property, onSaveToggle }: PropertyCardProps) {
   const { colors } = useAppTheme();
   const { t } = useI18n();
   const router = useRouter();
-  const { requireAuth } = useAuthGate();
+  const { isSaved, toggleSaved } = usePropertySaved(property.id);
 
   const handlePress = () => {
     router.push({
       pathname: "/property-details",
       params: { id: property.id, source: "property" },
     });
+  };
+
+  const handleToggleSave = async () => {
+    try {
+      await toggleSaved({
+        id: property.id,
+        title: property.title,
+        location: property.location,
+        price: property.price,
+        image: property.image,
+      });
+      onSaveToggle?.();
+    } catch (error) {
+      console.error("Failed to toggle save:", error);
+    }
   };
 
   return (
@@ -81,14 +97,15 @@ export function PropertyCard({ property }: PropertyCardProps) {
         {/* Top right icon */}
         <Pressable
           style={styles.favoriteButton}
-          onPress={() =>
-            requireAuth(() => router.push("/saved" as never), {
-              intent: "save-property",
-              redirectTo: `/property-details?id=${property.id}&source=property`,
-            })
-          }
+          onPress={handleToggleSave}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Heart size={16} color={colors.textMuted} />
+          <Heart
+            size={16}
+            color={isSaved ? "#EF4444" : colors.textMuted}
+            fill={isSaved ? "#EF4444" : "white"}
+            strokeWidth={2}
+          />
         </Pressable>
 
         {/* Bottom right price */}

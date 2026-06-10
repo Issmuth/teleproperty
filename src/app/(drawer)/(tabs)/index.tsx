@@ -25,6 +25,10 @@ import {
 } from "@/data/search-filters";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
+import {
+  createFilterLabelMap,
+  translateFilterConfig,
+} from "@/utils/filter-translations";
 
 export default function HomeScreen() {
   const { t } = useI18n();
@@ -91,154 +95,9 @@ export default function HomeScreen() {
         ? projectsSearchFiltersConfig
         : propertySearchFiltersConfig;
 
-    const labelMap: Record<string, string> = {
-      "Advanced Filters": t("home.filters.title"),
-      "Project Filters": t("home.filters.title"), // fallback if needed
-      "Refine home searches by listing type, location, and property details": t(
-        "home.filters.subtitle",
-      ),
-      "Refine property listings and sort by what matters most": t(
-        "home.filters.subtitle", // use same subtitle or handle differently?
-      ),
-      "Filter by city, project status, and verified developers": t(
-        "home.filters.subtitle", // fallback
-      ),
-      City: t("home.filters.city"),
-      "Property Type": t("home.filters.propertyType"),
-      "All Cities": t("home.filters.allCities"),
-      "Addis Ababa": t("home.filters.addisAbaba"),
-      Adama: t("home.filters.adama"),
-      Hawassa: t("home.filters.hawassa"),
-      "Bahir Dar": t("home.filters.bahirDar"),
-      "All Types": t("home.filters.allTypes"),
-      Apartment: t("home.filters.apartment"),
-      House: t("home.filters.house"),
-      Villa: t("home.filters.villa"),
-      Land: t("home.filters.land"),
-      "Price Range (ETB)": t("home.filters.priceRangeEtb"),
-      "Min 0": t("home.filters.min0"),
-      "Max Any": t("home.filters.maxAny"),
-      "< 1M": t("home.filters.lt1m"),
-      "1M-3M": t("home.filters.oneToThreeM"),
-      "3M-8M": t("home.filters.threeToEightM"),
-      "8M+": t("home.filters.eightMPlus"),
-      "< 20K/mo": t("home.filters.lt20kMonth"),
-      Bedrooms: t("home.filters.bedrooms"),
-      Bathrooms: t("home.filters.bathrooms"),
-      Any: t("home.filters.any"),
-      Studio: t("home.filters.studio"),
-      "5+": t("home.filters.fivePlus"),
-      "4+": t("home.filters.fourPlus"),
-      "Property Age": t("home.filters.propertyAge"),
-      "Any Age": t("home.filters.anyAge"),
-      "New (0–2 yrs)": t("home.filters.new0To2"),
-      "Recent (3–5 yrs)": t("home.filters.recent3To5"),
-      "5–10 yrs": t("home.filters.fiveToTen"),
-      "10–20 yrs": t("home.filters.tenToTwenty"),
-      "20+ yrs": t("home.filters.twentyPlus"),
-      Amenities: t("home.filters.amenities"),
-      Parking: t("home.filters.parking"),
-      Generator: t("home.filters.generator"),
-      Elevator: t("home.filters.elevator"),
-      "24/7 Security": t("home.filters.security24"),
-      "Water Tank": t("home.filters.waterTank"),
-      Furnished: t("home.filters.furnished"),
-      Balcony: t("home.filters.balcony"),
-      "Garden / Compound": t("home.filters.gardenCompound"),
-      CCTV: t("home.filters.cctv"),
-      "WiFi / Fibre": t("home.filters.wifiFibre"),
-      Gym: t("home.filters.gym"),
-      "Swimming Pool": t("home.filters.swimmingPool"),
-      // specific project filters mappings if they don't have localization yet:
-      Developer: "Developer",
-      "All Developers": "All Developers",
-      "Capital Real Estate": "Capital Real Estate",
-      "Sunshine Developers PLC": "Sunshine Developers PLC",
-      "Modern Developments Ltd": "Modern Developments Ltd",
-      "Blue Horizon Homes": "Blue Horizon Homes",
-      Status: "Status",
-      All: "All",
-      "Off-plan": "Off-plan",
-      "U/C": "U/C",
-      Ready: "Ready",
-      "Verified Developers Only": "Verified Developers Only",
-      "Show only developers verified by TeleProperty":
-        "Show only developers verified by TeleProperty",
-      "Verified Listings Only": "Verified Listings Only",
-      "Show only TeleProperty verified properties":
-        "Show only TeleProperty verified properties",
-      "Sort By": "Sort By",
-      Newest: "Newest",
-      "Price: Low-High": "Price: Low-High",
-      "Price: High-Low": "Price: High-Low",
-      "Most Popular": "Most Popular",
-    };
-
-    const translate = (value: string) => labelMap[value] ?? value;
-
-    return {
-      ...rawConfig,
-      title: translate(rawConfig.title),
-      subtitle: rawConfig.subtitle ? translate(rawConfig.subtitle) : undefined,
-      sections: rawConfig.sections.map((section) => {
-        if (section.kind === "segmented") {
-          return {
-            ...section,
-            label: translate(section.label),
-            options: section.options.map((option) => ({
-              ...option,
-              label: translate(option.label),
-            })),
-          };
-        }
-
-        if (section.kind === "dual-select") {
-          return {
-            ...section,
-            fields: section.fields.map((field) => ({
-              ...field,
-              label: translate(field.label),
-              value: translate(field.value),
-              options: field.options.map((option) => ({
-                ...option,
-                label: translate(option.label),
-              })),
-            })) as typeof section.fields,
-          };
-        }
-
-        if (section.kind === "range") {
-          return {
-            ...section,
-            label: translate(section.label),
-            minLabel: translate(section.minLabel),
-            maxLabel: translate(section.maxLabel),
-            quickOptions: section.quickOptions.map((option) => ({
-              ...option,
-              label: translate(option.label),
-            })),
-          };
-        }
-
-        if (section.kind === "chips") {
-          return {
-            ...section,
-            label: translate(section.label),
-            options: section.options.map((option) => ({
-              ...option,
-              label: translate(option.label),
-            })),
-          };
-        }
-
-        return {
-          ...section,
-          label: translate(section.label),
-          description: translate(section.description),
-        };
-      }),
-    };
-  }, [t]);
+    const labelMap = createFilterLabelMap(t);
+    return translateFilterConfig(rawConfig, labelMap);
+  }, [t, activeSegment]);
 
   return (
     <ScrollView
