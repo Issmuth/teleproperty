@@ -2,6 +2,8 @@ import { categoryStories, type Story } from "@/data/home";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { Image } from "expo-image";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { X } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -27,6 +29,7 @@ const STORY_DURATION = 4200;
 export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
   const { colors } = useAppTheme();
   const { t } = useI18n();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
   const progress = useRef(new Animated.Value(0)).current;
@@ -129,6 +132,16 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
     outputRange: [0, (width - 32) / total - 6],
   });
 
+  const handleCtaPress = () => {
+    if (active.pathname) {
+      onClose();
+      router.push({
+        pathname: active.pathname as never,
+        params: active.params || {},
+      });
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -141,6 +154,13 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
           source={{ uri: active.image }}
           style={[styles.hero, { height: height }]}
           contentFit="cover"
+        />
+
+        {/* Bottom gradient overlay for text visibility */}
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.3)", "rgba(0,0,0,0.8)"]}
+          style={styles.gradientOverlay}
+          pointerEvents="none"
         />
 
         <View style={[styles.topBar, { top: insets.top + 20 }]}>
@@ -189,7 +209,7 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
         >
           <View 
             style={[styles.bottomMeta, { paddingBottom: Math.max(insets.bottom, 20) + 20 }]} 
-            pointerEvents="none"
+            pointerEvents="box-none"
           >
             {active.title ? (
               <Text style={styles.storyTitle}>{active.title}</Text>
@@ -198,9 +218,9 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
               <Text style={styles.storySubtitle}>{active.subtitle}</Text>
             ) : null}
             {active.cta ? (
-              <View style={styles.ctaBtn}>
+              <Pressable style={styles.ctaBtn} onPress={handleCtaPress}>
                 <Text style={styles.ctaText}>{active.cta}</Text>
-              </View>
+              </Pressable>
             ) : null}
           </View>
         </Pressable>
@@ -212,6 +232,13 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "black" },
   hero: { width: "100%", position: "absolute", top: 0, left: 0 },
+  gradientOverlay: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "50%",
+  },
   topBar: { position: "absolute", left: 16, right: 16 },
   progressRow: { flexDirection: "row", gap: 6 },
   progressTrack: {

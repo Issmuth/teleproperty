@@ -154,6 +154,7 @@ export default function HomeScreen() {
             <HomeSectionHeader
               title={t("home.featuredProjects")}
               actionLabel={t("home.seeAll")}
+              onPressAction={() => router.push("/projects" as never)}
             />
           </View>
           <HomeCarousel
@@ -186,6 +187,7 @@ export default function HomeScreen() {
             <HomeSectionHeader
               title={t("home.featuredProperties")}
               actionLabel={t("home.browseAll")}
+              onPressAction={() => router.push("/property" as never)}
             />
           </View>
           <HomeCarousel

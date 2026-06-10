@@ -85,6 +85,8 @@ export function AppSearchBar({
           placeholder={placeholder}
           placeholderTextColor={colors.textMuted}
           style={[styles.input, { color: colors.text }]}
+          numberOfLines={1}
+          multiline={false}
         />
       </View>
 

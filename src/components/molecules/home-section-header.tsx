@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useAppTheme } from "@/theme/app-theme";
@@ -18,10 +19,11 @@ export function HomeSectionHeader({
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
-      <Pressable onPress={onPressAction}>
+      <Pressable onPress={onPressAction} style={styles.actionButton}>
         <Text style={[styles.action, { color: colors.activeText }]}>
-          {actionLabel} →
+          {actionLabel}
         </Text>
+        <ChevronRight size={16} color={colors.activeText} strokeWidth={2.5} />
       </Pressable>
     </View>
   );
@@ -36,6 +38,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "800",
+  },
+  actionButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   action: {
     fontSize: 13,

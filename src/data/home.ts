@@ -116,6 +116,8 @@ export type Story = {
   title?: string;
   subtitle?: string;
   cta?: string;
+  pathname?: string;
+  params?: Record<string, string>;
 };
 
 export type HomeServiceBannerItem = {
@@ -243,64 +245,98 @@ export const homeServiceBanners: HomeServicesGroup[] = [
 export const categoryStories: Record<string, Story[]> = {
   buy: [
     {
-      id: "buy-1",
+      id: "property-1",
       image:
         "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?auto=format&fit=crop&w=1200&q=80",
-      title: "Find Your Dream Home",
-      subtitle: "Explore beautiful properties in prime locations.",
-      cta: "Browse now",
+      title: "Modern Family Villa",
+      subtitle: "4 Beds · 3 Baths · 350 m² · Megenagna, Addis Ababa · ETB 8.4M",
+      cta: "View details",
+      pathname: "/property-details",
+      params: { id: "prop-villa-1", source: "story" },
     },
     {
-      id: "buy-2",
+      id: "property-2",
       image:
         "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
-      title: "Luxury Villas",
-      subtitle: "Discover spacious homes with premium amenities.",
-      cta: "See villas",
+      title: "Luxury Penthouse Suite",
+      subtitle: "3 Beds · 2 Baths · 280 m² · 22, Addis Ababa · ETB 12.5M",
+      cta: "View details",
+      pathname: "/property-details",
+      params: { id: "prop-penthouse-1", source: "story" },
     },
     {
-      id: "buy-3",
+      id: "property-3",
       image:
         "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
-      title: "Modern Apartments",
-      subtitle: "Live in the heart of the city with great views.",
-      cta: "View apartments",
+      title: "Contemporary Apartment",
+      subtitle: "2 Beds · 2 Baths · 180 m² · Bole, Addis Ababa · ETB 5.8M",
+      cta: "View details",
+      pathname: "/property-details",
+      params: { id: "prop-apt-1", source: "story" },
     },
   ],
   rent: [
     {
-      id: "rent-1",
+      id: "rental-1",
       image:
         "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
-      title: "Affordable Rentals",
-      subtitle: "Find great places to rent within your budget.",
-      cta: "Explore rentals",
+      title: "Furnished Studio Apartment",
+      subtitle: "1 Bed · 1 Bath · 65 m² · CMC, Addis Ababa · ETB 18K/month",
+      cta: "View details",
+      pathname: "/property-details",
+      params: { id: "rent-studio-1", source: "story" },
     },
     {
-      id: "rent-2",
+      id: "rental-2",
       image:
         "https://images.unsplash.com/photo-1502672260266-1c1de2d1d0cb?auto=format&fit=crop&w=1200&q=80",
-      title: "Temporary Stays",
-      subtitle: "Flexible leasing options for short-term stays.",
-      cta: "Learn more",
+      title: "Modern 2BR Apartment",
+      subtitle: "2 Beds · 1 Bath · 95 m² · Kazanchis, Addis Ababa · ETB 28K/month",
+      cta: "View details",
+      pathname: "/property-details",
+      params: { id: "rent-2br-1", source: "story" },
+    },
+    {
+      id: "rental-3",
+      image:
+        "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?auto=format&fit=crop&w=1200&q=80",
+      title: "Spacious Family Home",
+      subtitle: "3 Beds · 2 Baths · 220 m² · Megenagna, Addis Ababa · ETB 45K/month",
+      cta: "View details",
+      pathname: "/property-details",
+      params: { id: "rent-house-1", source: "story" },
     },
   ],
   projects: [
     {
-      id: "proj-1",
+      id: "project-1",
       image:
         "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-      title: "New Developments",
-      subtitle: "Invest early in upcoming real estate projects.",
-      cta: "See projects",
+      title: "Diamond Plaza Complex",
+      subtitle: "320+ units · Under Construction · Kazanchis · From ETB 3.2M",
+      cta: "View project",
+      pathname: "/project-details",
+      params: { id: "diamond-plaza", source: "story" },
     },
     {
-      id: "proj-2",
+      id: "project-2",
       image:
         "https://images.unsplash.com/photo-1541881451213-911293a9d905?auto=format&fit=crop&w=1200&q=80",
-      title: "Commercial Spaces",
-      subtitle: "Premium office spaces for your growing business.",
-      cta: "View commercial",
+      title: "Skyline Residence",
+      subtitle: "180+ units · Launch Soon · Bole · From ETB 2.7M",
+      cta: "View project",
+      pathname: "/project-details",
+      params: { id: "skyline-residence", source: "story" },
+    },
+    {
+      id: "project-3",
+      image:
+        "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
+      title: "Green Valley Homes",
+      subtitle: "150+ units · Pre-Launch · Lebu · From ETB 4.5M",
+      cta: "View project",
+      pathname: "/project-details",
+      params: { id: "green-valley", source: "story" },
     },
   ],
   agents: [
@@ -308,17 +344,31 @@ export const categoryStories: Record<string, Story[]> = {
       id: "agent-1",
       image:
         "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&q=80",
-      title: "Expert Agents",
-      subtitle: "Connect with verified brokers to guide your search.",
-      cta: "Find an agent",
+      title: "Sarah Bekele",
+      subtitle: "Verified Broker · 8 years experience · 250+ properties sold · 4.9★",
+      cta: "View profile",
+      pathname: "/(account)/broker-hub",
+      params: { id: "agent-sarah", source: "story" },
     },
     {
       id: "agent-2",
       image:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80",
-      title: "Sell Your Property",
-      subtitle: "Our agents can help you get the best market value.",
-      cta: "Get started",
+      title: "Michael Tadesse",
+      subtitle: "Verified Broker · 5 years experience · 180+ properties sold · 4.8★",
+      cta: "View profile",
+      pathname: "/(account)/broker-hub",
+      params: { id: "agent-michael", source: "story" },
+    },
+    {
+      id: "agent-3",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
+      title: "Daniel Alemu",
+      subtitle: "Verified Broker · 12 years experience · 400+ properties sold · 5.0★",
+      cta: "View profile",
+      pathname: "/(account)/broker-hub",
+      params: { id: "agent-daniel", source: "story" },
     },
   ],
 };
