@@ -5,7 +5,12 @@ type AuthRouteParams = {
   intent?: string;
 };
 
-export const protectedRoutePrefixes = ["/saved", "/post-property"] as const;
+export const protectedRoutePrefixes = [
+  "/saved",
+  "/post-property",
+  "/(drawer)/(tabs)/(property)/post-property",
+  "/(drawer)/(tabs)/(account)/saved",
+] as const;
 
 export function isProtectedRoute(pathname: string) {
   return protectedRoutePrefixes.some((prefix) => pathname.startsWith(prefix));

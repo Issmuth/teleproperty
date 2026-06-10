@@ -81,11 +81,12 @@ function NavigationMiddleware() {
       router.replace({
         pathname: "/auth" as never,
         params: {
-          intent: pathname.startsWith("/saved")
-            ? "saved-properties"
-            : pathname.startsWith("/post-property")
-              ? "post-property"
-              : "authenticate",
+          intent:
+            pathname.includes("saved")
+              ? "saved-properties"
+              : pathname.includes("post-property")
+                ? "post-property"
+                : "authenticate",
           redirectTo: pathname,
         },
       });

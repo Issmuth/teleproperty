@@ -12,16 +12,16 @@ import { HomeCategoryStory } from "@/components/organisms/home-category-story";
 import { HomeHero } from "@/components/organisms/home-hero";
 import { SearchFiltersSheet } from "@/components/organisms/search-filters-sheet";
 import {
-    featuredProjects,
-    featuredProperties,
-    homeCategories,
-    homeSegments,
-    homeServiceBanners,
-    type HomeSegmentKey,
+  featuredProjects,
+  featuredProperties,
+  homeCategories,
+  homeSegments,
+  homeServiceBanners,
+  type HomeSegmentKey,
 } from "@/data/home";
 import {
-    projectsSearchFiltersConfig,
-    propertySearchFiltersConfig,
+  projectsSearchFiltersConfig,
+  propertySearchFiltersConfig,
 } from "@/data/search-filters";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
@@ -252,7 +252,7 @@ export default function HomeScreen() {
           onSegmentChange={(key) => setActiveSegment(key as HomeSegmentKey)}
           segments={segments}
           onFilterPress={() => setFiltersVisible(true)}
-          onPostPress={() => router.push("/post-property" as never)}
+          onPostPress={() => router.push("/(drawer)/(tabs)/(property)/post-property" as never)}
           searchQuery={searchQuery}
           onSearchQueryChange={setSearchQuery}
           onSearchPress={() => {
