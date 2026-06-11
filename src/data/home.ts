@@ -347,8 +347,8 @@ export const categoryStories: Record<string, Story[]> = {
       title: "Sarah Bekele",
       subtitle: "Verified Broker · 8 years experience · 250+ properties sold · 4.9★",
       cta: "View profile",
-      pathname: "/(account)/broker-hub",
-      params: { id: "agent-sarah", source: "story" },
+      pathname: "/agent-profile",
+      params: { id: "agent-sarah" },
     },
     {
       id: "agent-2",
@@ -357,8 +357,8 @@ export const categoryStories: Record<string, Story[]> = {
       title: "Michael Tadesse",
       subtitle: "Verified Broker · 5 years experience · 180+ properties sold · 4.8★",
       cta: "View profile",
-      pathname: "/(account)/broker-hub",
-      params: { id: "agent-michael", source: "story" },
+      pathname: "/agent-profile",
+      params: { id: "agent-michael" },
     },
     {
       id: "agent-3",
@@ -367,8 +367,8 @@ export const categoryStories: Record<string, Story[]> = {
       title: "Daniel Alemu",
       subtitle: "Verified Broker · 12 years experience · 400+ properties sold · 5.0★",
       cta: "View profile",
-      pathname: "/(account)/broker-hub",
-      params: { id: "agent-daniel", source: "story" },
+      pathname: "/agent-profile",
+      params: { id: "agent-daniel" },
     },
   ],
 };

@@ -17,8 +17,10 @@ import {
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
+import { SubscriptionSheet } from "@/components/organisms/subscription-sheet";
 import { sampleProperties } from "@/data/property";
 import { usePropertySaved } from "@/hooks/use-saved-properties";
+import { useSubscriptionSheet } from "@/hooks/use-subscription-sheet";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { shortenPriceLabel } from "@/utils/number-format";
@@ -228,6 +230,7 @@ export default function PropertyDetails() {
   );
 
   const { isSaved, toggleSaved } = usePropertySaved(id || "");
+  const { visible, openSheet, closeSheet } = useSubscriptionSheet();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
@@ -407,7 +410,13 @@ export default function PropertyDetails() {
         </SectionCard>
 
         <SectionCard title={t("property.details.agent")} colors={colors}>
-          <View style={styles.agentRow}>
+          <Pressable 
+            style={styles.agentRow}
+            onPress={() => router.push({
+              pathname: "/agent-profile",
+              params: { id: "agent-1" }
+            })}
+          >
             <View
               style={[
                 styles.agentAvatar,
@@ -434,7 +443,7 @@ export default function PropertyDetails() {
                 </Text>
               </View>
             </View>
-          </View>
+          </Pressable>
         </SectionCard>
 
         <SectionCard
@@ -461,7 +470,7 @@ export default function PropertyDetails() {
                 styles.unlockButton,
                 { backgroundColor: colors.activeText },
               ]}
-              onPress={() => router.push("/subscriptions" as never)}
+              onPress={openSheet}
             >
               <Text style={styles.unlockButtonText}>
                 {t("property.details.subscribeToUnlock")}
@@ -566,6 +575,8 @@ export default function PropertyDetails() {
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
+
+      <SubscriptionSheet visible={visible} onClose={closeSheet} />
     </View>
   );
 }

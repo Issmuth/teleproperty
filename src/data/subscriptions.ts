@@ -1,27 +1,29 @@
+import { Crown, Star, Zap, type LucideIcon } from "lucide-react-native";
+
 export type SubscriptionPlan = {
   id: string;
   name: string;
   price: string;
   period: string;
-  icon: string;
-  iconBg: string;
+  icon: LucideIcon;
+  iconColor: string;
   cardBg: string;
   leads: string;
   listings: string;
   featured: string;
   popular: boolean;
   bestValue: boolean;
-  features: readonly string[];
+  features: string[];
 };
 
 export const subscriptionPlans: SubscriptionPlan[] = [
   {
     id: "basic",
-    name: "Basic Broker Plan",
+    name: "Basic Broker",
     price: "ETB 800",
     period: "/month",
-    icon: "⭐",
-    iconBg: "#1E293B",
+    icon: Star,
+    iconColor: "#94A3B8",
     cardBg: "#1E293B",
     leads: "20",
     listings: "10",
@@ -39,11 +41,11 @@ export const subscriptionPlans: SubscriptionPlan[] = [
   },
   {
     id: "pro",
-    name: "Professional Broker Plan",
+    name: "Professional",
     price: "ETB 1,500",
     period: "/month",
-    icon: "⚡",
-    iconBg: "rgba(255,255,255,0.2)",
+    icon: Zap,
+    iconColor: "#FFF",
     cardBg: "#16A34A",
     leads: "60",
     listings: "30",
@@ -63,11 +65,11 @@ export const subscriptionPlans: SubscriptionPlan[] = [
   },
   {
     id: "agency",
-    name: "Developer / Agency Plan",
+    name: "Agency",
     price: "ETB 3,500",
     period: "/month",
-    icon: "👑",
-    iconBg: "rgba(255,255,255,0.2)",
+    icon: Crown,
+    iconColor: "#FFF",
     cardBg: "#EA580C",
     leads: "∞",
     listings: "∞",
@@ -87,3 +89,13 @@ export const subscriptionPlans: SubscriptionPlan[] = [
     ],
   },
 ];
+
+// Mock subscription state - in real app this would come from backend/API
+export const mockUserSubscription = {
+  hasSubscription: true,
+  planId: "pro",
+  startDate: new Date(2024, 0, 15),
+  nextBilling: new Date(2024, 1, 15),
+  autoRenew: true,
+  transactionRef: "TLP-575485",
+};

@@ -302,7 +302,13 @@ export default function ProjectDetailsScreen() {
           </SectionCard>
 
           <SectionCard colors={colors}>
-            <View style={styles.developerCard}>
+            <Pressable 
+              style={styles.developerCard}
+              onPress={() => router.push({
+                pathname: "/agent-profile",
+                params: { id: "dev-1" }
+              })}
+            >
               <View
                 style={[
                   styles.developerAvatar,
@@ -335,7 +341,7 @@ export default function ProjectDetailsScreen() {
                 </View>
               </View>
               <ShieldCheck size={18} color="#14B37B" />
-            </View>
+            </Pressable>
           </SectionCard>
 
           <View style={styles.actionsRow}>

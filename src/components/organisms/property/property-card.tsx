@@ -1,5 +1,7 @@
+import { SubscriptionSheet } from "@/components/organisms/subscription-sheet";
 import { type PropertyItem } from "@/data/property";
 import { usePropertySaved } from "@/hooks/use-saved-properties";
+import { useSubscriptionSheet } from "@/hooks/use-subscription-sheet";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { palette } from "@/theme/palette";
@@ -26,6 +28,7 @@ export function PropertyCard({ property, onSaveToggle }: PropertyCardProps) {
   const { t } = useI18n();
   const router = useRouter();
   const { isSaved, toggleSaved } = usePropertySaved(property.id);
+  const { visible, openSheet, closeSheet } = useSubscriptionSheet();
 
   const handlePress = () => {
     router.push({
@@ -159,7 +162,7 @@ export function PropertyCard({ property, onSaveToggle }: PropertyCardProps) {
 
         <Pressable
           style={[styles.contactButton, { backgroundColor: colors.activeText }]}
-          onPress={() => router.push('/subscriptions')}
+          onPress={openSheet}
         >
           <Lock size={16} color="white" />
           <Text style={styles.contactButtonText}>
@@ -167,6 +170,8 @@ export function PropertyCard({ property, onSaveToggle }: PropertyCardProps) {
           </Text>
         </Pressable>
       </View>
+
+      <SubscriptionSheet visible={visible} onClose={closeSheet} />
     </Pressable>
   );
 }

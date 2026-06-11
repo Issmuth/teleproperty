@@ -32,9 +32,13 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const progress = useRef(new Animated.Value(0)).current;
   const animRef = useRef<Animated.CompositeAnimation | null>(null);
   const indexRef = useRef(index);
+  const pausedProgressValue = useRef(0);
+  const pressStartTime = useRef<number>(0);
+  const LONG_PRESS_THRESHOLD = 150; // milliseconds to distinguish tap from hold
 
   const stories: Story[] = (categoryKey && categoryStories[categoryKey]) || [];
   const total = stories.length;
@@ -76,6 +80,7 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
     progress.setValue(0);
     indexRef.current = index;
     animRef.current?.stop?.();
+    pausedProgressValue.current = 0;
 
     const anim = Animated.timing(progress, {
       toValue: 1,
@@ -97,6 +102,42 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
 
     return () => anim.stop();
   }, [index, visible, total, progress, onClose]);
+
+  // Handle pause/resume
+  useEffect(() => {
+    if (!visible || total === 0) return;
+
+    if (isPaused) {
+      // Pause: stop animation and save current progress
+      animRef.current?.stop?.();
+      progress.stopAnimation((value) => {
+        pausedProgressValue.current = value;
+      });
+    } else {
+      // Resume: continue from saved progress
+      const remainingProgress = 1 - pausedProgressValue.current;
+      const remainingDuration = STORY_DURATION * remainingProgress;
+
+      if (remainingDuration > 0) {
+        const anim = Animated.timing(progress, {
+          toValue: 1,
+          duration: remainingDuration,
+          useNativeDriver: false,
+        });
+        animRef.current = anim;
+        anim.start(({ finished }) => {
+          if (!finished) return;
+          if (indexRef.current < total - 1) {
+            const nextIndex = indexRef.current + 1;
+            indexRef.current = nextIndex;
+            setIndex(nextIndex);
+          } else {
+            onClose();
+          }
+        });
+      }
+    }
+  }, [isPaused, visible, total, progress, onClose]);
 
   if (!categoryKey || total === 0) return null;
 
@@ -201,10 +242,20 @@ export function HomeCategoryStory({ visible, categoryKey, onClose }: Props) {
 
         <Pressable
           style={styles.interactionArea}
-          onPress={({ nativeEvent }) => {
-            const x = nativeEvent.pageX;
-            if (x < width / 2) prev();
-            else next();
+          onPressIn={() => {
+            pressStartTime.current = Date.now();
+            setIsPaused(true);
+          }}
+          onPressOut={({ nativeEvent }) => {
+            const pressDuration = Date.now() - pressStartTime.current;
+            setIsPaused(false);
+            
+            // Only navigate if it was a quick tap (not a hold)
+            if (pressDuration < LONG_PRESS_THRESHOLD) {
+              const x = nativeEvent.pageX;
+              if (x < width / 2) prev();
+              else next();
+            }
           }}
         >
           <View 

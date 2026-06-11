@@ -1,26 +1,28 @@
 import { AppBottomSheet } from "@/components/atoms/app-bottom-sheet";
-import { mockUserSubscription, subscriptionPlans, type SubscriptionPlan } from "@/data/subscriptions";
+import { subscriptionPlans, type SubscriptionPlan } from "@/data/subscriptions";
 import { useAppTheme } from "@/theme/app-theme";
-import { useRouter } from "expo-router";
 import {
-  CheckCircle2,
-  CreditCard,
-  Lock,
-  RefreshCw,
-  Shield,
-  Sparkles,
+    CheckCircle2,
+    CreditCard,
+    Shield,
+    Sparkles,
 } from "lucide-react-native";
 import { useRef, useState } from "react";
 import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from "react-native";
 
 type Step = "plans" | "confirm" | "otp" | "success";
+
+type SubscriptionSheetProps = {
+  visible: boolean;
+  onClose: () => void;
+};
 
 function Stat({ val, label }: { val: string; label: string }) {
   return (
@@ -97,21 +99,15 @@ function PlanCard({
   );
 }
 
-export default function BrokerSubscriptionsScreen() {
-  const router = useRouter();
+export function SubscriptionSheet({ visible, onClose }: SubscriptionSheetProps) {
   const { colors, isDark } = useAppTheme();
   const [step, setStep] = useState<Step>("plans");
   const [selectedId, setSelectedId] = useState("pro");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [sheetVisible, setSheetVisible] = useState(false);
   const otpRefs = useRef<Array<TextInput | null>>([]);
 
   const plan = subscriptionPlans.find((p) => p.id === selectedId)!;
-  const userPlan = subscriptionPlans.find((p) => p.id === mockUserSubscription.planId);
-
-  const fmt = (d: Date) =>
-    `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
   const handleOtp = (val: string, i: number) => {
     const next = [...otp];
@@ -122,20 +118,24 @@ export default function BrokerSubscriptionsScreen() {
 
   const otpDone = otp.every((d) => d !== "");
 
-  const handleUpgradePress = () => {
-    setStep("plans");
-    setSheetVisible(true);
-  };
-
   const handleSubscribeSuccess = () => {
     setStep("success");
     setTimeout(() => {
-      setSheetVisible(false);
+      onClose();
       setStep("plans");
     }, 2000);
   };
 
-  const renderBottomSheetContent = () => {
+  const handleClose = () => {
+    onClose();
+    setTimeout(() => {
+      setStep("plans");
+      setPhone("");
+      setOtp(["", "", "", "", "", ""]);
+    }, 300);
+  };
+
+  const renderContent = () => {
     if (step === "plans") {
       return (
         <>
@@ -272,187 +272,33 @@ export default function BrokerSubscriptionsScreen() {
     return null;
   };
 
-  // Main screen showing current subscription
-  if (!mockUserSubscription.hasSubscription) {
-    // No subscription - show upgrade prompt
-    return (
-      <View style={[s.screen, { backgroundColor: colors.background }]}>
-        <View style={[s.bar, { backgroundColor: colors.background }]}>
-          <Pressable onPress={() => router.back()} style={[s.backBtn, { backgroundColor: colors.surface }]}>
-            <Text style={[s.backArrow, { color: colors.text }]}>‹</Text>
-          </Pressable>
-          <Text style={[s.barTitle, { color: colors.text }]}>Subscription</Text>
-        </View>
-        <ScrollView contentContainerStyle={s.scroll}>
-          <View style={[s.noSubCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <View style={[s.lockIconCircle, { backgroundColor: colors.surfaceMuted }]}>
-              <Lock size={32} color={colors.textMuted} strokeWidth={2} />
-            </View>
-            <Text style={[s.noSubTitle, { color: colors.text }]}>No Active Subscription</Text>
-            <Text style={[s.noSubText, { color: colors.textMuted }]}>
-              Subscribe to unlock verified leads, featured listings, and premium broker tools.
-            </Text>
-            <Pressable style={s.noSubBtn} onPress={handleUpgradePress}>
-              <Shield size={16} color="#FFF" strokeWidth={2.5} />
-              <Text style={s.btnLbl}>View Plans</Text>
-            </Pressable>
-          </View>
-        </ScrollView>
-
-        <AppBottomSheet 
-          visible={sheetVisible} 
-          onClose={() => setSheetVisible(false)}
-          title={
-            step === "plans" ? "Choose Your Plan" :
-            step === "confirm" ? "Confirm Subscription" :
-            step === "otp" ? "Enter OTP" :
-            "Success!"
-          }
-          subtitle={
-            step === "plans" ? "Monthly billing · Cancel anytime" :
-            step === "confirm" ? "Monthly plan · Cancel anytime" :
-            step === "otp" ? `Enter the 6-digit code sent to +251 ${phone}` :
-            undefined
-          }
-        >
-          {renderBottomSheetContent()}
-        </AppBottomSheet>
-      </View>
-    );
-  }
-
-  // Has subscription - show current plan
-  const UserIcon = userPlan?.icon;
-  
   return (
-    <View style={[s.screen, { backgroundColor: colors.background }]}>
-      <View style={[s.bar, { backgroundColor: colors.background }]}>
-        <Pressable onPress={() => router.back()} style={[s.backBtn, { backgroundColor: colors.surface }]}>
-          <Text style={[s.backArrow, { color: colors.text }]}>‹</Text>
-        </Pressable>
-        <Text style={[s.barTitle, { color: colors.text }]}>My Subscription</Text>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-        <View style={s.activeBanner}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flex: 1 }}>
-            <Shield size={18} color="#FFF" strokeWidth={2.5} />
-            <View>
-              <Text style={s.bannerTitle}>Subscription Active</Text>
-              <Text style={s.bannerSub}>{userPlan?.name} · Auto-renews monthly</Text>
-            </View>
-          </View>
-          <CheckCircle2 size={22} color="#FFF" strokeWidth={2.5} />
-        </View>
-
-        {userPlan && UserIcon && (
-          <View style={[s.planCard, { backgroundColor: userPlan.cardBg }]}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <View style={{ flex: 1 }}>
-                <Text style={[s.planName, { fontSize: 16 }]}>{userPlan.name} Plan</Text>
-                <Text style={s.planPeriodLine}>{userPlan.price}/month</Text>
-              </View>
-              <View style={[s.planIcon, { backgroundColor: "rgba(255,255,255,0.2)" }]}>
-                <UserIcon size={20} color={userPlan.iconColor} strokeWidth={2} />
-              </View>
-            </View>
-            <View style={s.statsRow}>
-              <Stat val={userPlan.leads} label="Leads" />
-              <Stat val={userPlan.listings} label="Listings" />
-              <Stat val={userPlan.featured} label="Featured" />
-            </View>
-          </View>
-        )}
-
-        <View style={[s.detailCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          {([
-            { label: "Monthly price", value: userPlan?.price, bold: true },
-            { label: "Start date", value: fmt(mockUserSubscription.startDate), bold: true },
-            { label: "Next billing", value: fmt(mockUserSubscription.nextBilling), bold: true },
-            { label: "Auto-renew", isToggle: true },
-          ] as Array<{ label: string; value?: string; bold?: boolean; isToggle?: boolean }>).map((row) => (
-            <View key={row.label} style={s.detailRow}>
-              <Text style={[s.detailLbl, { color: colors.textMuted }]}>{row.label}</Text>
-              {row.isToggle ? (
-                <View style={s.toggleBadge}>
-                  <RefreshCw size={11} color="#6366F1" strokeWidth={2.5} />
-                  <Text style={s.toggleTxt}>ON</Text>
-                </View>
-              ) : (
-                <Text style={[s.detailVal, { color: colors.text }, row.bold ? s.detailBold : undefined]}>
-                  {row.value}
-                </Text>
-              )}
-            </View>
-          ))}
-        </View>
-
-        {userPlan && (
-          <View style={[s.unlockedCard, { backgroundColor: isDark ? "rgba(22,163,74,0.12)" : "#F0FDF4", borderColor: "rgba(22,163,74,0.2)" }]}>
-            <View style={s.unlockedHead}>
-              <CheckCircle2 size={14} color="#16A34A" strokeWidth={2.5} />
-              <Text style={s.unlockedTitle}>Active Features</Text>
-            </View>
-            {userPlan.features.map((f) => (
-              <View key={f} style={s.featureRow}>
-                <CheckCircle2 size={13} color="#16A34A" strokeWidth={2.5} />
-                <Text style={[s.featureTxt, { color: isDark ? "#4ADE80" : "#15803D" }]}>{f}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        <Pressable style={[s.btn, { backgroundColor: colors.activeText }]} onPress={handleUpgradePress}>
-          <Text style={s.btnLbl}>Change Plan</Text>
-        </Pressable>
-        <Pressable onPress={() => router.back()} style={s.ghost}>
-          <Text style={[s.ghostLbl, { color: colors.textMuted }]}>← Back to Account</Text>
-        </Pressable>
-      </ScrollView>
-
-      <AppBottomSheet 
-        visible={sheetVisible} 
-        onClose={() => setSheetVisible(false)}
-        title={
-          step === "plans" ? "Choose Your Plan" :
-          step === "confirm" ? "Confirm Subscription" :
-          step === "otp" ? "Enter OTP" :
-          "Success!"
-        }
-        subtitle={
-          step === "plans" ? "Monthly billing · Cancel anytime" :
-          step === "confirm" ? "Monthly plan · Cancel anytime" :
-          step === "otp" ? `Enter the 6-digit code sent to +251 ${phone}` :
-          undefined
-        }
-      >
-        {renderBottomSheetContent()}
-      </AppBottomSheet>
-    </View>
+    <AppBottomSheet 
+      visible={visible} 
+      onClose={handleClose}
+      title={
+        step === "plans" ? "Choose Your Plan" :
+        step === "confirm" ? "Confirm Subscription" :
+        step === "otp" ? "Enter OTP" :
+        "Success!"
+      }
+      subtitle={
+        step === "plans" ? "Monthly billing · Cancel anytime" :
+        step === "confirm" ? "Monthly plan · Cancel anytime" :
+        step === "otp" ? `Enter the 6-digit code sent to +251 ${phone}` :
+        undefined
+      }
+    >
+      {renderContent()}
+    </AppBottomSheet>
   );
 }
 
 const s = StyleSheet.create({
-  screen: { flex: 1 },
-  bar: { paddingTop: 14, paddingHorizontal: 16, paddingBottom: 10, flexDirection: "row", alignItems: "center", gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, alignItems: "center", justifyContent: "center" },
-  backArrow: { fontSize: 24, lineHeight: 24, fontWeight: "700", marginTop: -2 },
-  barTitle: { fontSize: 18, fontWeight: "900" },
-  scroll: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 40, gap: 14 },
-
-  // No subscription
-  noSubCard: { borderRadius: 20, borderWidth: 1, padding: 32, alignItems: "center", gap: 16, marginTop: 20 },
-  lockIconCircle: { width: 80, height: 80, borderRadius: 40, alignItems: "center", justifyContent: "center" },
-  noSubTitle: { fontSize: 20, fontWeight: "900", textAlign: "center" },
-  noSubText: { fontSize: 14, fontWeight: "500", textAlign: "center", lineHeight: 21 },
-  noSubBtn: { backgroundColor: "#16A34A", borderRadius: 14, minHeight: 52, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, paddingHorizontal: 32, marginTop: 8 },
-
-  // Bottom sheet
   sheetScroll: { paddingBottom: 20, gap: 14 },
   sheetFooter: { paddingVertical: 16, paddingHorizontal: 20, borderTopWidth: 1, borderTopColor: "rgba(0,0,0,0.08)", marginTop: 10 },
   sheetSub: { fontSize: 14, fontWeight: "600", color: "#64748B" },
   sectionTitle: { fontSize: 16, fontWeight: "800", marginTop: 8 },
-
-  // Plan card
   planCard: { borderRadius: 18, padding: 16, gap: 14 },
   planCardTop: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
   planIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
@@ -477,19 +323,11 @@ const s = StyleSheet.create({
   featureRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   featureTxt: { fontSize: 13, fontWeight: "600", flex: 1, color: "rgba(255,255,255,0.95)" },
   moreFeatures: { fontSize: 12, fontWeight: "700", color: "rgba(255,255,255,0.7)", marginTop: 4 },
-
-  // Buttons
   btn: { backgroundColor: "#16A34A", borderRadius: 14, minHeight: 52, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10 },
   btnOff: { backgroundColor: "#94A3B8" },
   btnLbl: { color: "#FFF", fontSize: 15, fontWeight: "900" },
-  ghost: { alignItems: "center", paddingVertical: 8 },
-  ghostLbl: { fontSize: 14, fontWeight: "700" },
-
-  // Payment
   telebirrCard: { borderWidth: 2, borderRadius: 14, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12 },
   telebirrLabel: { fontSize: 16, fontWeight: "800" },
-
-  // Phone
   phoneCard: { borderWidth: 1, borderRadius: 16, padding: 16, gap: 12 },
   phoneLabel: { fontSize: 15, fontWeight: "800" },
   phoneRow: { flexDirection: "row", alignItems: "center", borderWidth: 1, borderRadius: 12, overflow: "hidden", minHeight: 50 },
@@ -497,31 +335,12 @@ const s = StyleSheet.create({
   prefixNum: { fontSize: 15, fontWeight: "800" },
   phoneSep: { width: 1, height: 28 },
   phoneInput: { flex: 1, paddingHorizontal: 16, fontSize: 16, fontWeight: "600" },
-
-  // OTP
   demoHint: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12 },
   demoTxt: { fontSize: 13, fontWeight: "700" },
   otpRow: { flexDirection: "row", gap: 10, justifyContent: "center", marginVertical: 20 },
   otpBox: { width: 50, height: 58, borderWidth: 1.5, borderRadius: 14, fontSize: 24, fontWeight: "900" },
-
-  // Success
-  successCircle: { width: 88, height: 88, borderRadius: 44, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginTop: 20, marginBottom: 16 },
+  successCircle: { width: 88, height: 88, borderRadius: 44, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 16 },
   successTitle: { fontSize: 26, fontWeight: "900", marginBottom: 8 },
   verifiedBadge: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "#16A34A", borderRadius: 999, paddingHorizontal: 20, paddingVertical: 12, marginVertical: 16 },
   verifiedLbl: { color: "#FFF", fontSize: 15, fontWeight: "900" },
-
-  // My Subscription
-  activeBanner: { backgroundColor: "#16A34A", borderRadius: 16, padding: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  bannerTitle: { color: "#FFF", fontSize: 15, fontWeight: "900" },
-  bannerSub: { color: "rgba(255,255,255,0.9)", fontSize: 13, fontWeight: "600", marginTop: 2 },
-  detailCard: { borderWidth: 1, borderRadius: 16, padding: 16, gap: 14 },
-  detailRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  detailLbl: { fontSize: 14, fontWeight: "600" },
-  detailVal: { fontSize: 14, fontWeight: "700" },
-  detailBold: { fontWeight: "900" },
-  toggleBadge: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "#EEF2FF", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 5 },
-  toggleTxt: { color: "#6366F1", fontSize: 13, fontWeight: "900" },
-  unlockedCard: { borderRadius: 16, padding: 16, gap: 12, borderWidth: 1 },
-  unlockedHead: { flexDirection: "row", alignItems: "center", gap: 8 },
-  unlockedTitle: { fontSize: 15, fontWeight: "900", color: "#16A34A" },
 });
