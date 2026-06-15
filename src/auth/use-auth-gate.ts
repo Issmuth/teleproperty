@@ -1,8 +1,8 @@
 import { useLocalSearchParams, usePathname, useRouter } from "expo-router";
 import { useCallback } from "react";
 
-import { useAuth } from "@/auth/auth-context";
 import { buildRoutePath, readSearchParam } from "@/auth/auth-routing";
+import { useAuth } from "@/hooks/use-auth";
 
 type AuthGateOptions = {
   intent?: string;

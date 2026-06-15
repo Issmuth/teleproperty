@@ -83,7 +83,7 @@ export default function HomeScreen() {
                 ...item,
                 title: t(item.titleKey),
                 subtitle: t(item.subtitleKey),
-              })) as typeof section.items,
+              })) as unknown as typeof section.items,
             },
       ),
     [t],
@@ -215,7 +215,7 @@ export default function HomeScreen() {
               ) : (
                 <View key={section.id} style={styles.halfGrid}>
                   {section.items.map((item) => (
-                    <HomeServiceBanner key={item.title} {...item} />
+                    <HomeServiceBanner title={""} subtitle={""} key={item.titleKey} {...item} />
                   ))}
                 </View>
               ),

@@ -1,7 +1,6 @@
 import { sampleAgents, type AgentProfile } from "@/data/agent-profile";
 import { useAppTheme } from "@/theme/app-theme";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { CommonActions } from "expo-router/build/react-navigation";
 import {
   BadgeCheck,
   ChevronLeft,
@@ -42,12 +41,7 @@ export default function AgentProfileScreen() {
       <View style={[styles.header, { backgroundColor: colors.background }]}>
         <Pressable
           onPress={() => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes:[{name: '(accounts)'}]
-              })
-            )
+            router.replace('/(drawer)/(tabs)/(account)/account')
             router.back()
           }}
           style={[styles.backBtn, { backgroundColor: colors.surface }]}

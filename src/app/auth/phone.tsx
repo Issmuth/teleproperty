@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ArrowRight } from "lucide-react-native";
+import { ArrowRight, Flag } from "lucide-react-native";
 import { useMemo } from "react";
 import {
     Pressable,
@@ -10,29 +10,31 @@ import {
     View,
 } from "react-native";
 
-import { useAuth } from "@/auth/auth-context";
 import { readAuthRouteParams, withAuthRouteParams } from "@/auth/auth-routing";
 import { AuthShell } from "@/components/organisms/auth/auth-shell";
 import { AuthStepper } from "@/components/organisms/auth/auth-stepper";
+import { useAuth } from "@/hooks/use-auth";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
 export default function PhoneAuthScreen() {
   const router = useRouter();
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const { draft, updateDraft } = useAuth();
   const params = readAuthRouteParams(
-    useLocalSearchParams<Record<string, string | string[]>>(),
+    useLocalSearchParams<Record<string, string | string[]>>()
   );
 
   const isContinueDisabled = useMemo(
     () => !draft.fullName.trim() || !draft.phoneNumber.trim(),
-    [draft.fullName, draft.phoneNumber],
+    [draft.fullName, draft.phoneNumber]
   );
 
   return (
     <AuthShell
-      title="TeleProperty"
-      subtitle="Ethiopia's #1 Property Platform"
+      title={t("auth.shell.title")}
+      subtitle={t("auth.shell.subtitle")}
       onBackPress={() => router.back()}
       onClosePress={() => router.replace("/")}
     >
@@ -44,20 +46,23 @@ export default function PhoneAuthScreen() {
 
         <View style={styles.copyBlock}>
           <Text style={[styles.heading, { color: colors.text }]}>
-            Enter Your Phone
+            {t("auth.phone.title")}
           </Text>
           <Text style={[styles.subheading, { color: colors.textMuted }]}>
-            We&apos;ll send a one-time code
+            {t("auth.phone.subtitle")}
           </Text>
         </View>
 
         <View style={styles.fieldGroup}>
-          <Text style={[styles.label, { color: colors.text }]}>Full Name</Text>
+          <Text style={[styles.label, { color: colors.text }]}>
+            {t("auth.phone.fullName")}
+          </Text>
           <TextInput
             value={draft.fullName}
             onChangeText={(value) => updateDraft({ fullName: value })}
-            placeholder="Your full name"
+            placeholder={t("auth.phone.fullNamePlaceholder")}
             placeholderTextColor={colors.textMuted}
+            autoCapitalize="words"
             style={[
               styles.input,
               {
@@ -76,19 +81,18 @@ export default function PhoneAuthScreen() {
               { backgroundColor: colors.surface, borderColor: colors.border },
             ]}
           >
-            <Text style={[styles.countryLabel, { color: colors.text }]}>
-              ET
-            </Text>
-            <Text style={[styles.countryCode, { color: colors.textMuted }]}>
+            <Flag size={16} color={colors.text} strokeWidth={2.5} />
+            <Text style={[styles.countryCode, { color: colors.text }]}>
               +251
             </Text>
           </View>
           <TextInput
             value={draft.phoneNumber}
             onChangeText={(value) => updateDraft({ phoneNumber: value })}
-            placeholder="9X XXX XXXX"
+            placeholder={t("auth.phone.phoneNumberPlaceholder")}
             placeholderTextColor={colors.textMuted}
             keyboardType="phone-pad"
+            maxLength={10}
             style={[
               styles.phoneInput,
               {
@@ -102,13 +106,14 @@ export default function PhoneAuthScreen() {
 
         <View style={styles.fieldGroup}>
           <Text style={[styles.label, { color: colors.text }]}>
-            Referral Code (Optional)
+            {t("auth.phone.referralCode")}
           </Text>
           <TextInput
             value={draft.referralCode}
             onChangeText={(value) => updateDraft({ referralCode: value })}
-            placeholder="e.g. TPF-BIRUK-001"
+            placeholder={t("auth.phone.referralCodePlaceholder")}
             placeholderTextColor={colors.textMuted}
+            autoCapitalize="characters"
             style={[
               styles.input,
               {
@@ -139,8 +144,9 @@ export default function PhoneAuthScreen() {
           ]}
         >
           <ArrowRight
-            size={16}
+            size={18}
             color={isContinueDisabled ? colors.textMuted : "#FFFFFF"}
+            strokeWidth={2.5}
           />
           <Text
             style={[
@@ -148,12 +154,12 @@ export default function PhoneAuthScreen() {
               { color: isContinueDisabled ? colors.textMuted : "#FFFFFF" },
             ]}
           >
-            Send OTP
+            {t("auth.phone.sendOtp")}
           </Text>
         </Pressable>
 
         <Text style={[styles.footerNote, { color: colors.textMuted }]}>
-          By continuing you agree to our Terms &amp; Privacy Policy
+          {t("auth.phone.termsNotice")}
         </Text>
       </ScrollView>
     </AuthShell>
@@ -185,7 +191,7 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   input: {
-    minHeight: 44,
+    minHeight: 48,
     borderRadius: 12,
     borderWidth: 1,
     paddingHorizontal: 14,
@@ -198,25 +204,21 @@ const styles = StyleSheet.create({
   },
   countryBox: {
     width: 88,
-    minHeight: 44,
+    minHeight: 48,
     borderRadius: 12,
     borderWidth: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
-  },
-  countryLabel: {
-    fontSize: 13,
-    fontWeight: "800",
+    gap: 8,
   },
   countryCode: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "800",
   },
   phoneInput: {
     flex: 1,
-    minHeight: 44,
+    minHeight: 48,
     borderRadius: 12,
     borderWidth: 1,
     paddingHorizontal: 14,

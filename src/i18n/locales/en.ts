@@ -743,6 +743,71 @@ export const en = {
     om: "Afan Oromo",
     ti: "Tigrigna",
   },
+  auth: {
+    index: {
+      title: "Sign in with your phone number",
+      subtitle: "Use OTP to continue to your account",
+      continueWithPhone: "Continue with Phone",
+      quickLogin: "Quick login with OTP",
+      termsNotice: "By continuing, you agree to our Terms of Service and Privacy Policy",
+    },
+    phone: {
+      title: "Enter Your Phone",
+      subtitle: "We'll send a one-time code",
+      fullName: "Full Name",
+      fullNamePlaceholder: "Your full name",
+      phoneNumber: "Phone Number",
+      phoneNumberPlaceholder: "9X XXX XXXX",
+      referralCode: "Referral Code (Optional)",
+      referralCodePlaceholder: "e.g. TPF-BIRUK-001",
+      sendOtp: "Send OTP",
+      termsNotice: "By continuing you agree to our Terms & Privacy Policy",
+    },
+    verify: {
+      title: "Enter Verification Code",
+      subtitle: "We sent a code to %{phone}",
+      verifyAndContinue: "Verify & Continue",
+      resendCode: "Resend Code",
+      resendIn: "Resend in %{seconds}s",
+      demoHint: "Demo: use any 4 digits",
+    },
+    role: {
+      title: "I am a...",
+      subtitle: "Select your role to personalize your experience",
+      continueAs: "Continue as %{role}",
+      selectRole: "Select a role",
+      buyer: {
+        title: "Buyer / Seeker",
+        subtitle: "Looking to buy or rent",
+      },
+      owner: {
+        title: "Owner",
+        subtitle: "List my property",
+      },
+      agent: {
+        title: "Agent",
+        subtitle: "Find & connect clients",
+      },
+      broker: {
+        title: "Broker",
+        subtitle: "Manage listings & leads",
+      },
+      developer: {
+        title: "Developer",
+        subtitle: "Manage projects & units",
+      },
+      hotelPartner: {
+        title: "Hotel Partner",
+        subtitle: "List my hotel / guesthouse",
+      },
+    },
+    shell: {
+      title: "TeleProperty",
+      subtitle: "Ethiopia's #1 Property Platform",
+      phoneSignIn: "Phone sign-in",
+    },
+    welcome: "Welcome %{name}!",
+  },
   drawer: {
     menuTitle: "Menu",
     searchProperty: "Search Property",

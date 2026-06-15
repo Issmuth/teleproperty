@@ -3,6 +3,7 @@ import { Bell, Trash2 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { useSmartBack } from "@/hooks/use-smart-back";
 import { useAppTheme } from "@/theme/app-theme";
 
 type NotifCategory = "All" | "Property Alerts" | "Government/News" | "Rewards & Lottery" | "Subscription";
@@ -91,6 +92,7 @@ const initialNotifs: Notification[] = [
 
 export default function NotificationsScreen() {
   const router = useRouter();
+  const goBack = useSmartBack(true ,'/(drawer)/(tabs)/(account)/account');
   const { colors, isDark } = useAppTheme();
   const [activeFilter, setActiveFilter] = useState<NotifCategory>("All");
   const [notifs, setNotifs] = useState<Notification[]>(initialNotifs);
@@ -122,8 +124,7 @@ export default function NotificationsScreen() {
       <View style={[styles.topBar, { backgroundColor: colors.background }]}>
         <Pressable
           onPress={() => {
-            router.replace('/(drawer)/(tabs)/(account)/account');
-            router.back();
+            goBack();
           }}
           style={[styles.backBtn, { backgroundColor: colors.surface }]}
         >

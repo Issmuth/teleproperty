@@ -1,21 +1,21 @@
-import { useAuth } from "@/auth/auth-context";
 import { AccountRow } from "@/components/molecules/account/account-row";
 import { ProfileCard } from "@/components/molecules/account/profile-card";
 import { useI18n } from "@/i18n";
+import { useAuthStore } from "@/store";
 import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";
 import {
-  Bell,
-  Building2,
-  CreditCard,
-  Globe,
-  Headphones,
-  Heart,
-  MessageSquareHeart,
-  PhoneCall,
-  Shield,
-  Star,
-  Wallet,
+    Bell,
+    Building2,
+    CreditCard,
+    Globe,
+    Headphones,
+    Heart,
+    MessageSquareHeart,
+    PhoneCall,
+    Shield,
+    Star,
+    Wallet,
 } from "lucide-react-native";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -23,7 +23,14 @@ export default function AccountScreen() {
   const { t } = useI18n();
   const router = useRouter();
   const { colors } = useAppTheme();
-  const { isAdmin, isAuthenticated, session, signOut } = useAuth();
+  
+  // Subscribe to session state directly to ensure re-renders
+  const session = useAuthStore((state) => state.session);
+  const signOut = useAuthStore((state) => state.signOut);
+  
+  // Derive computed values from session
+  const isAuthenticated = Boolean(session);
+  const isAdmin = session?.role === "developer" || session?.role === "owner";
 
   const contactLine =
     session?.phoneNumber ?? session?.email ?? "No contact added";
@@ -164,7 +171,12 @@ export default function AccountScreen() {
           </View>
 
           {isAuthenticated ? (
-            <Pressable style={styles.signOutBtn} onPress={() => void signOut()}>
+            <Pressable
+              style={styles.signOutBtn}
+              onPress={async () => {
+                await signOut();
+              }}
+            >
               <Text style={styles.signOutLabel}>{t("account.signOut")}</Text>
             </Pressable>
           ) : (

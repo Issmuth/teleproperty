@@ -690,6 +690,71 @@ export const om: typeof en = {
     om: "Afan Oromo",
     ti: "Tigrigna",
   },
+  auth: {
+    index: {
+      title: "Lakkoofsa bilbilaa keetiin gali",
+      subtitle: "Herrega kee irratti itti fufuuf OTP fayyadami",
+      continueWithPhone: "Bilbilaan Itti Fufi",
+      quickLogin: "OTP'n ariifannaan gali",
+      termsNotice: "Itti fufuudhaan, Seeraa Tajaajila keenya fi Imaammata Dhuunfaa waliin walii galte",
+    },
+    phone: {
+      title: "Bilbila Kee Galchi",
+      subtitle: "Koodii si ergina",
+      fullName: "Maqaa Guutuu",
+      fullNamePlaceholder: "Maqaa kee guutuu",
+      phoneNumber: "Lakkoofsa Bilbilaa",
+      phoneNumberPlaceholder: "9X XXX XXXX",
+      referralCode: "Koodii Qajeelfama (Filannoo)",
+      referralCodePlaceholder: "fkn TPF-BIRUK-001",
+      sendOtp: "OTP Ergi",
+      termsNotice: "Itti fufuudhaan Seera fi Imaammata Dhuunfaa keenya waliin walii galte",
+    },
+    verify: {
+      title: "Koodii Mirkaneessaa Galchi",
+      subtitle: "Gara %{phone} koodii erginee jirra",
+      verifyAndContinue: "Mirkaneessi & Itti Fufi",
+      resendCode: "Koodii Deebi'ii Ergi",
+      resendIn: "%{seconds}s keessatti Deebi'ii Ergi",
+      demoHint: "Demo: lakkoofsa 4 kamiyyuu fayyadami",
+    },
+    role: {
+      title: "Ani...",
+      subtitle: "Muuxannoo kee dhuunfachiisuuf gahee kee filadhu",
+      continueAs: "Akka %{role} Itti Fufi",
+      selectRole: "Gahee filadhu",
+      buyer: {
+        title: "Bitaa / Barbaadu",
+        subtitle: "Bituuf ykn kireeffachuuf barbaada",
+      },
+      owner: {
+        title: "Abbaa Qabeenyaa",
+        subtitle: "Qabeenya koo tarreessi",
+      },
+      agent: {
+        title: "Bakka Bu'aa",
+        subtitle: "Maamila barbaadii fi walqunnamsiisi",
+      },
+      broker: {
+        title: "Daldalaa",
+        subtitle: "Tarreeffamaa fi leads bulchi",
+      },
+      developer: {
+        title: "Misoomtuu",
+        subtitle: "Pirojektoota fi yuunitoota bulchi",
+      },
+      hotelPartner: {
+        title: "Hiriyaa Hoteelaa",
+        subtitle: "Hotela / mana keessummaa koo tarreessi",
+      },
+    },
+    shell: {
+      title: "TeleProperty",
+      subtitle: "Waltajjii Qabeenya #1 Itoophiyaa",
+      phoneSignIn: "Bilbilaan Gali",
+    },
+    welcome: "Baga nagaan dhuftan %{name}!",
+  },
   drawer: {
     menuTitle: "Fiilloo",
     searchProperty: "Qabeenya Barbaadi",

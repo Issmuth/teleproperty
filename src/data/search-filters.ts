@@ -68,6 +68,70 @@ const cityOptions = [
   { key: "bahir-dar", label: "Bahir Dar" },
 ] as const;
 
+// Subcity options for each city
+const addisAbabaSubcityOptions = [
+  { key: "all-subcities", label: "All Subcities" },
+  { key: "bole", label: "Bole" },
+  { key: "kirkos", label: "Kirkos" },
+  { key: "yeka", label: "Yeka" },
+  { key: "kolfe-keranio", label: "Kolfe Keranio" },
+  { key: "addis-ketema", label: "Addis Ketema" },
+  { key: "lideta", label: "Lideta" },
+  { key: "arada", label: "Arada" },
+  { key: "gulele", label: "Gulele" },
+  { key: "nifas-silk-lafto", label: "Nifas Silk-Lafto" },
+  { key: "akaky-kaliti", label: "Akaky Kaliti" },
+  { key: "lemi-kura", label: "Lemi Kura" },
+] as const;
+
+const adamaSubcityOptions = [
+  { key: "all-subcities", label: "All Areas" },
+  { key: "adama-01", label: "Adama 01" },
+  { key: "adama-02", label: "Adama 02" },
+  { key: "adama-03", label: "Adama 03" },
+  { key: "adama-04", label: "Adama 04" },
+  { key: "adama-05", label: "Adama 05" },
+  { key: "adama-06", label: "Adama 06" },
+  { key: "adama-07", label: "Adama 07" },
+] as const;
+
+const hawassaSubcityOptions = [
+  { key: "all-subcities", label: "All Areas" },
+  { key: "hawassa-01", label: "Hawassa 01" },
+  { key: "hawassa-02", label: "Hawassa 02" },
+  { key: "hawassa-03", label: "Hawassa 03" },
+  { key: "hawassa-04", label: "Hawassa 04" },
+  { key: "hawassa-05", label: "Hawassa 05" },
+  { key: "hawassa-06", label: "Hawassa 06" },
+  { key: "hawassa-07", label: "Hawassa 07" },
+  { key: "hawassa-08", label: "Hawassa 08" },
+] as const;
+
+const bahirDarSubcityOptions = [
+  { key: "all-subcities", label: "All Areas" },
+  { key: "bahir-dar-01", label: "Bahir Dar 01" },
+  { key: "bahir-dar-02", label: "Bahir Dar 02" },
+  { key: "bahir-dar-03", label: "Bahir Dar 03" },
+  { key: "bahir-dar-04", label: "Bahir Dar 04" },
+  { key: "bahir-dar-05", label: "Bahir Dar 05" },
+  { key: "bahir-dar-06", label: "Bahir Dar 06" },
+  { key: "bahir-dar-07", label: "Bahir Dar 07" },
+  { key: "bahir-dar-08", label: "Bahir Dar 08" },
+  { key: "bahir-dar-09", label: "Bahir Dar 09" },
+] as const;
+
+// Map cities to their subcities
+export const citySubcityMap: Record<
+  string,
+  readonly SearchFilterOption[]
+> = {
+  "addis-ababa": addisAbabaSubcityOptions,
+  adama: adamaSubcityOptions,
+  hawassa: hawassaSubcityOptions,
+  "bahir-dar": bahirDarSubcityOptions,
+  "all-cities": [{ key: "all-subcities", label: "All Areas" }],
+};
+
 const propertyTypeOptions = [
   { key: "all-types", label: "All Types" },
   { key: "apartment", label: "Apartment" },
@@ -165,6 +229,24 @@ export const homeSearchFiltersConfig: SearchFiltersConfig = {
       ],
     },
     {
+      kind: "dual-select",
+      id: "subcityAndAge",
+      fields: [
+        {
+          id: "subcity",
+          label: "Subcity / Area",
+          value: "All Areas",
+          options: [{ key: "all-subcities", label: "All Areas" }],
+        },
+        {
+          id: "propertyAge",
+          label: "Property Age",
+          value: "Any Age",
+          options: propertyAgeOptions,
+        },
+      ],
+    },
+    {
       kind: "range",
       id: "priceRange",
       label: "Price Range (ETB)",
@@ -186,13 +268,6 @@ export const homeSearchFiltersConfig: SearchFiltersConfig = {
       label: "Bathrooms",
       options: bathroomOptions,
       selectedKeys: ["any"],
-    },
-    {
-      kind: "chips",
-      id: "propertyAge",
-      label: "Property Age",
-      options: propertyAgeOptions,
-      selectedKeys: ["any-age"],
     },
     {
       kind: "chips",
@@ -229,6 +304,24 @@ export const propertySearchFiltersConfig: SearchFiltersConfig = {
       ],
     },
     {
+      kind: "dual-select",
+      id: "subcityAndAge",
+      fields: [
+        {
+          id: "subcity",
+          label: "Subcity / Area",
+          value: "All Areas",
+          options: [{ key: "all-subcities", label: "All Areas" }],
+        },
+        {
+          id: "propertyAge",
+          label: "Property Age",
+          value: "Any Age",
+          options: propertyAgeOptions,
+        },
+      ],
+    },
+    {
       kind: "range",
       id: "priceRange",
       label: "Price Range (ETB)",
@@ -250,13 +343,6 @@ export const propertySearchFiltersConfig: SearchFiltersConfig = {
       label: "Bathrooms",
       options: bathroomOptions,
       selectedKeys: ["any"],
-    },
-    {
-      kind: "chips",
-      id: "propertyAge",
-      label: "Property Age",
-      options: propertyAgeOptions,
-      selectedKeys: ["any-age"],
     },
     {
       kind: "chips",

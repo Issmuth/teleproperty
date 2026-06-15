@@ -1,5 +1,5 @@
-import { useAuth } from "@/auth/auth-context";
 import { useAuthGate } from "@/auth/use-auth-gate";
+import { useAuth } from "@/hooks/use-auth";
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 import { useRouter } from "expo-router";

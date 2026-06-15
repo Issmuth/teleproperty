@@ -1,17 +1,18 @@
 import { Tabs } from "expo-router";
 import {
-    Building2,
-    CreditCard,
-    DraftingCompass,
-    House,
-    User,
+  Building2,
+  CreditCard,
+  DraftingCompass,
+  House,
+  User,
 } from "lucide-react-native";
-import { Pressable, StyleSheet, type PressableProps } from "react-native";
+import { Platform, Pressable, StyleSheet, type PressableProps } from "react-native";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
@@ -73,6 +74,12 @@ function TabBarButton({
 export default function TabsLayout() {
   const { t } = useI18n();
   const { colors } = useAppTheme();
+  const insets = useSafeAreaInsets();
+
+  // Calculate bottom spacing for Android nav bar
+  const bottomSpacing = Platform.OS === 'android' 
+    ? Math.max(insets.bottom, 10) 
+    : 10;
 
   return (
     <Tabs
@@ -89,6 +96,9 @@ export default function TabsLayout() {
           {
             backgroundColor: colors.tabBarBackground,
             borderColor: colors.border,
+            bottom: bottomSpacing,
+            paddingBottom: Platform.OS === 'android' ? insets.bottom : 0,
+            height: Platform.OS === 'android' ? 66 + insets.bottom : 66,
           },
         ],
       }}

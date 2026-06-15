@@ -2,11 +2,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ChevronLeft, House, X } from "lucide-react-native";
 import type { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { LanguageSelector } from "@/components/molecules/language-selector";
 import { useAppTheme } from "@/theme/app-theme";
 
 type AuthShellProps = {
-  localeLabel?: string;
   title: string;
   subtitle: string;
   onBackPress?: () => void;
@@ -15,7 +16,6 @@ type AuthShellProps = {
 };
 
 export function AuthShell({
-  localeLabel = "GB EN",
   title,
   subtitle,
   onBackPress,
@@ -23,6 +23,9 @@ export function AuthShell({
   children,
 }: AuthShellProps) {
   const { colors } = useAppTheme();
+  const insets = useSafeAreaInsets();
+
+  const topSpacing = Math.max(insets.top + 4, 18);
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
@@ -30,27 +33,21 @@ export function AuthShell({
         colors={["#127C40", "#109146", "#19A856"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={styles.hero}
+        style={[styles.hero, { paddingTop: topSpacing }]}
       >
         <View style={styles.heroChrome} />
         <View style={styles.heroChromeRight} />
 
-        <View style={styles.heroTopRow}>
-          <View
-            style={[
-              styles.localePill,
-              { borderColor: "rgba(255,255,255,0.22)" },
-            ]}
-          >
-            <Text style={styles.localeLabel}>{localeLabel}</Text>
-          </View>
+        <View style={[styles.heroTopRow, { top: topSpacing }]}>
+          <LanguageSelector light />
 
           {onClosePress ? (
             <Pressable
               onPress={onClosePress}
               style={[styles.iconButton, styles.closeButton]}
+              hitSlop={8}
             >
-              <X size={18} color="#FFFFFF" />
+              <X size={18} color="#FFFFFF" strokeWidth={2.5} />
             </Pressable>
           ) : null}
         </View>
@@ -61,13 +58,17 @@ export function AuthShell({
               <House size={22} color="#0F7B44" strokeWidth={2.4} />
             </View>
           </View>
-          <Text style={styles.brandTitle}>TeleProperty</Text>
+          <Text style={styles.brandTitle}>{title}</Text>
           <Text style={styles.brandSubtitle}>{subtitle}</Text>
         </View>
 
         {onBackPress ? (
-          <Pressable onPress={onBackPress} style={styles.backButton}>
-            <ChevronLeft size={18} color="#FFFFFF" />
+          <Pressable 
+            onPress={onBackPress} 
+            style={[styles.backButton, { top: topSpacing + 54 }]}
+            hitSlop={8}
+          >
+            <ChevronLeft size={18} color="#FFFFFF" strokeWidth={2.5} />
           </Pressable>
         ) : null}
       </LinearGradient>
@@ -112,26 +113,11 @@ const styles = StyleSheet.create({
   },
   heroTopRow: {
     position: "absolute",
-    top: 32,
     left: 16,
     right: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  localePill: {
-    minHeight: 28,
-    paddingHorizontal: 12,
-    borderRadius: 999,
-    borderWidth: 1,
-    justifyContent: "center",
-    backgroundColor: "rgba(255,255,255,0.16)",
-  },
-  localeLabel: {
-    color: "#FFFFFF",
-    fontSize: 12,
-    fontWeight: "800",
-    letterSpacing: 0.2,
   },
   iconButton: {
     width: 32,
@@ -178,7 +164,6 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     left: 16,
-    top: 72,
     width: 32,
     height: 32,
     borderRadius: 16,

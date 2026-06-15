@@ -1,20 +1,21 @@
 import { AppBottomSheet } from "@/components/atoms/app-bottom-sheet";
-import type {
-    SearchFilterOption,
-    SearchFilterSection,
-    SearchFiltersConfig,
+import {
+  citySubcityMap,
+  type SearchFilterOption,
+  type SearchFilterSection,
+  type SearchFiltersConfig,
 } from "@/data/search-filters";
 import { useAppTheme } from "@/theme/app-theme";
 import { ChevronDown, SlidersHorizontal } from "lucide-react-native";
 import { useEffect, useState, type ReactNode } from "react";
 import {
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    TextInput,
-    View,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 const FILTER_ICON_SIZE = 18;
@@ -93,7 +94,20 @@ export function SearchFiltersSheet({
   };
 
   const handleSelectOption = (groupId: string, option: SearchFilterOption) => {
-    setState((current) => ({ ...current, [groupId]: option.label }));
+    setState((current) => {
+      const updates: FilterState = { 
+        [groupId]: option.label,
+        [`${groupId}_key`]: option.key 
+      };
+      
+      // Reset subcity when city changes
+      if (groupId === "city") {
+        updates["subcity"] = "All Areas";
+        updates["subcity_key"] = "all-subcities";
+      }
+      
+      return { ...current, ...updates };
+    });
     setExpandedSelectId(null);
   };
 
@@ -221,6 +235,13 @@ function FilterSectionView({
           const selectedValue = String(state[field.id] ?? field.value);
           const isExpanded = expandedSelectId === field.id;
 
+          // Dynamic subcity options based on city selection
+          let fieldOptions = field.options;
+          if (field.id === "subcity") {
+            const selectedCityKey = String(state["city_key"] ?? "all-cities");
+            fieldOptions = citySubcityMap[selectedCityKey] || field.options;
+          }
+
           return (
             <View key={field.id} style={styles.dualSelectColumn}>
               <Text style={[styles.sectionLabel, { color: colors.textMuted }]}>
@@ -255,36 +276,38 @@ function FilterSectionView({
                     },
                   ]}
                 >
-                  {field.options.map((option) => {
-                    const isSelected = option.label === selectedValue;
+                  <ScrollView style={styles.optionPanelScroll} nestedScrollEnabled>
+                    {fieldOptions.map((option) => {
+                      const isSelected = option.label === selectedValue;
 
-                    return (
-                      <Pressable
-                        key={option.key}
-                        onPress={() => onSelectOption(field.id, option)}
-                        style={({ pressed }) => [
-                          styles.optionItem,
-                          isSelected && {
-                            backgroundColor: colors.surfaceMuted,
-                          },
-                          pressed && styles.pressed,
-                        ]}
-                      >
-                        <Text
-                          style={[
-                            styles.optionText,
-                            {
-                              color: isSelected
-                                ? colors.activeText
-                                : colors.text,
+                      return (
+                        <Pressable
+                          key={option.key}
+                          onPress={() => onSelectOption(field.id, option)}
+                          style={({ pressed }) => [
+                            styles.optionItem,
+                            isSelected && {
+                              backgroundColor: colors.surfaceMuted,
                             },
+                            pressed && styles.pressed,
                           ]}
                         >
-                          {option.label}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
+                          <Text
+                            style={[
+                              styles.optionText,
+                              {
+                                color: isSelected
+                                  ? colors.activeText
+                                  : colors.text,
+                              },
+                            ]}
+                          >
+                            {option.label}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </ScrollView>
                 </View>
               )}
             </View>
@@ -492,6 +515,11 @@ function createInitialState(
     if (section.kind === "dual-select") {
       for (const field of section.fields) {
         nextState[field.id] = field.value;
+        // Store the key for dynamic lookups
+        const selectedOption = field.options.find(opt => opt.label === field.value);
+        if (selectedOption) {
+          nextState[`${field.id}_key`] = selectedOption.key;
+        }
       }
       continue;
     }
@@ -579,8 +607,11 @@ const styles = StyleSheet.create({
   optionPanel: {
     borderRadius: 14,
     borderWidth: 1,
-    paddingVertical: 6,
+    maxHeight: 240,
     overflow: "hidden",
+  },
+  optionPanelScroll: {
+    paddingVertical: 6,
   },
   optionItem: {
     paddingHorizontal: 14,

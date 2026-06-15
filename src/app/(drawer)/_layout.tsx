@@ -15,6 +15,7 @@ export default function DrawerLayout() {
       initialRouteName="(tabs)"
       drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={{
+        swipeEnabled: false,
         headerShown: true,
         drawerType: "front",
         drawerPosition: "right",

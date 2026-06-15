@@ -690,6 +690,71 @@ export const ti: typeof en = {
     om: "Afan Oromo",
     ti: "ትግርኛ",
   },
+  auth: {
+    index: {
+      title: "ብቑጽሪ ተሌፎንካ ኣቱ",
+      subtitle: "ናብ መዝገብካ ንምቕጻል OTP ተጠቐም",
+      continueWithPhone: "ብተሌፎን ቀጽል",
+      quickLogin: "ብOTP ቅልጡፍ መእተዊ",
+      termsNotice: "ብምቕጻል፡ ምስ ውዕል ኣገልግሎትናን ፖሊሲ ምስጢርናን ትሰማማዕ",
+    },
+    phone: {
+      title: "ተሌፎንካ ኣእቱ",
+      subtitle: "ኮድ ክንልኣካልካ ኢና",
+      fullName: "ምሉእ ስም",
+      fullNamePlaceholder: "ምሉእ ስምካ",
+      phoneNumber: "ቑጽሪ ተሌፎን",
+      phoneNumberPlaceholder: "9X XXX XXXX",
+      referralCode: "ኮድ መምርሒ (ምርጫ)",
+      referralCodePlaceholder: "ንኣብነት TPF-BIRUK-001",
+      sendOtp: "OTP ለኣኽ",
+      termsNotice: "ብምቕጻል ምስ ውዕልናን ፖሊሲ ምስጢርናን ትሰማማዕ",
+    },
+    verify: {
+      title: "ኮድ ምርግጋጽ ኣእቱ",
+      subtitle: "ናብ %{phone} ኮድ ለኣኺና",
+      verifyAndContinue: "ኣረጋግጽን ቀጽልን",
+      resendCode: "ኮድ ደጊምካ ለኣኽ",
+      resendIn: "ብ%{seconds}ሰ ውሽጢ ደጊምካ ለኣኽ",
+      demoHint: "ምኽሪ: ዝኾነ 4 ቑጽሪ ተጠቐም",
+    },
+    role: {
+      title: "እየ ኣነ...",
+      subtitle: "ተሞክሮኻ ንምውልላል ግደኻ ምረጽ",
+      continueAs: "ከም %{role} ቀጽል",
+      selectRole: "ግደ ምረጽ",
+      buyer: {
+        title: "መግዛኢ / መድለዪ",
+        subtitle: "ንምግዛእ ወይ ንምኽራይ የድሊ",
+      },
+      owner: {
+        title: "ወናኒ",
+        subtitle: "ንብረተይ ዝርዝር ግበር",
+      },
+      agent: {
+        title: "ወኪል",
+        subtitle: "ዓሚላት ርኸብን ራኸብን",
+      },
+      broker: {
+        title: "ደላላይ",
+        subtitle: "ዝርዝራትን leadsን ኣመሓድር",
+      },
+      developer: {
+        title: "ኣልሚ",
+        subtitle: "ፕሮጀክትታትን ኣሃዱታትን ኣመሓድር",
+      },
+      hotelPartner: {
+        title: "መጻምዲ ሆቴል",
+        subtitle: "ሆቴለይ / ቤት እንኳዕታ ዝርዝር ግበር",
+      },
+    },
+    shell: {
+      title: "TeleProperty",
+      subtitle: "ናይ ኢትዮጵያ #1 መድረኽ ንብረት",
+      phoneSignIn: "ብተሌፎን መእተዊ",
+    },
+    welcome: "እንቋዕ ደሓን መጻኻ %{name}!",
+  },
   drawer: {
     menuTitle: "ምናሌ",
     searchProperty: "ንብረት ድለ",

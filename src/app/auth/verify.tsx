@@ -1,48 +1,62 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Lightbulb } from "lucide-react-native";
-import { useMemo } from "react";
+import { Info } from "lucide-react-native";
+import { useRef } from "react";
 import {
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
-import { useAuth } from "@/auth/auth-context";
 import { readAuthRouteParams, withAuthRouteParams } from "@/auth/auth-routing";
 import { AuthShell } from "@/components/organisms/auth/auth-shell";
 import { AuthStepper } from "@/components/organisms/auth/auth-stepper";
+import { useAuth } from "@/hooks/use-auth";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
 
 export default function VerifyAuthScreen() {
   const router = useRouter();
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const { draft, updateDraft } = useAuth();
   const params = readAuthRouteParams(
-    useLocalSearchParams<Record<string, string | string[]>>(),
+    useLocalSearchParams<Record<string, string | string[]>>()
   );
 
+  const otpRefs = useRef<Array<TextInput | null>>([]);
   const code = draft.otp;
   const phoneLabel = draft.phoneNumber.trim()
     ? `+251 ${draft.phoneNumber.trim()}`
     : "+251";
-  const isContinueDisabled = useMemo(
-    () => code.some((item) => item.trim().length === 0),
-    [code],
-  );
+
+  const isContinueDisabled = code.some((item) => item.trim().length === 0);
 
   const updateCodeAtIndex = (index: number, value: string) => {
+    const sanitized = value.replace(/[^0-9]/g, "").slice(-1);
     const next = [...code] as [string, string, string, string];
-    next[index] = value.replace(/[^0-9]/g, "").slice(-1);
+    next[index] = sanitized;
     updateDraft({ otp: next });
+
+    // Auto-advance to next input
+    if (sanitized && index < 3) {
+      otpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyPress = (index: number, key: string) => {
+    // Move back on backspace if current is empty
+    if (key === "Backspace" && !code[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
   };
 
   return (
     <AuthShell
-      title="TeleProperty"
-      subtitle="Ethiopia's #1 Property Platform"
+      title={t("auth.shell.title")}
+      subtitle={t("auth.shell.subtitle")}
       onBackPress={() => router.back()}
       onClosePress={() => router.replace("/")}
     >
@@ -54,11 +68,10 @@ export default function VerifyAuthScreen() {
 
         <View style={styles.copyBlock}>
           <Text style={[styles.heading, { color: colors.text }]}>
-            Verify Code
+            {t("auth.verify.title")}
           </Text>
           <Text style={[styles.subheading, { color: colors.textMuted }]}>
-            We&apos;ll send a one-time code{" "}
-            <Text style={styles.emphasis}>{phoneLabel}</Text>
+            {t("auth.verify.subtitle", { phone: phoneLabel })}
           </Text>
         </View>
 
@@ -71,9 +84,9 @@ export default function VerifyAuthScreen() {
             },
           ]}
         >
-          <Lightbulb size={14} color={colors.activeText} />
+          <Info size={16} color={colors.activeText} strokeWidth={2.5} />
           <Text style={[styles.demoText, { color: colors.activeText }]}>
-            Demo OTP: 1 2 3 4 5
+            {t("auth.verify.demoHint")}
           </Text>
         </View>
 
@@ -81,8 +94,14 @@ export default function VerifyAuthScreen() {
           {code.map((digit, index) => (
             <TextInput
               key={index}
+              ref={(ref) => {
+                otpRefs.current[index] = ref;
+              }}
               value={digit}
               onChangeText={(value) => updateCodeAtIndex(index, value)}
+              onKeyPress={({ nativeEvent }) =>
+                handleKeyPress(index, nativeEvent.key)
+              }
               keyboardType="number-pad"
               maxLength={1}
               selectTextOnFocus
@@ -90,7 +109,7 @@ export default function VerifyAuthScreen() {
                 styles.otpInput,
                 {
                   backgroundColor: colors.surface,
-                  borderColor: colors.border,
+                  borderColor: digit ? colors.activeText : colors.border,
                   color: colors.text,
                 },
               ]}
@@ -122,7 +141,7 @@ export default function VerifyAuthScreen() {
               { color: isContinueDisabled ? colors.textMuted : "#FFFFFF" },
             ]}
           >
-            Verify &amp; Continue
+            {t("auth.verify.verifyAndContinue")}
           </Text>
         </Pressable>
 
@@ -131,7 +150,7 @@ export default function VerifyAuthScreen() {
           onPress={() => updateDraft({ otp: ["", "", "", ""] })}
         >
           <Text style={[styles.resendText, { color: colors.activeText }]}>
-            resend
+            {t("auth.verify.resendCode")}
           </Text>
         </Pressable>
       </ScrollView>
@@ -180,12 +199,12 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   otpInput: {
-    width: 46,
-    height: 46,
+    width: 52,
+    height: 56,
     borderRadius: 12,
-    borderWidth: 1,
+    borderWidth: 2,
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "900",
   },
   primaryButton: {

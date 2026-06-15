@@ -1,35 +1,35 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Phone } from "lucide-react-native";
 import { useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { useAuth } from "@/auth/auth-context";
 import { readAuthRouteParams } from "@/auth/auth-routing";
 import { AuthOptionCard } from "@/components/organisms/auth/auth-option-card";
 import { AuthShell } from "@/components/organisms/auth/auth-shell";
+import { useAuth } from "@/hooks/use-auth";
+import { useI18n } from "@/i18n";
 import { useAppTheme } from "@/theme/app-theme";
-import { useLocalSearchParams } from "expo-router";
 
 export default function AuthIndexScreen() {
   const router = useRouter();
   const { colors } = useAppTheme();
+  const { t } = useI18n();
   const { isAuthenticated, isHydrated } = useAuth();
   const params = readAuthRouteParams(
-    useLocalSearchParams<Record<string, string | string[]>>(),
+    useLocalSearchParams<Record<string, string | string[]>>()
   );
 
+  // Redirect if already authenticated
   useEffect(() => {
-    if (!isHydrated || !isAuthenticated) {
-      return;
+    if (isHydrated && isAuthenticated) {
+      router.replace((params.redirectTo ?? "/") as never);
     }
-
-    router.replace((params.redirectTo ?? "/") as never);
   }, [isAuthenticated, isHydrated, params.redirectTo, router]);
 
   return (
     <AuthShell
-      title="TeleProperty"
-      subtitle="Phone sign-in"
+      title={t("auth.shell.title")}
+      subtitle={t("auth.shell.phoneSignIn")}
       onClosePress={() => router.replace("/")}
     >
       <ScrollView
@@ -38,17 +38,17 @@ export default function AuthIndexScreen() {
       >
         <View style={styles.copyBlock}>
           <Text style={[styles.heading, { color: colors.text }]}>
-            Sign in with your phone number
+            {t("auth.index.title")}
           </Text>
           <Text style={[styles.subheading, { color: colors.textMuted }]}>
-            Use OTP to continue to your account
+            {t("auth.index.subtitle")}
           </Text>
         </View>
 
         <View style={styles.options}>
           <AuthOptionCard
-            title="Continue with Phone"
-            subtitle="Quick login with OTP"
+            title={t("auth.index.continueWithPhone")}
+            subtitle={t("auth.index.quickLogin")}
             icon={Phone}
             accentColor="#E8FFF0"
             tintColor="#22C55E"
@@ -67,7 +67,7 @@ export default function AuthIndexScreen() {
 
         <View style={styles.footerNoteWrap}>
           <Text style={[styles.footerNote, { color: colors.textMuted }]}>
-            By continuing, you agree to our Terms of Service and Privacy Policy
+            {t("auth.index.termsNotice")}
           </Text>
         </View>
       </ScrollView>

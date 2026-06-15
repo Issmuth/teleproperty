@@ -702,6 +702,71 @@ export const am: typeof en = {
     om: "Afan Oromo",
     ti: "ትግርኛ",
   },
+  auth: {
+    index: {
+      title: "በስልክ ቁጥርዎ ይግቡ",
+      subtitle: "ወደ መለያዎ ለመቀጠል OTP ይጠቀሙ",
+      continueWithPhone: "በስልክ ቀጥል",
+      quickLogin: "በOTP ፈጣን መግቢያ",
+      termsNotice: "በመቀጠል፣ ከአገልግሎታችን ውል እና የግልነት ፖሊሲ ጋር ይስማማሉ",
+    },
+    phone: {
+      title: "ስልክዎን ያስገቡ",
+      subtitle: "ኮድ እንልክልዎታለን",
+      fullName: "ሙሉ ስም",
+      fullNamePlaceholder: "ሙሉ ስምዎ",
+      phoneNumber: "ስልክ ቁጥር",
+      phoneNumberPlaceholder: "9X XXX XXXX",
+      referralCode: "የመጋበዣ ኮድ (አማራጭ)",
+      referralCodePlaceholder: "ለምሳሌ TPF-BIRUK-001",
+      sendOtp: "OTP ላክ",
+      termsNotice: "በመቀጠል ከውላችን እና የግልነት ፖሊሲ ጋር ይስማማሉ",
+    },
+    verify: {
+      title: "የማረጋገጫ ኮድ ያስገቡ",
+      subtitle: "ወደ %{phone} ኮድ ልከናል",
+      verifyAndContinue: "አረጋግጥና ቀጥል",
+      resendCode: "ኮድ እንደገና ላክ",
+      resendIn: "%{seconds}ሰ ውስጥ እንደገና ላክ",
+      demoHint: "ደሞ: ማንኛውንም 4 ቁጥሮች ተጠቀም",
+    },
+    role: {
+      title: "እኔ ነኝ...",
+      subtitle: "ተሞክሮውን ለማበጀት ሚናዎን ይምረጡ",
+      continueAs: "እንደ %{role} ቀጥል",
+      selectRole: "ሚና ምረጥ",
+      buyer: {
+        title: "ገዢ / ፈላጊ",
+        subtitle: "ለመግዛት ወይም ለመከራየት እየፈለግሁ ነው",
+      },
+      owner: {
+        title: "ባለቤት",
+        subtitle: "ንብረቴን ዝርዝር አድርግ",
+      },
+      agent: {
+        title: "ወኪል",
+        subtitle: "ደንበኞችን ፈልግና አገናኝ",
+      },
+      broker: {
+        title: "ብሮከር",
+        subtitle: "ዝርዝሮችን እና ሊድስን አስተዳድር",
+      },
+      developer: {
+        title: "አልሚ",
+        subtitle: "ፕሮጀክቶችን እና ክፍሎችን አስተዳድር",
+      },
+      hotelPartner: {
+        title: "የሆቴል አጋር",
+        subtitle: "ሆቴሌን / እንግዳ ማረፊያን ዝርዝር አድርግ",
+      },
+    },
+    shell: {
+      title: "TeleProperty",
+      subtitle: "የኢትዮጵያ #1 የንብረት መድረክ",
+      phoneSignIn: "በስልክ መግቢያ",
+    },
+    welcome: "እንኳን ደህና መጡ %{name}!",
+  },
   drawer: {
     menuTitle: "ምናሌ",
     searchProperty: "ንብረት ፈልግ",
