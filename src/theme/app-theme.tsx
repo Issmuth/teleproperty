@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router";
+import { ThemeProvider } from "@react-navigation/native";
 import {
     createContext,
     ReactNode,
@@ -88,9 +88,8 @@ const darkColors: AppThemeColors = {
 
 const navigationThemes = {
   light: {
-    ...DefaultTheme,
+    dark: false,
     colors: {
-      ...DefaultTheme.colors,
       primary: palette.brand.primary,
       background: lightColors.background,
       card: lightColors.surface,
@@ -98,17 +97,52 @@ const navigationThemes = {
       border: lightColors.border,
       notification: palette.brand.accent,
     },
+    fonts: {
+      regular: {
+        fontFamily: 'System',
+        fontWeight: '400',
+      },
+      medium: {
+        fontFamily: 'System',
+        fontWeight: '500',
+      },
+      bold: {
+        fontFamily: 'System',
+        fontWeight: '700',
+      },
+      heavy: {
+        fontFamily: 'System',
+        fontWeight: '800',
+      },
+    },
   },
   dark: {
-    ...DarkTheme,
+    dark: true,
     colors: {
-      ...DarkTheme.colors,
       primary: palette.brand.accent,
       background: darkColors.background,
       card: darkColors.surface,
       text: darkColors.text,
       border: darkColors.border,
       notification: palette.brand.accent,
+    },
+    fonts: {
+      regular: {
+        fontFamily: 'System',
+        fontWeight: '400',
+      },
+      medium: {
+        fontFamily: 'System',
+        fontWeight: '500',
+      },
+      bold: {
+        fontFamily: 'System',
+        fontWeight: '700',
+      },
+      heavy: {
+        fontFamily: 'System',
+        fontWeight: '800',
+      },
     },
   },
 } as const;

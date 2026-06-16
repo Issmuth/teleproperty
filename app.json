@@ -27,10 +27,6 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.issmuth.teleproperty",
-      "navigationBar": {
-        "visible": "immersive",
-        "backgroundColor": "#00000000"
-      },
       "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
